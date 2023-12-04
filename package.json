@@ -7,12 +7,13 @@
     "start": "npx --yes http-server ./docs -p 8000",
     "typedoc": "typedoc --out ./docs ./src"
   },
-  "dependencies": {
+  "peerDependencies": {
     "ajv": "8.12.0",
-    "uuid": "9.0.1",
-    "jsonschema7": "0.8.0"
+    "jsonschema7": "0.8.0",
+    "uuid": "9.0.1"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.7",
     "typedoc": "0.25.4"
   },
   "keywords": []
