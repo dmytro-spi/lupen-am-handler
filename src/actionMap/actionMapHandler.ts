@@ -229,7 +229,7 @@ export class ActionMapHandler {
       return false;
     }
 
-    const fromSchema = await this.getTileOutputSchema(fromTile);
+    const fromSchema = await this.getTileOutputSchema(fromTile!);
     const toSchema = await this.getActionArgumentsSchema(
       (toTile as ActionTile).actionId,
     );
@@ -312,7 +312,7 @@ export class ActionMapHandler {
       case TileType.Accessor:
         throw new Error('Cannot add input to accessor tile');
       case TileType.Action:
-        (toTile as ActionTile).input[output.toArgument] = outputId;
+        (toTile as ActionTile).input[parseInt(output.toArgument!)] = outputId;
         break;
       case TileType.Memory:
         (toTile as MemoryTile).input.push(outputId);
