@@ -2,8 +2,11 @@
   "name": "tile-validator",
   "version": "1.0.0",
   "description": "TypeScript Template with Node.js",
-  "main": "src/index.js",
-  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "start": "npx --yes http-server ./docs -p 8000",
     "typedoc": "typedoc --out ./docs ./src"
