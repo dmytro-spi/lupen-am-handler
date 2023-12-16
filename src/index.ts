@@ -3,15 +3,27 @@ import { DataSchemaHandler } from './dataSchema/dataSchema';
 import type { PossibleOutput } from './actionMap/actionMapHandler'
 import type { CompatiblePaths } from './dataSchema/dataSchema'
 import type { Model } from './model/types/model'
-import { AccessorSources,
-    AccessorTile,ActionMap,
-    ActionTile,CONSTANT_SELECTOR,
+import {
+    AccessorSources,
+    AccessorTile,
+    ActionMap,
+    ActionTile,
+    CONSTANT_SELECTOR,
     ConditionalOutput,
     DataIn,
     ConditionOperator,
-    DefaultOutput,ForEachOutput,
-    MEMORY_SELECTOR,MODEL_SELECTOR,MemoryTile,OUTPUT_SELECTOR,Output,
-    OutputDirection,OutputGeneral,OutputType,Tile,TileType
+    DefaultOutput,
+    ForEachOutput,
+    MEMORY_SELECTOR,
+    MODEL_SELECTOR,
+    MemoryTile,
+    OUTPUT_SELECTOR,
+    Output,
+    OutputDirection,
+    OutputGeneral,
+    OutputType,
+    Tile,
+    TileType
  } from './actionMap/types/actionMap';
 import {
     ComplexDataType,ContentDataType,DataSchema,DataTypes,FormatDataType,SimpleDataType
