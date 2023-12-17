@@ -4,7 +4,6 @@ import type { PossibleOutput } from './actionMap/actionMapHandler'
 import type { CompatiblePaths } from './dataSchema/dataSchema'
 import type { Model } from './model/types/model'
 import {
-    AccessorSources,
     AccessorTile,
     ActionMap,
     ActionTile,
@@ -34,7 +33,6 @@ export {
     OutputType,
     OutputDirection,
     ConditionOperator,
-    AccessorSources,
     CONSTANT_SELECTOR,
     MEMORY_SELECTOR,
     MODEL_SELECTOR,

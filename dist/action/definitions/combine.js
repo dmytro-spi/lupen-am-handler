@@ -1,5 +1,4 @@
 "use strict";
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.combineAction = exports.actionOutput = exports.functionCall = exports.implementation = exports.description = exports.actionArguments = void 0;
 const uuid_1 = require("uuid");
@@ -46,7 +45,7 @@ exports.actionOutput = {
 };
 exports.combineAction = {
     id: (0, uuid_1.v4)(),
-    category: ((_a = categories_1.categories.find((category) => category.name === 'string')) === null || _a === void 0 ? void 0 : _a.id) || '',
+    category: categories_1.categories.find((category) => category.name === 'string')?.id || '',
     name: 'combine',
     label: 'Combine',
     arguments: JSON.stringify(exports.actionArguments),

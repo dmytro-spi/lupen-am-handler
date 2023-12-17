@@ -1,21 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActionMapHandler = void 0;
-const ajv_1 = require("ajv");
 const uuid_1 = require("uuid");
 const actionMap_1 = require("./types/actionMap");
-const actionMapSchema_1 = require("./schema/actionMapSchema");
-const accessorTileSchema_1 = require("./schema/accessorTileSchema");
-const actionTileSchema_1 = require("./schema/actionTileSchema");
-const memoryTileSchema_1 = require("./schema/memoryTileSchema");
+const actionMap_schema_1 = require("./schema/actionMap.schema");
 const dataSchema_1 = require("../dataSchema/types/dataSchema");
 const dataSchema_2 = require("../dataSchema/dataSchema");
+const tile_schema_1 = require("./schema/tile.schema");
 class ActionMapHandler {
     constructor(actionMap, models, actionFetcher) {
         this.actionMap = actionMap;
         this.models = models;
         this.actionFetcher = actionFetcher;
-        this.ajv = new ajv_1.default();
         this.dataSchemaHandler = new dataSchema_2.DataSchemaHandler();
         this.validateSchema();
     }
@@ -32,13 +28,11 @@ class ActionMapHandler {
      * @throws {Error} Throws an error if the action map fails schema validation,
      *         with details about the validation errors.
      */
-    validateSchema() {
-        const validate = this.ajv.compile(actionMapSchema_1.actionMapSchema);
-        const valid = validate(this.actionMap);
-        if (!valid) {
-            throw new Error(`Invalid action map schema: ${this.ajv.errorsText(validate.errors)}`);
-        }
-        return valid;
+    async validateSchema() {
+        await actionMap_schema_1.default.validate(this.actionMap, {
+            abortEarly: false,
+        });
+        return true;
     }
     /**
      * Asynchronously retrieves the output schema for an Accessor tile.
@@ -56,15 +50,25 @@ class ActionMapHandler {
      *         source type is invalid.
      */
     async getAccessorOutputSchema(tile) {
-        const source = tile.source.split('::');
+        const source = tile.accessType;
         const sourceType = source[0];
         const sourceId = source[1];
-        switch (sourceType) {
-            case actionMap_1.AccessorSources.Memory:
+        switch (tile.accessType) {
+            case actionMap_1.AccessorType.Memory:
                 return this.getMemorySchema(sourceId);
-            case actionMap_1.AccessorSources.Model:
-                return this.getModelSchema(sourceId); // TODO: reimplement
-            case actionMap_1.AccessorSources.Constant:
+            case actionMap_1.AccessorType.Model: {
+                const modelSchema = this.getModelSchema(sourceId);
+                if (tile.operation === actionMap_1.ModelAccessOperation.FindMany) {
+                    return {
+                        type: dataSchema_1.ComplexDataType.Array,
+                        arrayType: modelSchema,
+                    };
+                }
+                return modelSchema;
+            }
+            case actionMap_1.AccessorType.Constant:
+                throw new Error('No implementation');
+            case actionMap_1.AccessorType.DataIn:
                 throw new Error('No implementation');
             default:
                 throw new Error(`Invalid accessor source type: ${sourceType}`);
@@ -83,27 +87,28 @@ class ActionMapHandler {
      * @throws {Error} Throws an error if the tile type is invalid or if the tile
      *         fails schema validation.
      */
-    validateTile(tile) {
+    async validateTile(tile) {
         let validationSchema;
         switch (tile.type) {
             case actionMap_1.TileType.Accessor:
-                validationSchema = accessorTileSchema_1.accessorTileSchema;
+                await tile_schema_1.accessorTileSchema.validate(tile, {
+                    abortEarly: false,
+                });
                 break;
             case actionMap_1.TileType.Action:
-                validationSchema = actionTileSchema_1.actionTileSchema;
+                tile_schema_1.actionTileSchema.validate(tile, {
+                    abortEarly: false,
+                });
                 break;
             case actionMap_1.TileType.Memory:
-                validationSchema = memoryTileSchema_1.memoryTileSchema;
+                tile_schema_1.memoryTileSchema.validate(tile, {
+                    abortEarly: false,
+                });
                 break;
             default:
                 throw new Error(`Invalid tile type: ${tile.type}`);
         }
-        const validate = this.ajv.compile(validationSchema);
-        const valid = validate(tile);
-        if (!valid) {
-            throw new Error(`Invalid tile schema: ${this.ajv.errorsText(validate.errors)}`);
-        }
-        return valid;
+        return true;
     }
     /**
      * Adds a new tile to the action map.
@@ -140,11 +145,8 @@ class ActionMapHandler {
             throw new Error(`Tile ${id} not found`);
         }
         // delete inputs ant outputs for this tile
-        const outputsForDelete = this.actionMap.outputs.filter((o) => {
-            var _a, _b;
-            return ((_a = this.actionMap.tiles[index].output) === null || _a === void 0 ? void 0 : _a.includes(o.id))
-                || ((_b = this.actionMap.tiles[index].input) === null || _b === void 0 ? void 0 : _b.includes(o.id));
-        });
+        const outputsForDelete = this.actionMap.outputs.filter((o) => this.actionMap.tiles[index].output?.includes(o.id)
+            || this.actionMap.tiles[index].input?.includes(o.id));
         outputsForDelete.forEach((o) => {
             this.removeOutput(o.id);
         });
@@ -170,10 +172,10 @@ class ActionMapHandler {
     async canConnectTiles(fromTileId, toTileId, cb) {
         const fromTile = this.actionMap.tiles.find((t) => t.id === fromTileId);
         const toTile = this.actionMap.tiles.find((t) => t.id === toTileId);
-        if ((toTile === null || toTile === void 0 ? void 0 : toTile.type) === actionMap_1.TileType.Memory) {
+        if (toTile?.type === actionMap_1.TileType.Memory) {
             return true;
         }
-        if ((toTile === null || toTile === void 0 ? void 0 : toTile.type) !== actionMap_1.TileType.Action) {
+        if (toTile?.type !== actionMap_1.TileType.Action) {
             return false;
         }
         const fromSchema = await this.getTileOutputSchema(fromTile);

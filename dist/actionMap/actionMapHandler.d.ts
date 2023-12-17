@@ -12,7 +12,6 @@ export declare class ActionMapHandler {
     private readonly actionMap;
     private readonly models;
     private readonly actionFetcher;
-    private ajv;
     private dataSchemaHandler;
     constructor(actionMap: ActionMap, models: Model[], actionFetcher: (actionId: string) => Promise<Action>);
     /**
@@ -27,7 +26,7 @@ export declare class ActionMapHandler {
      * @throws {Error} Throws an error if the action map fails schema validation,
      *         with details about the validation errors.
      */
-    validateSchema(): boolean;
+    validateSchema(): Promise<boolean>;
     /**
      * Asynchronously retrieves the output schema for an Accessor tile.
      *
@@ -57,7 +56,7 @@ export declare class ActionMapHandler {
      * @throws {Error} Throws an error if the tile type is invalid or if the tile
      *         fails schema validation.
      */
-    validateTile(tile: Tile): boolean;
+    validateTile(tile: Tile): Promise<boolean>;
     /**
      * Adds a new tile to the action map.
      *

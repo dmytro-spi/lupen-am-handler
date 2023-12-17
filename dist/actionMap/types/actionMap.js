@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AccessorSources = exports.TileType = exports.OutputType = exports.OutputDirection = exports.ConditionOperator = exports.OUTPUT_SELECTOR = exports.MODEL_SELECTOR = exports.CONSTANT_SELECTOR = exports.MEMORY_SELECTOR = void 0;
+exports.ModelMemoryOperation = exports.MemoryType = exports.ModelAccessOperation = exports.AccessorType = exports.TileType = exports.OutputType = exports.OutputDirection = exports.ConditionOperator = exports.OUTPUT_SELECTOR = exports.MODEL_SELECTOR = exports.CONSTANT_SELECTOR = exports.MEMORY_SELECTOR = void 0;
 // User language types ---------------------------------------------------------
 const MEMORY_SELECTOR = (id) => `memory::${id}`;
 exports.MEMORY_SELECTOR = MEMORY_SELECTOR;
@@ -43,10 +43,31 @@ var TileType;
     TileType["Action"] = "action";
     TileType["Memory"] = "memory";
 })(TileType || (exports.TileType = TileType = {}));
-var AccessorSources;
-(function (AccessorSources) {
-    AccessorSources["Model"] = "model";
-    AccessorSources["Constant"] = "constant";
-    AccessorSources["Memory"] = "memory";
-    AccessorSources["Input"] = "input";
-})(AccessorSources || (exports.AccessorSources = AccessorSources = {}));
+var AccessorType;
+(function (AccessorType) {
+    AccessorType["Model"] = "model";
+    AccessorType["Constant"] = "constant";
+    AccessorType["Memory"] = "memory";
+    AccessorType["DataIn"] = "dataIn";
+})(AccessorType || (exports.AccessorType = AccessorType = {}));
+var ModelAccessOperation;
+(function (ModelAccessOperation) {
+    ModelAccessOperation["FindOne"] = "findOne";
+    ModelAccessOperation["FindMany"] = "findMany";
+    ModelAccessOperation["FindFirst"] = "findFirst";
+    ModelAccessOperation["FindLast"] = "findLast";
+})(ModelAccessOperation || (exports.ModelAccessOperation = ModelAccessOperation = {}));
+;
+var MemoryType;
+(function (MemoryType) {
+    MemoryType["DataOut"] = "dataOut";
+    MemoryType["Internal"] = "internal";
+    MemoryType["Model"] = "model";
+})(MemoryType || (exports.MemoryType = MemoryType = {}));
+var ModelMemoryOperation;
+(function (ModelMemoryOperation) {
+    ModelMemoryOperation["Create"] = "create";
+    ModelMemoryOperation["Update"] = "update";
+    ModelMemoryOperation["Delete"] = "delete";
+})(ModelMemoryOperation || (exports.ModelMemoryOperation = ModelMemoryOperation = {}));
+;
