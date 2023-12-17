@@ -1,24 +1,23 @@
-import Ajv from 'ajv';
 import { v4 as uuidv4 } from 'uuid';
 import {
   ActionMap,
   AccessorTile,
-  AccessorSources,
   ActionTile,
   MemoryTile,
   Tile,
   TileType,
   Output,
   OutputDirection,
+  AccessorType,
+  ModelAccessorTile,
+  ModelAccessOperation,
 } from './types/actionMap';
-import { actionMapSchema } from './schema/actionMapSchema';
-import { accessorTileSchema } from './schema/accessorTileSchema';
-import { actionTileSchema } from './schema/actionTileSchema';
-import { memoryTileSchema } from './schema/memoryTileSchema';
+import actionMapSchema from './schema/actionMap.schema';
 import { Model } from '../model/types/model';
 import { Action } from '../action/types/action';
 import { ComplexDataType, DataSchema } from '../dataSchema/types/dataSchema';
 import { CompatiblePaths, DataSchemaHandler } from '../dataSchema/dataSchema';
+import { accessorTileSchema, actionTileSchema, memoryTileSchema } from './schema/tile.schema';
 
 export type PossibleOutput = {
   coordinates: [number, number];
@@ -27,8 +26,6 @@ export type PossibleOutput = {
 };
 
 export class ActionMapHandler {
-  private ajv: Ajv = new Ajv();
-
   private dataSchemaHandler: DataSchemaHandler = new DataSchemaHandler();
 
   constructor(
@@ -52,17 +49,12 @@ export class ActionMapHandler {
    * @throws {Error} Throws an error if the action map fails schema validation,
    *         with details about the validation errors.
    */
-  public validateSchema(): boolean {
-    const validate = this.ajv.compile(actionMapSchema);
-    const valid = validate(this.actionMap);
+  public async validateSchema(): Promise<boolean> {
+    await actionMapSchema.validate(this.actionMap, {
+      abortEarly: false,
+    });
 
-    if (!valid) {
-      throw new Error(
-        `Invalid action map schema: ${this.ajv.errorsText(validate.errors)}`,
-      );
-    }
-
-    return valid;
+    return true;
   }
 
   /**
@@ -83,16 +75,28 @@ export class ActionMapHandler {
   public async getAccessorOutputSchema(
     tile: AccessorTile,
   ): Promise<DataSchema> {
-    const source = tile.source.split('::');
+    const source = tile.accessType;
     const sourceType = source[0];
     const sourceId = source[1];
 
-    switch (sourceType) {
-      case AccessorSources.Memory:
+    switch (tile.accessType) {
+      case AccessorType.Memory:
         return this.getMemorySchema(sourceId);
-      case AccessorSources.Model:
-        return this.getModelSchema(sourceId); // TODO: reimplement
-      case AccessorSources.Constant:
+      case AccessorType.Model: {
+        const modelSchema = this.getModelSchema(sourceId);
+
+        if ((tile as ModelAccessorTile).operation === ModelAccessOperation.FindMany) {
+          return {
+            type: ComplexDataType.Array,
+            arrayType: modelSchema,
+          };
+        }
+
+        return modelSchema;
+      }
+      case AccessorType.Constant:
+        throw new Error('No implementation');
+      case AccessorType.DataIn:
         throw new Error('No implementation');
       default:
         throw new Error(`Invalid accessor source type: ${sourceType}`);
@@ -112,33 +116,30 @@ export class ActionMapHandler {
    * @throws {Error} Throws an error if the tile type is invalid or if the tile
    *         fails schema validation.
    */
-  public validateTile(tile: Tile): boolean {
+  public async validateTile(tile: Tile): Promise<boolean> {
     let validationSchema;
 
     switch (tile.type) {
       case TileType.Accessor:
-        validationSchema = accessorTileSchema;
+        await accessorTileSchema.validate(tile, {
+          abortEarly: false,
+        })
         break;
       case TileType.Action:
-        validationSchema = actionTileSchema;
+        actionTileSchema.validate(tile, {
+          abortEarly: false,
+        });
         break;
       case TileType.Memory:
-        validationSchema = memoryTileSchema;
+        memoryTileSchema.validate(tile, {
+          abortEarly: false,
+        });
         break;
       default:
         throw new Error(`Invalid tile type: ${tile.type}`);
     }
 
-    const validate = this.ajv.compile(validationSchema);
-    const valid = validate(tile);
-
-    if (!valid) {
-      throw new Error(
-        `Invalid tile schema: ${this.ajv.errorsText(validate.errors)}`,
-      );
-    }
-
-    return valid;
+    return true;
   }
 
   /**

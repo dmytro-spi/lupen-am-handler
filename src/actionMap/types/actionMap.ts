@@ -1,3 +1,6 @@
+import * as yup from 'yup';
+import { DataSchema } from '../../dataSchema/types/dataSchema';
+
 // User language types ---------------------------------------------------------
 export const MEMORY_SELECTOR = (id: string) => `memory::${id}`;
 export const CONSTANT_SELECTOR = (name: string) => `constant::${name}`;
@@ -61,53 +64,105 @@ export enum TileType {
   Memory = 'memory',
 }
 
-export enum AccessorSources {
-  Model = 'model',
-  Constant = 'constant',
-  Memory = 'memory',
-  Input = 'input',
-}
-
-type TileGeneral = {
+export type TileGeneral = {
   id: string;
   coordinates: { start: [number, number]; end: [number, number] };
   type: TileType;
 };
 
+export enum AccessorType {
+  Model = 'model',
+  Constant = 'constant',
+  Memory = 'memory',
+  DataIn = 'dataIn',
+}
+
 export type AccessorTile = TileGeneral & {
   output: Output['id'][];
-  source: string; // memory::id, or memory::id/field/nestedField, or constant::name, or model::name
+  accessType: AccessorType;
+};
+
+export type ConstantAccessorTile = AccessorTile & {
+  accessType: AccessorType.Constant;
+  constantName: string;
+};
+
+export type DataInAccessorTile = AccessorTile & {
+  accessType: AccessorType.DataIn;
+  dataInProps: DataIn;
+};
+
+export type MemoryAccessorTile = AccessorTile & {
+  accessType: AccessorType.Memory;
+  memoryTileId: string;
+};
+
+export enum  ModelAccessOperation {
+  FindOne = 'findOne',
+  FindMany = 'findMany',
+  FindFirst = 'findFirst',
+  FindLast = 'findLast',
+};
+
+export type ModelAccessorTile = AccessorTile & {
+  accessType: AccessorType.Model;
+  modelName: string;
+  query: string;
+  operation: ModelAccessOperation;
 };
 
 export type ActionTile = TileGeneral & {
   output: string[];
   actionId: string;
   input: Output['id'][];
-  // options?: {
-  //   [key: string]: any; // memory::id, or constant::name, or any other value
-  // };
 };
+
+export enum MemoryType {
+  DataOut = 'dataOut',
+  Internal = 'internal',
+  Model = 'model',
+}
 
 export type MemoryTile = TileGeneral & {
   input: Output['id'][];
-  isDataOut: boolean;
+  memoryType: MemoryType;
 };
 
-export type Tile = AccessorTile | ActionTile | MemoryTile;
+export enum ModelMemoryOperation {
+  Create = 'create',
+  Update = 'update',
+  Delete = 'delete',
+};
+
+export type ModelMemoryTile = MemoryTile & {
+  memoryType: MemoryType.Model;
+  modelName: string;
+  query: string;
+  operation: ModelMemoryOperation;
+};
+
+export type Tile = AccessorTile
+| ActionTile
+| MemoryTile
+| ModelMemoryTile
+| ModelAccessorTile
+| ConstantAccessorTile
+| DataInAccessorTile
+| MemoryAccessorTile;
 
 // Data in types ---------------------------------------------------------------
 export type DataIn = {
   name: string;
   label: string;
-  type: string;
+  type: DataSchema;
   required: boolean;
+  defaultValue?: any;
 };
 
 // Action map types ------------------------------------------------------------
 export type ActionMap = {
   id: string;
   name: string;
-  dataIn: DataIn[];
   outputs: Output[];
   tiles: Tile[];
 };
