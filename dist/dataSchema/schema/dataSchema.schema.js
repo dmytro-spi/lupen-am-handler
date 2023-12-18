@@ -26,7 +26,9 @@ const dataSchema = yup.object({
     required: yup.boolean().nullable(),
 });
 // If needed to validate the properties object with dynamic keys
-dataSchema.fields.properties = dataSchema.fields.properties.of(yup.object().shape({
-// keys are dynamic, values are DataSchema
-}).test('is-data-schema', '${path} must be a valid DataSchema', value => dataSchema.isValidSync(value)));
+// dataSchema.fields.properties = dataSchema.fields.properties.of(
+//   yup.object().shape({
+//     // keys are dynamic, values are DataSchema
+//   }).test('is-data-schema', '${path} must be a valid DataSchema', value => dataSchema.isValidSync(value))
+// );
 exports.default = dataSchema;
