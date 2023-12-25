@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AccessorSources = exports.TileType = exports.OutputType = exports.OutputDirection = exports.ConditionOperator = exports.OUTPUT_SELECTOR = exports.MODEL_SELECTOR = exports.CONSTANT_SELECTOR = exports.MEMORY_SELECTOR = void 0;
-// User language types ---------------------------------------------------------
+exports.ModelMemoryOperation = exports.MemoryType = exports.ModelAccessOperation = exports.AccessorType = exports.TileType = exports.OutputType = exports.OutputDirection = exports.ConditionOperator = exports.OUTPUT_SELECTOR = exports.MODEL_SELECTOR = exports.CONSTANT_SELECTOR = exports.MEMORY_SELECTOR = void 0;
 const MEMORY_SELECTOR = (id) => `memory::${id}`;
 exports.MEMORY_SELECTOR = MEMORY_SELECTOR;
 const CONSTANT_SELECTOR = (name) => `constant::${name}`;
@@ -10,7 +9,6 @@ const MODEL_SELECTOR = (name) => `model::${name}`;
 exports.MODEL_SELECTOR = MODEL_SELECTOR;
 const OUTPUT_SELECTOR = (id) => `output::${id}`;
 exports.OUTPUT_SELECTOR = OUTPUT_SELECTOR;
-// condition operators
 var ConditionOperator;
 (function (ConditionOperator) {
     ConditionOperator["Equal"] = "==";
@@ -22,7 +20,6 @@ var ConditionOperator;
     ConditionOperator["LessThan"] = "<";
     ConditionOperator["LessThanOrEqual"] = "<=";
 })(ConditionOperator || (exports.ConditionOperator = ConditionOperator = {}));
-// Output types ----------------------------------------------------------------
 var OutputDirection;
 (function (OutputDirection) {
     OutputDirection["Down"] = "down";
@@ -36,17 +33,37 @@ var OutputType;
     OutputType["Conditional"] = "conditional";
     OutputType["ForEach"] = "forEach";
 })(OutputType || (exports.OutputType = OutputType = {}));
-// Tile types ------------------------------------------------------------------
 var TileType;
 (function (TileType) {
     TileType["Accessor"] = "accessor";
     TileType["Action"] = "action";
     TileType["Memory"] = "memory";
 })(TileType || (exports.TileType = TileType = {}));
-var AccessorSources;
-(function (AccessorSources) {
-    AccessorSources["Model"] = "model";
-    AccessorSources["Constant"] = "constant";
-    AccessorSources["Memory"] = "memory";
-    AccessorSources["Input"] = "input";
-})(AccessorSources || (exports.AccessorSources = AccessorSources = {}));
+var AccessorType;
+(function (AccessorType) {
+    AccessorType["Model"] = "model";
+    AccessorType["Constant"] = "constant";
+    AccessorType["Memory"] = "memory";
+    AccessorType["DataIn"] = "dataIn";
+})(AccessorType || (exports.AccessorType = AccessorType = {}));
+var ModelAccessOperation;
+(function (ModelAccessOperation) {
+    ModelAccessOperation["FindOne"] = "findOne";
+    ModelAccessOperation["FindMany"] = "findMany";
+    ModelAccessOperation["FindFirst"] = "findFirst";
+    ModelAccessOperation["FindLast"] = "findLast";
+})(ModelAccessOperation || (exports.ModelAccessOperation = ModelAccessOperation = {}));
+;
+var MemoryType;
+(function (MemoryType) {
+    MemoryType["DataOut"] = "dataOut";
+    MemoryType["Internal"] = "internal";
+    MemoryType["Model"] = "model";
+})(MemoryType || (exports.MemoryType = MemoryType = {}));
+var ModelMemoryOperation;
+(function (ModelMemoryOperation) {
+    ModelMemoryOperation["Create"] = "create";
+    ModelMemoryOperation["Update"] = "update";
+    ModelMemoryOperation["Delete"] = "delete";
+})(ModelMemoryOperation || (exports.ModelMemoryOperation = ModelMemoryOperation = {}));
+;

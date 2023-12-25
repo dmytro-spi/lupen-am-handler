@@ -1,12 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ContentDataType = exports.ComplexDataType = exports.DataSchemaHandler = exports.ActionMapHandler = exports.FormatDataType = exports.SimpleDataType = exports.OUTPUT_SELECTOR = exports.MODEL_SELECTOR = exports.MEMORY_SELECTOR = exports.CONSTANT_SELECTOR = exports.AccessorSources = exports.ConditionOperator = exports.OutputDirection = exports.OutputType = exports.TileType = void 0;
+exports.ContentDataType = exports.ComplexDataType = exports.DataSchemaHandler = exports.ActionMapHandler = exports.FormatDataType = exports.SimpleDataType = exports.OUTPUT_SELECTOR = exports.MODEL_SELECTOR = exports.MEMORY_SELECTOR = exports.CONSTANT_SELECTOR = exports.ConditionOperator = exports.OutputDirection = exports.OutputType = exports.TileType = void 0;
 const actionMapHandler_1 = require("./actionMap/actionMapHandler");
 Object.defineProperty(exports, "ActionMapHandler", { enumerable: true, get: function () { return actionMapHandler_1.ActionMapHandler; } });
 const dataSchema_1 = require("./dataSchema/dataSchema");
 Object.defineProperty(exports, "DataSchemaHandler", { enumerable: true, get: function () { return dataSchema_1.DataSchemaHandler; } });
 const actionMap_1 = require("./actionMap/types/actionMap");
-Object.defineProperty(exports, "AccessorSources", { enumerable: true, get: function () { return actionMap_1.AccessorSources; } });
 Object.defineProperty(exports, "CONSTANT_SELECTOR", { enumerable: true, get: function () { return actionMap_1.CONSTANT_SELECTOR; } });
 Object.defineProperty(exports, "ConditionOperator", { enumerable: true, get: function () { return actionMap_1.ConditionOperator; } });
 Object.defineProperty(exports, "MEMORY_SELECTOR", { enumerable: true, get: function () { return actionMap_1.MEMORY_SELECTOR; } });

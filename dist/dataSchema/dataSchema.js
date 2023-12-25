@@ -98,8 +98,7 @@ class DataSchemaHandler {
                 return true;
             case dataSchema_1.ComplexDataType.Object:
                 return Object.entries(schemaFrom.properties || {}).every(([key, value]) => {
-                    var _a;
-                    const schemaToProperty = (_a = schemaTo.properties) === null || _a === void 0 ? void 0 : _a[key];
+                    const schemaToProperty = schemaTo.properties?.[key];
                     if (!schemaToProperty) {
                         return false;
                     }
