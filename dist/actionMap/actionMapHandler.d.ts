@@ -1,21 +1,23 @@
-import { ActionMap, AccessorTile, Tile, Output, OutputDirection } from './types/actionMap';
+import { ActionMap, AccessorTile, MemoryTile, Tile, Output, OutputDirection } from './types/actionMap';
 import { Model } from '../model/types/model';
 import { Action } from '../action/types/action';
 import { DataSchema } from '../dataSchema/types/dataSchema';
-import { CompatiblePaths } from '../dataSchema/dataSchema';
+import { CompatiblePaths, DataSchemaHandler } from '../dataSchema/dataSchema';
 export type PossibleOutput = {
     coordinates: [number, number];
     direction: OutputDirection;
     active: boolean;
 };
 export declare class ActionMapHandler {
-    private readonly models;
-    private readonly actionFetcher;
-    private readonly dataSchemaHandler;
-    private actionMap;
-    private changeStack;
-    private futureStack;
-    constructor(actionMap: ActionMap | null, models: Model[], actionFetcher: (actionId: string) => Promise<Action | undefined>);
+    protected readonly models: Model[];
+    protected readonly actionFetcher: (actionId: string) => Promise<Action | undefined>;
+    protected readonly dataSchemaHandler: DataSchemaHandler;
+    protected actionMap: ActionMap;
+    protected changeStack: Uint8Array[];
+    protected futureStack: Uint8Array[];
+    constructor(actionMap: ActionMap | null, models: Model[], actionFetcher: (actionId: string) => Promise<Action | undefined>, options?: {
+        skipValidation?: boolean;
+    });
     get currentActionMap(): ActionMap;
     static get emptyActionMap(): ActionMap;
     createEmptyActionMap(name?: string): ActionMap;
@@ -36,21 +38,24 @@ export declare class ActionMapHandler {
     getTilePossibleOutputs(tile: Tile): Promise<PossibleOutput[]>;
     undo(): ActionMap;
     redo(): ActionMap;
-    private pushNewState;
-    private returnToPreviousState;
-    private putCurrentToFutureState;
-    private putCurrentToPreviousState;
-    private clearFutureStack;
-    private returnToFutureState;
-    private getOutputDirection;
-    private getOutputCoordinates;
-    private getTileNeighbors;
-    private getActionOutputSchema;
-    private getModelSchema;
-    private getMemoryById;
-    private getMemorySchema;
-    private processOutputs;
-    private getOutputById;
-    private getOutputsByIds;
-    private getSourceTileForOutput;
+    protected pushNewState(actionMap: ActionMap): ActionMap;
+    protected returnToPreviousState(): ActionMap;
+    protected putCurrentToFutureState(): ActionMap;
+    protected putCurrentToPreviousState(): ActionMap;
+    protected clearFutureStack(): ActionMap;
+    protected returnToFutureState(): ActionMap;
+    protected getOutputDirection(tile: Tile, neighbor: Tile): OutputDirection;
+    protected getOutputCoordinates(tile: Tile, neighbor: Tile, direction: OutputDirection): [number, number];
+    protected getTileNeighbors(tile: Tile): Tile[];
+    protected getActionOutputSchema(actionId: string): Promise<DataSchema>;
+    protected getModelSchema(modelName: string): DataSchema;
+    protected getMemoryById(id: string): MemoryTile | null;
+    protected getMemorySchema(id: string): Promise<DataSchema>;
+    protected processOutputs(inOutputs: Output[]): Promise<{
+        argument?: string;
+        schema: DataSchema;
+    }[]>;
+    protected getOutputById(id: string): Output;
+    protected getOutputsByIds(ids: string[]): Output[];
+    protected getSourceTileForOutput(outputId: string): Tile;
 }

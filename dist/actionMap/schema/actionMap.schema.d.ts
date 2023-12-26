@@ -3,7 +3,9 @@ declare const actionMapSchema: yup.ObjectSchema<{
     id: string;
     name: string;
     outputs: {}[];
-    tiles: {}[];
+    tiles: {
+        type: NonNullable<import("../..").TileType | undefined>;
+    }[];
 }, yup.AnyObject, {
     id: undefined;
     name: undefined;

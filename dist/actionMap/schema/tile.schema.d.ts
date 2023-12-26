@@ -229,5 +229,7 @@ export declare const modelMemoryTileSchema: yup.ObjectSchema<{
     query: undefined;
     operation: undefined;
 }, "">;
-declare const tileSchema: yup.Lazy<{}, yup.AnyObject, any>;
+declare const tileSchema: yup.Lazy<{
+    type: NonNullable<TileType | undefined>;
+}, yup.AnyObject, any>;
 export default tileSchema;

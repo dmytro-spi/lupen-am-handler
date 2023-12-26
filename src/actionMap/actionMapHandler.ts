@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { BSON } from 'bson';
+import * as bson from 'bson';
 import {
   ActionMap,
   AccessorTile,
@@ -667,7 +667,7 @@ export class ActionMapHandler {
   protected pushNewState(actionMap: ActionMap): ActionMap {
     this.clearFutureStack();
 
-    const bsonAM = BSON.serialize(this.actionMap);
+    const bsonAM = bson.BSON.serialize(this.actionMap);
     this.changeStack.push(bsonAM);
     if (this.changeStack.length > 10) {
       this.changeStack.shift();
@@ -680,10 +680,10 @@ export class ActionMapHandler {
 
   protected returnToPreviousState(): ActionMap {
     this.putCurrentToFutureState();
-  
+
     const bsonAM = this.changeStack.pop();
     if (bsonAM) {
-      this.actionMap = BSON.deserialize(bsonAM) as ActionMap;
+      this.actionMap = bson.BSON.deserialize(bsonAM) as ActionMap;
     }
 
     return this.actionMap;
@@ -694,7 +694,7 @@ export class ActionMapHandler {
       return this.actionMap;
     }
 
-    const bsonAM = BSON.serialize(this.actionMap);
+    const bsonAM = bson.BSON.serialize(this.actionMap);
     this.futureStack.push(bsonAM);
     if (this.futureStack.length > 10) {
       this.futureStack.shift();
@@ -708,7 +708,7 @@ export class ActionMapHandler {
       return this.actionMap;
     }
 
-    const bsonAM = BSON.serialize(this.actionMap);
+    const bsonAM = bson.BSON.serialize(this.actionMap);
     this.changeStack.push(bsonAM);
     if (this.changeStack.length > 10) {
       this.changeStack.shift();
@@ -727,7 +727,7 @@ export class ActionMapHandler {
 
     const bsonAM = this.futureStack.pop();
     if (bsonAM) {
-      this.actionMap = BSON.deserialize(bsonAM) as ActionMap;
+      this.actionMap = bson.BSON.deserialize(bsonAM) as ActionMap;
     }
 
     return this.actionMap;
