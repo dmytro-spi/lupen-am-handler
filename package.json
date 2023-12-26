@@ -10,9 +10,9 @@
   "scripts": {
     "start": "npx --yes http-server ./docs -p 8000",
     "typedoc": "typedoc --out ./docs ./src",
-    "lint-staged": "lint-staged",
     "play": "npx ts-node src/playground.ts",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-commit-script": "npm run typedoc && tsc && git add ."
   },
   "dependencies": {
     "bson": "^6.2.0",
@@ -23,12 +23,7 @@
   "devDependencies": {
     "@types/uuid": "^9.0.7",
     "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
     "typedoc": "0.25.4"
   },
-  "husky": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": ["tsc"],
   "keywords": []
 }
