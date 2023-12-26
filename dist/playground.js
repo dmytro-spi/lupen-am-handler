@@ -8,10 +8,10 @@ const actionFetcher = async (actionId) => {
         combine_1.combineAction,
     ].find((action) => action.id === actionId);
 };
-const amHandler = new actionMapHandler_1.ActionMapHandler(null, [
-    user_1.userModel,
-], actionFetcher);
 const run = async () => {
+    const amHandler = new actionMapHandler_1.ActionMapHandler(null, [
+        user_1.userModel,
+    ], actionFetcher);
     console.log('amHandler', await amHandler.validateSchema());
 };
 run().then(() => console.log('done')).catch((err) => console.log('err', err));
