@@ -135,7 +135,9 @@ const tileSchema = yup.lazy(value => {
     case TileType.Memory:
       return (value.memoryType === MemoryType.Model) ? modelMemoryTileSchema : memoryTileSchema;
     default:
-      return yup.object().shape({});
+      return yup.object().shape({
+        type: yup.mixed<TileType>().oneOf(Object.values(TileType)).required(),
+      });
   }
 });
 

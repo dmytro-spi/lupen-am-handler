@@ -27,19 +27,25 @@ export type PossibleOutput = {
 };
 
 export class ActionMapHandler {
-  private readonly dataSchemaHandler: DataSchemaHandler = new DataSchemaHandler();
-  private actionMap: ActionMap = ActionMapHandler.emptyActionMap;
-  private changeStack: Uint8Array[] = [];
-  private futureStack: Uint8Array[] = [];
+  protected readonly dataSchemaHandler: DataSchemaHandler = new DataSchemaHandler();
+  protected actionMap: ActionMap = ActionMapHandler.emptyActionMap;
+  protected changeStack: Uint8Array[] = [];
+  protected futureStack: Uint8Array[] = [];
 
   constructor(
     actionMap: ActionMap | null,
-    private readonly models: Model[],
-    private readonly actionFetcher: (actionId: string) => Promise<Action | undefined>,
+    protected readonly models: Model[],
+    protected readonly actionFetcher: (actionId: string) => Promise<Action | undefined>,
+    options?: {
+      skipValidation?: boolean;
+    }
   ) {
     if (actionMap) {
       this.actionMap = actionMap;
-      this.validateSchema();
+
+      if (!options?.skipValidation) {
+        this.validateSchema();
+      }
     } else {
       this.createEmptyActionMap();
     }
@@ -657,8 +663,8 @@ export class ActionMapHandler {
     return this.returnToFutureState();
   }
 
-  // PRIVATE -----------------------------------------------------------------
-  private pushNewState(actionMap: ActionMap): ActionMap {
+  // PROTECTED -----------------------------------------------------------------
+  protected pushNewState(actionMap: ActionMap): ActionMap {
     this.clearFutureStack();
 
     const bsonAM = BSON.serialize(this.actionMap);
@@ -672,7 +678,7 @@ export class ActionMapHandler {
     return actionMap;
   }
 
-  private returnToPreviousState(): ActionMap {
+  protected returnToPreviousState(): ActionMap {
     this.putCurrentToFutureState();
   
     const bsonAM = this.changeStack.pop();
@@ -683,7 +689,7 @@ export class ActionMapHandler {
     return this.actionMap;
   }
 
-  private putCurrentToFutureState(): ActionMap {
+  protected putCurrentToFutureState(): ActionMap {
     if (!this.actionMap) {
       return this.actionMap;
     }
@@ -697,7 +703,7 @@ export class ActionMapHandler {
     return this.actionMap;
   }
 
-  private putCurrentToPreviousState(): ActionMap {
+  protected putCurrentToPreviousState(): ActionMap {
     if (!this.actionMap) {
       return this.actionMap;
     }
@@ -711,12 +717,12 @@ export class ActionMapHandler {
     return this.actionMap;
   }
 
-  private clearFutureStack(): ActionMap {
+  protected clearFutureStack(): ActionMap {
     this.futureStack = [];
     return this.actionMap;
   }
 
-  private returnToFutureState(): ActionMap {
+  protected returnToFutureState(): ActionMap {
     this.putCurrentToPreviousState();
 
     const bsonAM = this.futureStack.pop();
@@ -727,7 +733,7 @@ export class ActionMapHandler {
     return this.actionMap;
   }
 
-  private getOutputDirection(tile: Tile, neighbor: Tile): OutputDirection {
+  protected getOutputDirection(tile: Tile, neighbor: Tile): OutputDirection {
     const xStart = tile.coordinates.start[0];
     const xEnd = tile.coordinates.end[0];
     const yStart = tile.coordinates.start[1];
@@ -757,7 +763,7 @@ export class ActionMapHandler {
     throw new Error('Invalid output direction');
   }
 
-  private getOutputCoordinates(
+  protected getOutputCoordinates(
     tile: Tile,
     neighbor: Tile,
     direction: OutputDirection,
@@ -781,7 +787,7 @@ export class ActionMapHandler {
     }
   }
 
-  private getTileNeighbors(tile: Tile): Tile[] {
+  protected getTileNeighbors(tile: Tile): Tile[] {
     const neighbors: Tile[] = [];
 
     // get coordinates of current tile and find any tiles that have
@@ -813,7 +819,7 @@ export class ActionMapHandler {
     return neighbors;
   }
 
-  private async getActionOutputSchema(actionId: string): Promise<DataSchema> {
+  protected async getActionOutputSchema(actionId: string): Promise<DataSchema> {
     const action = await this.actionFetcher(actionId);
 
     if (!action) {
@@ -823,7 +829,7 @@ export class ActionMapHandler {
     return JSON.parse(action.output) as DataSchema;
   }
 
-  private getModelSchema(modelName: string): DataSchema {
+  protected getModelSchema(modelName: string): DataSchema {
     const model = this.models.find((m: Model) => m.name === modelName);
 
     if (!model) {
@@ -833,13 +839,13 @@ export class ActionMapHandler {
     return JSON.parse(model.schema) as DataSchema;
   }
 
-  private getMemoryById(id: string): MemoryTile | null {
+  protected getMemoryById(id: string): MemoryTile | null {
     return (this.actionMap.tiles.find(
       (tile: Tile) => tile.type === TileType.Memory && tile.id === id,
     ) || null) as MemoryTile | null;
   }
 
-  private async getMemorySchema(id: string): Promise<DataSchema> {
+  protected async getMemorySchema(id: string): Promise<DataSchema> {
     // Retrieve a memory object by its ID. Throws an error if not found.
     const memory = this.getMemoryById(id);
     if (!memory) {
@@ -906,7 +912,7 @@ export class ActionMapHandler {
    * 4. If no outputPath is specified, the entire schema from the source tile is used.
    * 5. The resulting schema and any argument are added to the return array.
    */
-  private async processOutputs(
+  protected async processOutputs(
     inOutputs: Output[],
   ): Promise<{ argument?: string; schema: DataSchema }[]> {
     const inputSchemas = await Promise.all(
@@ -948,7 +954,7 @@ export class ActionMapHandler {
     return inputSchemas;
   }
 
-  private getOutputById(id: string): Output {
+  protected getOutputById(id: string): Output {
     const output = this.actionMap.outputs.find((o: Output) => o.id === id);
 
     if (!output) {
@@ -958,11 +964,11 @@ export class ActionMapHandler {
     return output;
   }
 
-  private getOutputsByIds(ids: string[]): Output[] {
+  protected getOutputsByIds(ids: string[]): Output[] {
     return ids.map((id: string) => this.getOutputById(id));
   }
 
-  private getSourceTileForOutput(outputId: string): Tile {
+  protected getSourceTileForOutput(outputId: string): Tile {
     const tile = this.actionMap.tiles.find((t: Tile) => {
       switch (t.type) {
         case TileType.Accessor:
