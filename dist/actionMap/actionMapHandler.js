@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActionMapHandler = void 0;
 const uuid_1 = require("uuid");
-const bson_1 = require("bson");
+const bson = require("bson");
 const actionMap_1 = require("./types/actionMap");
 const actionMap_schema_1 = require("./schema/actionMap.schema");
 const dataSchema_1 = require("../dataSchema/types/dataSchema");
 const dataSchema_2 = require("../dataSchema/dataSchema");
 const tile_schema_1 = require("./schema/tile.schema");
 class ActionMapHandler {
-    constructor(actionMap, models, actionFetcher) {
+    constructor(actionMap, models, actionFetcher, options) {
         this.models = models;
         this.actionFetcher = actionFetcher;
         this.dataSchemaHandler = new dataSchema_2.DataSchemaHandler();
@@ -18,7 +18,9 @@ class ActionMapHandler {
         this.futureStack = [];
         if (actionMap) {
             this.actionMap = actionMap;
-            this.validateSchema();
+            if (!options?.skipValidation) {
+                this.validateSchema();
+            }
         }
         else {
             this.createEmptyActionMap();
@@ -305,7 +307,7 @@ class ActionMapHandler {
     }
     pushNewState(actionMap) {
         this.clearFutureStack();
-        const bsonAM = bson_1.BSON.serialize(this.actionMap);
+        const bsonAM = bson.BSON.serialize(this.actionMap);
         this.changeStack.push(bsonAM);
         if (this.changeStack.length > 10) {
             this.changeStack.shift();
@@ -317,7 +319,7 @@ class ActionMapHandler {
         this.putCurrentToFutureState();
         const bsonAM = this.changeStack.pop();
         if (bsonAM) {
-            this.actionMap = bson_1.BSON.deserialize(bsonAM);
+            this.actionMap = bson.BSON.deserialize(bsonAM);
         }
         return this.actionMap;
     }
@@ -325,7 +327,7 @@ class ActionMapHandler {
         if (!this.actionMap) {
             return this.actionMap;
         }
-        const bsonAM = bson_1.BSON.serialize(this.actionMap);
+        const bsonAM = bson.BSON.serialize(this.actionMap);
         this.futureStack.push(bsonAM);
         if (this.futureStack.length > 10) {
             this.futureStack.shift();
@@ -336,7 +338,7 @@ class ActionMapHandler {
         if (!this.actionMap) {
             return this.actionMap;
         }
-        const bsonAM = bson_1.BSON.serialize(this.actionMap);
+        const bsonAM = bson.BSON.serialize(this.actionMap);
         this.changeStack.push(bsonAM);
         if (this.changeStack.length > 10) {
             this.changeStack.shift();
@@ -351,7 +353,7 @@ class ActionMapHandler {
         this.putCurrentToPreviousState();
         const bsonAM = this.futureStack.pop();
         if (bsonAM) {
-            this.actionMap = bson_1.BSON.deserialize(bsonAM);
+            this.actionMap = bson.BSON.deserialize(bsonAM);
         }
         return this.actionMap;
     }

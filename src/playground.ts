@@ -5,7 +5,7 @@ import { userModel } from "./model/definitions/user";
 
 const actionFetcher = async (actionId: string): Promise<Action | undefined> => {
   return [
-    combineAction,  
+    combineAction,
   ].find((action) => action.id === actionId);
 }
 
