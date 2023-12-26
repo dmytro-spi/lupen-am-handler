@@ -29,8 +29,6 @@
   "husky": {
     "pre-commit": "lint-staged"
   },
-  "lint-staged": {
-    "**/*.ts": "tsc --noEmit"
-  },
+  "lint-staged": ["tsc"],
   "keywords": []
 }
