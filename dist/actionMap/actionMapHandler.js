@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActionMapHandler = void 0;
 const uuid_1 = require("uuid");
-const bson = require("bson");
+const bson_cjs_1 = require("../lib/bson/bson.cjs");
 const actionMap_1 = require("./types/actionMap");
 const actionMap_schema_1 = require("./schema/actionMap.schema");
 const dataSchema_1 = require("../dataSchema/types/dataSchema");
@@ -307,7 +307,7 @@ class ActionMapHandler {
     }
     pushNewState(actionMap) {
         this.clearFutureStack();
-        const bsonAM = bson.BSON.serialize(this.actionMap);
+        const bsonAM = bson_cjs_1.BSON.serialize(this.actionMap);
         this.changeStack.push(bsonAM);
         if (this.changeStack.length > 10) {
             this.changeStack.shift();
@@ -319,7 +319,7 @@ class ActionMapHandler {
         this.putCurrentToFutureState();
         const bsonAM = this.changeStack.pop();
         if (bsonAM) {
-            this.actionMap = bson.BSON.deserialize(bsonAM);
+            this.actionMap = bson_cjs_1.BSON.deserialize(bsonAM);
         }
         return this.actionMap;
     }
@@ -327,7 +327,7 @@ class ActionMapHandler {
         if (!this.actionMap) {
             return this.actionMap;
         }
-        const bsonAM = bson.BSON.serialize(this.actionMap);
+        const bsonAM = bson_cjs_1.BSON.serialize(this.actionMap);
         this.futureStack.push(bsonAM);
         if (this.futureStack.length > 10) {
             this.futureStack.shift();
@@ -338,7 +338,7 @@ class ActionMapHandler {
         if (!this.actionMap) {
             return this.actionMap;
         }
-        const bsonAM = bson.BSON.serialize(this.actionMap);
+        const bsonAM = bson_cjs_1.BSON.serialize(this.actionMap);
         this.changeStack.push(bsonAM);
         if (this.changeStack.length > 10) {
             this.changeStack.shift();
@@ -353,7 +353,7 @@ class ActionMapHandler {
         this.putCurrentToPreviousState();
         const bsonAM = this.futureStack.pop();
         if (bsonAM) {
-            this.actionMap = bson.BSON.deserialize(bsonAM);
+            this.actionMap = bson_cjs_1.BSON.deserialize(bsonAM);
         }
         return this.actionMap;
     }

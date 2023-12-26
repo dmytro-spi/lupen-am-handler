@@ -9,15 +9,15 @@ const actionFetcher = async (actionId: string): Promise<Action | undefined> => {
   ].find((action) => action.id === actionId);
 }
 
-const amHandler = new ActionMapHandler(
-  null,
-  [
-    userModel,
-  ],
-  actionFetcher,
-);
-
 const run = async () => {
+  const amHandler = new ActionMapHandler(
+    null,
+    [
+      userModel,
+    ],
+    actionFetcher,
+  );
+
   console.log('amHandler', await amHandler.validateSchema());
 }
 
