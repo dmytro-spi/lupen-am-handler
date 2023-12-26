@@ -30,7 +30,7 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "**/*.ts": "npx tsc --noEmit"
+    "**/*.ts": "tsc --noEmit"
   },
   "keywords": []
 }
