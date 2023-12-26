@@ -10,6 +10,7 @@
   "scripts": {
     "start": "npx --yes http-server ./docs -p 8000",
     "typedoc": "typedoc --out ./docs ./src",
+    "lint-staged": "lint-staged",
     "play": "npx ts-node src/playground.ts",
     "prepare": "husky install"
   },
