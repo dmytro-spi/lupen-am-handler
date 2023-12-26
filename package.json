@@ -22,7 +22,14 @@
   "devDependencies": {
     "@types/uuid": "^9.0.7",
     "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
     "typedoc": "0.25.4"
+  },
+  "husky": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "**/*.ts": "tsc"
   },
   "keywords": []
 }
