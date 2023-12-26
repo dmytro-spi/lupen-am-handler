@@ -9,9 +9,11 @@
   ],
   "scripts": {
     "start": "npx --yes http-server ./docs -p 8000",
-    "typedoc": "typedoc --out ./docs ./src"
+    "typedoc": "typedoc --out ./docs ./src",
+    "play": "npx ts-node src/playground.ts"
   },
   "dependencies": {
+    "bson": "^6.2.0",
     "jsonschema7": "0.8.0",
     "uuid": "9.0.1",
     "yup": "^1.3.2"

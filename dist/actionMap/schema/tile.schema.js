@@ -11,23 +11,18 @@ exports.dataInSchema = yup.object().shape({
     required: yup.boolean().required(),
     defaultValue: yup.mixed().nullable(),
 });
-// TileType schema
 exports.tileTypeSchema = yup
     .mixed()
     .oneOf(Object.values(actionMap_1.TileType));
-// AccessorType schema
 exports.accessorTypeSchema = yup
     .mixed()
     .oneOf(Object.values(actionMap_1.AccessorType));
-// ModelAccessOperation schema
 exports.modelAccessOperationSchema = yup
     .mixed()
     .oneOf(Object.values(actionMap_1.ModelAccessOperation));
-// ModelMemoryOperation schema
 exports.modelMemoryOperationSchema = yup
     .mixed()
     .oneOf(Object.values(actionMap_1.ModelMemoryOperation));
-// Base TileGeneral schema
 exports.tileGeneralSchema = yup.object().shape({
     id: yup.string().required(),
     coordinates: yup.object().shape({
@@ -46,31 +41,46 @@ exports.tileGeneralSchema = yup.object().shape({
     }),
     type: exports.tileTypeSchema.required(),
 });
+<<<<<<< HEAD
 // AccessorTile schema
+=======
+>>>>>>> main
 exports.accessorTileSchema = exports.tileGeneralSchema
     .concat(yup.object({
     output: yup.array().of(yup.string()).required(),
     accessType: exports.accessorTypeSchema.required(),
 }));
+<<<<<<< HEAD
 // ConstantAccessorTile schema
+=======
+>>>>>>> main
 exports.constantAccessorTileSchema = exports.accessorTileSchema
     .concat(yup.object({
     accessType: yup.mixed().oneOf([actionMap_1.AccessorType.Constant]),
     constantName: yup.string().required(),
 }));
+<<<<<<< HEAD
 // DataInAccessorTile schema
+=======
+>>>>>>> main
 exports.dataInAccessorTileSchema = exports.accessorTileSchema
     .concat(yup.object({
     accessType: yup.mixed().oneOf([actionMap_1.AccessorType.DataIn]),
     dataInProps: exports.dataInSchema.required(),
 }));
+<<<<<<< HEAD
 // MemoryAccessorTile schema
+=======
+>>>>>>> main
 exports.memoryAccessorTileSchema = exports.accessorTileSchema
     .concat(yup.object({
     accessType: yup.mixed().oneOf([actionMap_1.AccessorType.Memory]),
     memoryTileId: yup.string().required(),
 }));
+<<<<<<< HEAD
 // ModelAccessorTile schema
+=======
+>>>>>>> main
 exports.modelAccessorTileSchema = exports.accessorTileSchema
     .concat(yup.object({
     accessType: yup.mixed().oneOf([actionMap_1.AccessorType.Model]),
@@ -78,14 +88,20 @@ exports.modelAccessorTileSchema = exports.accessorTileSchema
     query: yup.string().required(),
     operation: exports.modelAccessOperationSchema.required(),
 }));
+<<<<<<< HEAD
 // ActionTile schema
+=======
+>>>>>>> main
 exports.actionTileSchema = exports.tileGeneralSchema
     .concat(yup.object({
     output: yup.array().of(yup.string()).required(),
     actionId: yup.string().required(),
     input: yup.array().of(yup.string()).required(),
 }));
+<<<<<<< HEAD
 // MemoryTile schema
+=======
+>>>>>>> main
 exports.memoryTileSchema = exports.tileGeneralSchema
     .concat(yup.object({
     input: yup.array().of(yup.string()).required(),
@@ -94,7 +110,10 @@ exports.memoryTileSchema = exports.tileGeneralSchema
         .oneOf(Object.values(actionMap_1.MemoryType))
         .required(),
 }));
+<<<<<<< HEAD
 // ModelMemoryTile schema
+=======
+>>>>>>> main
 exports.modelMemoryTileSchema = exports.memoryTileSchema
     .concat(yup.object({
     memoryType: yup.mixed().oneOf([actionMap_1.MemoryType.Model]),
@@ -102,7 +121,10 @@ exports.modelMemoryTileSchema = exports.memoryTileSchema
     query: yup.string().required(),
     operation: exports.modelMemoryOperationSchema.required(),
 }));
+<<<<<<< HEAD
 // Combined Tile schema
+=======
+>>>>>>> main
 const tileSchema = yup.lazy(value => {
     switch (value.type) {
         case actionMap_1.TileType.Accessor:

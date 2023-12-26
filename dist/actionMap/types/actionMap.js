@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModelMemoryOperation = exports.MemoryType = exports.ModelAccessOperation = exports.AccessorType = exports.TileType = exports.OutputType = exports.OutputDirection = exports.ConditionOperator = exports.OUTPUT_SELECTOR = exports.MODEL_SELECTOR = exports.CONSTANT_SELECTOR = exports.MEMORY_SELECTOR = void 0;
-// User language types ---------------------------------------------------------
 const MEMORY_SELECTOR = (id) => `memory::${id}`;
 exports.MEMORY_SELECTOR = MEMORY_SELECTOR;
 const CONSTANT_SELECTOR = (name) => `constant::${name}`;
@@ -10,7 +9,6 @@ const MODEL_SELECTOR = (name) => `model::${name}`;
 exports.MODEL_SELECTOR = MODEL_SELECTOR;
 const OUTPUT_SELECTOR = (id) => `output::${id}`;
 exports.OUTPUT_SELECTOR = OUTPUT_SELECTOR;
-// condition operators
 var ConditionOperator;
 (function (ConditionOperator) {
     ConditionOperator["Equal"] = "==";
@@ -22,7 +20,6 @@ var ConditionOperator;
     ConditionOperator["LessThan"] = "<";
     ConditionOperator["LessThanOrEqual"] = "<=";
 })(ConditionOperator || (exports.ConditionOperator = ConditionOperator = {}));
-// Output types ----------------------------------------------------------------
 var OutputDirection;
 (function (OutputDirection) {
     OutputDirection["Down"] = "down";
@@ -36,7 +33,6 @@ var OutputType;
     OutputType["Conditional"] = "conditional";
     OutputType["ForEach"] = "forEach";
 })(OutputType || (exports.OutputType = OutputType = {}));
-// Tile types ------------------------------------------------------------------
 var TileType;
 (function (TileType) {
     TileType["Accessor"] = "accessor";

@@ -4,8 +4,8 @@ export declare const dataInSchema: yup.ObjectSchema<{
     name: string;
     label: string;
     type: any;
-    required: boolean;
-    defaultValue: {};
+    required: NonNullable<boolean | undefined>;
+    defaultValue: {} | null | undefined;
 }, yup.AnyObject, {
     name: undefined;
     label: undefined;
@@ -13,6 +13,7 @@ export declare const dataInSchema: yup.ObjectSchema<{
     required: undefined;
     defaultValue: undefined;
 }, "">;
+<<<<<<< HEAD
 export declare const tileTypeSchema: yup.MixedSchema<TileType, yup.AnyObject, undefined, "">;
 export declare const accessorTypeSchema: yup.MixedSchema<AccessorType, yup.AnyObject, undefined, "">;
 export declare const modelAccessOperationSchema: yup.MixedSchema<ModelAccessOperation, yup.AnyObject, undefined, "">;
@@ -24,6 +25,19 @@ export declare const tileGeneralSchema: yup.ObjectSchema<{
         start?: number[];
     };
     type: TileType;
+=======
+export declare const tileTypeSchema: yup.MixedSchema<TileType | undefined, yup.AnyObject, undefined, "">;
+export declare const accessorTypeSchema: yup.MixedSchema<AccessorType | undefined, yup.AnyObject, undefined, "">;
+export declare const modelAccessOperationSchema: yup.MixedSchema<ModelAccessOperation | undefined, yup.AnyObject, undefined, "">;
+export declare const modelMemoryOperationSchema: yup.MixedSchema<ModelMemoryOperation | undefined, yup.AnyObject, undefined, "">;
+export declare const tileGeneralSchema: yup.ObjectSchema<{
+    id: string;
+    coordinates: {
+        end: (number | undefined)[];
+        start: (number | undefined)[];
+    };
+    type: NonNullable<TileType | undefined>;
+>>>>>>> main
 }, yup.AnyObject, {
     id: undefined;
     coordinates: {
@@ -35,6 +49,7 @@ export declare const tileGeneralSchema: yup.ObjectSchema<{
 export declare const accessorTileSchema: yup.ObjectSchema<{
     id: string;
     coordinates: {
+<<<<<<< HEAD
         end?: number[];
         start?: number[];
     };
@@ -42,6 +57,15 @@ export declare const accessorTileSchema: yup.ObjectSchema<{
 } & {
     output: string[];
     accessType: AccessorType;
+=======
+        end: (number | undefined)[];
+        start: (number | undefined)[];
+    };
+    type: NonNullable<TileType | undefined>;
+} & {
+    output: (string | undefined)[];
+    accessType: NonNullable<AccessorType | undefined>;
+>>>>>>> main
 }, yup.AnyObject, {
     id: undefined;
     coordinates: {
@@ -55,6 +79,7 @@ export declare const accessorTileSchema: yup.ObjectSchema<{
 export declare const constantAccessorTileSchema: yup.ObjectSchema<{
     id: string;
     coordinates: {
+<<<<<<< HEAD
         end?: number[];
         start?: number[];
     };
@@ -63,6 +88,16 @@ export declare const constantAccessorTileSchema: yup.ObjectSchema<{
     accessType: {};
 } & {
     accessType: {};
+=======
+        end: (number | undefined)[];
+        start: (number | undefined)[];
+    };
+    type: NonNullable<TileType | undefined>;
+    output: (string | undefined)[];
+    accessType: {} | undefined;
+} & {
+    accessType: {} | undefined;
+>>>>>>> main
     constantName: string;
 }, yup.AnyObject, {
     id: undefined;
@@ -78,6 +113,7 @@ export declare const constantAccessorTileSchema: yup.ObjectSchema<{
 export declare const dataInAccessorTileSchema: yup.ObjectSchema<{
     id: string;
     coordinates: {
+<<<<<<< HEAD
         end?: number[];
         start?: number[];
     };
@@ -92,6 +128,22 @@ export declare const dataInAccessorTileSchema: yup.ObjectSchema<{
         name?: string;
         label?: string;
         defaultValue?: {};
+=======
+        end: (number | undefined)[];
+        start: (number | undefined)[];
+    };
+    type: NonNullable<TileType | undefined>;
+    output: (string | undefined)[];
+    accessType: {} | undefined;
+} & {
+    accessType: {} | undefined;
+    dataInProps: {
+        type?: any;
+        defaultValue?: {} | null | undefined;
+        required: NonNullable<boolean | undefined>;
+        name: string;
+        label: string;
+>>>>>>> main
     };
 }, yup.AnyObject, {
     id: undefined;
@@ -113,6 +165,7 @@ export declare const dataInAccessorTileSchema: yup.ObjectSchema<{
 export declare const memoryAccessorTileSchema: yup.ObjectSchema<{
     id: string;
     coordinates: {
+<<<<<<< HEAD
         end?: number[];
         start?: number[];
     };
@@ -121,6 +174,16 @@ export declare const memoryAccessorTileSchema: yup.ObjectSchema<{
     accessType: {};
 } & {
     accessType: {};
+=======
+        end: (number | undefined)[];
+        start: (number | undefined)[];
+    };
+    type: NonNullable<TileType | undefined>;
+    output: (string | undefined)[];
+    accessType: {} | undefined;
+} & {
+    accessType: {} | undefined;
+>>>>>>> main
     memoryTileId: string;
 }, yup.AnyObject, {
     id: undefined;
@@ -136,6 +199,7 @@ export declare const memoryAccessorTileSchema: yup.ObjectSchema<{
 export declare const modelAccessorTileSchema: yup.ObjectSchema<{
     id: string;
     coordinates: {
+<<<<<<< HEAD
         end?: number[];
         start?: number[];
     };
@@ -147,6 +211,19 @@ export declare const modelAccessorTileSchema: yup.ObjectSchema<{
     modelName: string;
     query: string;
     operation: ModelAccessOperation;
+=======
+        end: (number | undefined)[];
+        start: (number | undefined)[];
+    };
+    type: NonNullable<TileType | undefined>;
+    output: (string | undefined)[];
+    accessType: {} | undefined;
+} & {
+    accessType: {} | undefined;
+    modelName: string;
+    query: string;
+    operation: NonNullable<ModelAccessOperation | undefined>;
+>>>>>>> main
 }, yup.AnyObject, {
     id: undefined;
     coordinates: {
@@ -163,6 +240,7 @@ export declare const modelAccessorTileSchema: yup.ObjectSchema<{
 export declare const actionTileSchema: yup.ObjectSchema<{
     id: string;
     coordinates: {
+<<<<<<< HEAD
         end?: number[];
         start?: number[];
     };
@@ -171,6 +249,16 @@ export declare const actionTileSchema: yup.ObjectSchema<{
     output: string[];
     actionId: string;
     input: string[];
+=======
+        end: (number | undefined)[];
+        start: (number | undefined)[];
+    };
+    type: NonNullable<TileType | undefined>;
+} & {
+    output: (string | undefined)[];
+    actionId: string;
+    input: (string | undefined)[];
+>>>>>>> main
 }, yup.AnyObject, {
     id: undefined;
     coordinates: {
@@ -185,6 +273,7 @@ export declare const actionTileSchema: yup.ObjectSchema<{
 export declare const memoryTileSchema: yup.ObjectSchema<{
     id: string;
     coordinates: {
+<<<<<<< HEAD
         end?: number[];
         start?: number[];
     };
@@ -192,6 +281,15 @@ export declare const memoryTileSchema: yup.ObjectSchema<{
 } & {
     input: string[];
     memoryType: MemoryType;
+=======
+        end: (number | undefined)[];
+        start: (number | undefined)[];
+    };
+    type: NonNullable<TileType | undefined>;
+} & {
+    input: (string | undefined)[];
+    memoryType: NonNullable<MemoryType | undefined>;
+>>>>>>> main
 }, yup.AnyObject, {
     id: undefined;
     coordinates: {
@@ -205,6 +303,7 @@ export declare const memoryTileSchema: yup.ObjectSchema<{
 export declare const modelMemoryTileSchema: yup.ObjectSchema<{
     id: string;
     coordinates: {
+<<<<<<< HEAD
         end?: number[];
         start?: number[];
     };
@@ -216,6 +315,19 @@ export declare const modelMemoryTileSchema: yup.ObjectSchema<{
     modelName: string;
     query: string;
     operation: ModelMemoryOperation;
+=======
+        end: (number | undefined)[];
+        start: (number | undefined)[];
+    };
+    type: NonNullable<TileType | undefined>;
+    input: (string | undefined)[];
+    memoryType: {} | undefined;
+} & {
+    memoryType: {} | undefined;
+    modelName: string;
+    query: string;
+    operation: NonNullable<ModelMemoryOperation | undefined>;
+>>>>>>> main
 }, yup.AnyObject, {
     id: undefined;
     coordinates: {

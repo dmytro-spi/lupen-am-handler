@@ -2,15 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const yup = require("yup");
 const actionMap_1 = require("../types/actionMap");
-// OutputDirection schema
 const outputDirectionSchema = yup
     .mixed()
     .oneOf(Object.values(actionMap_1.OutputDirection));
-// OutputType schema
 const outputTypeSchema = yup
     .mixed()
     .oneOf(Object.values(actionMap_1.OutputType));
-// Base OutputGeneral schema
 const outputGeneralSchema = yup.object().shape({
     id: yup.string().required(),
     direction: outputDirectionSchema.required(),
@@ -24,23 +21,35 @@ const outputGeneralSchema = yup.object().shape({
     type: outputTypeSchema.required(),
     outputPath: yup.string().nullable(),
 });
+<<<<<<< HEAD
 // DefaultOutput schema
+=======
+>>>>>>> main
 const defaultOutputSchema = outputGeneralSchema
     .concat(yup.object({
     type: yup.mixed().oneOf([actionMap_1.OutputType.Default]),
 }));
+<<<<<<< HEAD
 // ConditionalOutput schema
+=======
+>>>>>>> main
 const conditionalOutputSchema = outputGeneralSchema
     .concat(yup.object({
     type: yup.mixed().oneOf([actionMap_1.OutputType.Conditional]),
     condition: yup.string().required(),
 }));
+<<<<<<< HEAD
 // ForEachOutput schema
+=======
+>>>>>>> main
 const forEachOutputSchema = outputGeneralSchema
     .concat(yup.object({
     type: yup.mixed().oneOf([actionMap_1.OutputType.ForEach]),
 }));
+<<<<<<< HEAD
 // Combined Output schema
+=======
+>>>>>>> main
 const outputSchema = yup.lazy(value => {
     switch (value.type) {
         case actionMap_1.OutputType.Default:
