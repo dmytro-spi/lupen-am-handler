@@ -10,7 +10,8 @@
   "scripts": {
     "start": "npx --yes http-server ./docs -p 8000",
     "typedoc": "typedoc --out ./docs ./src",
-    "play": "npx ts-node src/playground.ts"
+    "play": "npx ts-node src/playground.ts",
+    "prepare": "husky install"
   },
   "dependencies": {
     "bson": "^6.2.0",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.7",
+    "husky": "^8.0.3",
     "typedoc": "0.25.4"
   },
   "keywords": []
