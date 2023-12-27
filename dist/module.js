@@ -1,33 +1,14 @@
-var $8zHUo$uuid = require("uuid");
-var $8zHUo$bson = require("bson");
-var $8zHUo$yup = require("yup");
+import {v4 as $hgUW1$v4} from "uuid";
+import {BSON as $hgUW1$BSON} from "bson";
+import {object as $hgUW1$object, string as $hgUW1$string, array as $hgUW1$array, mixed as $hgUW1$mixed, number as $hgUW1$number, lazy as $hgUW1$lazy, boolean as $hgUW1$boolean} from "yup";
 
 
-function $parcel$export(e, n, v, s) {
-  Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
-}
 
-$parcel$export(module.exports, "TileType", () => $53a7a2c32695d914$export$b58a0cc33096f1fb);
-$parcel$export(module.exports, "OutputType", () => $53a7a2c32695d914$export$be94d7b677b041dd);
-$parcel$export(module.exports, "OutputDirection", () => $53a7a2c32695d914$export$dec6c71a4257ac74);
-$parcel$export(module.exports, "ConditionOperator", () => $53a7a2c32695d914$export$e035c9caa79ccaa9);
-$parcel$export(module.exports, "CONSTANT_SELECTOR", () => $53a7a2c32695d914$export$a82221618652cb9f);
-$parcel$export(module.exports, "MEMORY_SELECTOR", () => $53a7a2c32695d914$export$ede5a19a386fa7ea);
-$parcel$export(module.exports, "MODEL_SELECTOR", () => $53a7a2c32695d914$export$85ca6aa0f7ebde22);
-$parcel$export(module.exports, "OUTPUT_SELECTOR", () => $53a7a2c32695d914$export$bf648471fa87db4a);
-$parcel$export(module.exports, "SimpleDataType", () => $9c38f06678b5673e$export$2bd38b90f09fb16c);
-$parcel$export(module.exports, "FormatDataType", () => $9c38f06678b5673e$export$a914443d1add2f4c);
-$parcel$export(module.exports, "ActionMapHandler", () => $86d69c5e11233160$export$a82bfd0bc6a25e39);
-$parcel$export(module.exports, "DataSchemaHandler", () => $763d6b25a3753a1a$export$e073683b1b98b026);
-$parcel$export(module.exports, "ComplexDataType", () => $9c38f06678b5673e$export$1ae122a9008ff510);
-$parcel$export(module.exports, "ContentDataType", () => $9c38f06678b5673e$export$b00b62a09b73016e);
-
-
-const $53a7a2c32695d914$export$ede5a19a386fa7ea = (id)=>`memory::${id}`;
-const $53a7a2c32695d914$export$a82221618652cb9f = (name)=>`constant::${name}`;
-const $53a7a2c32695d914$export$85ca6aa0f7ebde22 = (name)=>`model::${name}`;
-const $53a7a2c32695d914$export$bf648471fa87db4a = (id)=>`output::${id}`;
-var $53a7a2c32695d914$export$e035c9caa79ccaa9;
+const $b224c477343e41e6$export$ede5a19a386fa7ea = (id)=>`memory::${id}`;
+const $b224c477343e41e6$export$a82221618652cb9f = (name)=>`constant::${name}`;
+const $b224c477343e41e6$export$85ca6aa0f7ebde22 = (name)=>`model::${name}`;
+const $b224c477343e41e6$export$bf648471fa87db4a = (id)=>`output::${id}`;
+var $b224c477343e41e6$export$e035c9caa79ccaa9;
 (function(ConditionOperator) {
     ConditionOperator["Equal"] = "==";
     ConditionOperator["StrongEqual"] = "===";
@@ -37,271 +18,271 @@ var $53a7a2c32695d914$export$e035c9caa79ccaa9;
     ConditionOperator["GreaterThanOrEqual"] = ">=";
     ConditionOperator["LessThan"] = "<";
     ConditionOperator["LessThanOrEqual"] = "<=";
-})($53a7a2c32695d914$export$e035c9caa79ccaa9 || ($53a7a2c32695d914$export$e035c9caa79ccaa9 = {}));
-var $53a7a2c32695d914$export$dec6c71a4257ac74;
+})($b224c477343e41e6$export$e035c9caa79ccaa9 || ($b224c477343e41e6$export$e035c9caa79ccaa9 = {}));
+var $b224c477343e41e6$export$dec6c71a4257ac74;
 (function(OutputDirection) {
     OutputDirection["Down"] = "down";
     OutputDirection["Right"] = "right";
     OutputDirection["Up"] = "up";
     OutputDirection["Left"] = "left";
-})($53a7a2c32695d914$export$dec6c71a4257ac74 || ($53a7a2c32695d914$export$dec6c71a4257ac74 = {}));
-var $53a7a2c32695d914$export$be94d7b677b041dd;
+})($b224c477343e41e6$export$dec6c71a4257ac74 || ($b224c477343e41e6$export$dec6c71a4257ac74 = {}));
+var $b224c477343e41e6$export$be94d7b677b041dd;
 (function(OutputType) {
     OutputType["Default"] = "default";
     OutputType["Conditional"] = "conditional";
     OutputType["ForEach"] = "forEach";
-})($53a7a2c32695d914$export$be94d7b677b041dd || ($53a7a2c32695d914$export$be94d7b677b041dd = {}));
-var $53a7a2c32695d914$export$b58a0cc33096f1fb;
+})($b224c477343e41e6$export$be94d7b677b041dd || ($b224c477343e41e6$export$be94d7b677b041dd = {}));
+var $b224c477343e41e6$export$b58a0cc33096f1fb;
 (function(TileType) {
     TileType["Accessor"] = "accessor";
     TileType["Action"] = "action";
     TileType["Memory"] = "memory";
-})($53a7a2c32695d914$export$b58a0cc33096f1fb || ($53a7a2c32695d914$export$b58a0cc33096f1fb = {}));
-var $53a7a2c32695d914$export$1f02415756f5fb16;
+})($b224c477343e41e6$export$b58a0cc33096f1fb || ($b224c477343e41e6$export$b58a0cc33096f1fb = {}));
+var $b224c477343e41e6$export$1f02415756f5fb16;
 (function(AccessorType) {
     AccessorType["Model"] = "model";
     AccessorType["Constant"] = "constant";
     AccessorType["Memory"] = "memory";
     AccessorType["DataIn"] = "dataIn";
-})($53a7a2c32695d914$export$1f02415756f5fb16 || ($53a7a2c32695d914$export$1f02415756f5fb16 = {}));
-var $53a7a2c32695d914$export$5c1a605137b9ecb3;
+})($b224c477343e41e6$export$1f02415756f5fb16 || ($b224c477343e41e6$export$1f02415756f5fb16 = {}));
+var $b224c477343e41e6$export$5c1a605137b9ecb3;
 (function(ModelAccessOperation) {
     ModelAccessOperation["FindOne"] = "findOne";
     ModelAccessOperation["FindMany"] = "findMany";
     ModelAccessOperation["FindFirst"] = "findFirst";
     ModelAccessOperation["FindLast"] = "findLast";
-})($53a7a2c32695d914$export$5c1a605137b9ecb3 || ($53a7a2c32695d914$export$5c1a605137b9ecb3 = {}));
-var $53a7a2c32695d914$export$90d94503f4d956ff;
+})($b224c477343e41e6$export$5c1a605137b9ecb3 || ($b224c477343e41e6$export$5c1a605137b9ecb3 = {}));
+var $b224c477343e41e6$export$90d94503f4d956ff;
 (function(MemoryType) {
     MemoryType["DataOut"] = "dataOut";
     MemoryType["Internal"] = "internal";
     MemoryType["Model"] = "model";
-})($53a7a2c32695d914$export$90d94503f4d956ff || ($53a7a2c32695d914$export$90d94503f4d956ff = {}));
-var $53a7a2c32695d914$export$6c7545f640252ea7;
+})($b224c477343e41e6$export$90d94503f4d956ff || ($b224c477343e41e6$export$90d94503f4d956ff = {}));
+var $b224c477343e41e6$export$6c7545f640252ea7;
 (function(ModelMemoryOperation) {
     ModelMemoryOperation["Create"] = "create";
     ModelMemoryOperation["Update"] = "update";
     ModelMemoryOperation["Delete"] = "delete";
-})($53a7a2c32695d914$export$6c7545f640252ea7 || ($53a7a2c32695d914$export$6c7545f640252ea7 = {}));
+})($b224c477343e41e6$export$6c7545f640252ea7 || ($b224c477343e41e6$export$6c7545f640252ea7 = {}));
 
 
 
 
 
 // OutputDirection schema
-const $ec2df8c8c4925e94$var$outputDirectionSchema = $8zHUo$yup.mixed().oneOf(Object.values((0, $53a7a2c32695d914$export$dec6c71a4257ac74)));
+const $0c1e32e0c308ab33$var$outputDirectionSchema = $hgUW1$mixed().oneOf(Object.values((0, $b224c477343e41e6$export$dec6c71a4257ac74)));
 // OutputType schema
-const $ec2df8c8c4925e94$var$outputTypeSchema = $8zHUo$yup.mixed().oneOf(Object.values((0, $53a7a2c32695d914$export$be94d7b677b041dd)));
+const $0c1e32e0c308ab33$var$outputTypeSchema = $hgUW1$mixed().oneOf(Object.values((0, $b224c477343e41e6$export$be94d7b677b041dd)));
 // Base OutputGeneral schema
-const $ec2df8c8c4925e94$var$outputGeneralSchema = $8zHUo$yup.object().shape({
-    id: $8zHUo$yup.string().required(),
-    direction: $ec2df8c8c4925e94$var$outputDirectionSchema.required(),
-    coordinates: $8zHUo$yup.array().of($8zHUo$yup.number()).min(2).max(2).required(),
-    toArgument: $8zHUo$yup.string().nullable(),
-    type: $ec2df8c8c4925e94$var$outputTypeSchema.required(),
-    outputPath: $8zHUo$yup.string().nullable()
+const $0c1e32e0c308ab33$var$outputGeneralSchema = $hgUW1$object().shape({
+    id: $hgUW1$string().required(),
+    direction: $0c1e32e0c308ab33$var$outputDirectionSchema.required(),
+    coordinates: $hgUW1$array().of($hgUW1$number()).min(2).max(2).required(),
+    toArgument: $hgUW1$string().nullable(),
+    type: $0c1e32e0c308ab33$var$outputTypeSchema.required(),
+    outputPath: $hgUW1$string().nullable()
 });
 // DefaultOutput schema
-const $ec2df8c8c4925e94$var$defaultOutputSchema = $ec2df8c8c4925e94$var$outputGeneralSchema.concat($8zHUo$yup.object({
-    type: $8zHUo$yup.mixed().oneOf([
-        (0, $53a7a2c32695d914$export$be94d7b677b041dd).Default
+const $0c1e32e0c308ab33$var$defaultOutputSchema = $0c1e32e0c308ab33$var$outputGeneralSchema.concat($hgUW1$object({
+    type: $hgUW1$mixed().oneOf([
+        (0, $b224c477343e41e6$export$be94d7b677b041dd).Default
     ])
 }));
 // ConditionalOutput schema
-const $ec2df8c8c4925e94$var$conditionalOutputSchema = $ec2df8c8c4925e94$var$outputGeneralSchema.concat($8zHUo$yup.object({
-    type: $8zHUo$yup.mixed().oneOf([
-        (0, $53a7a2c32695d914$export$be94d7b677b041dd).Conditional
+const $0c1e32e0c308ab33$var$conditionalOutputSchema = $0c1e32e0c308ab33$var$outputGeneralSchema.concat($hgUW1$object({
+    type: $hgUW1$mixed().oneOf([
+        (0, $b224c477343e41e6$export$be94d7b677b041dd).Conditional
     ]),
-    condition: $8zHUo$yup.string().required()
+    condition: $hgUW1$string().required()
 }));
 // ForEachOutput schema
-const $ec2df8c8c4925e94$var$forEachOutputSchema = $ec2df8c8c4925e94$var$outputGeneralSchema.concat($8zHUo$yup.object({
-    type: $8zHUo$yup.mixed().oneOf([
-        (0, $53a7a2c32695d914$export$be94d7b677b041dd).ForEach
+const $0c1e32e0c308ab33$var$forEachOutputSchema = $0c1e32e0c308ab33$var$outputGeneralSchema.concat($hgUW1$object({
+    type: $hgUW1$mixed().oneOf([
+        (0, $b224c477343e41e6$export$be94d7b677b041dd).ForEach
     ])
 }));
 // Combined Output schema
-const $ec2df8c8c4925e94$var$outputSchema = $8zHUo$yup.lazy((value)=>{
+const $0c1e32e0c308ab33$var$outputSchema = $hgUW1$lazy((value)=>{
     switch(value.type){
-        case (0, $53a7a2c32695d914$export$be94d7b677b041dd).Default:
-            return $ec2df8c8c4925e94$var$defaultOutputSchema;
-        case (0, $53a7a2c32695d914$export$be94d7b677b041dd).Conditional:
-            return $ec2df8c8c4925e94$var$conditionalOutputSchema;
-        case (0, $53a7a2c32695d914$export$be94d7b677b041dd).ForEach:
-            return $ec2df8c8c4925e94$var$forEachOutputSchema;
+        case (0, $b224c477343e41e6$export$be94d7b677b041dd).Default:
+            return $0c1e32e0c308ab33$var$defaultOutputSchema;
+        case (0, $b224c477343e41e6$export$be94d7b677b041dd).Conditional:
+            return $0c1e32e0c308ab33$var$conditionalOutputSchema;
+        case (0, $b224c477343e41e6$export$be94d7b677b041dd).ForEach:
+            return $0c1e32e0c308ab33$var$forEachOutputSchema;
         default:
-            return $8zHUo$yup.object().shape({});
+            return $hgUW1$object().shape({});
     }
 });
-var $ec2df8c8c4925e94$export$2e2bcd8739ae039 = $ec2df8c8c4925e94$var$outputSchema;
+var $0c1e32e0c308ab33$export$2e2bcd8739ae039 = $0c1e32e0c308ab33$var$outputSchema;
 
 
 
 
 
-var $9c38f06678b5673e$export$2bd38b90f09fb16c;
+var $8f8d2861b2e1d35f$export$2bd38b90f09fb16c;
 (function(SimpleDataType) {
     SimpleDataType["Text"] = "text";
     SimpleDataType["Number"] = "number";
     SimpleDataType["Date"] = "date";
     SimpleDataType["YesNo"] = "yesNo";
-})($9c38f06678b5673e$export$2bd38b90f09fb16c || ($9c38f06678b5673e$export$2bd38b90f09fb16c = {}));
-var $9c38f06678b5673e$export$a914443d1add2f4c;
+})($8f8d2861b2e1d35f$export$2bd38b90f09fb16c || ($8f8d2861b2e1d35f$export$2bd38b90f09fb16c = {}));
+var $8f8d2861b2e1d35f$export$a914443d1add2f4c;
 (function(FormatDataType) {
     FormatDataType["Money"] = "money";
     FormatDataType["PhoneNumber"] = "phoneNumber";
     FormatDataType["Email"] = "email";
     FormatDataType["Url"] = "url";
-})($9c38f06678b5673e$export$a914443d1add2f4c || ($9c38f06678b5673e$export$a914443d1add2f4c = {}));
-var $9c38f06678b5673e$export$b00b62a09b73016e;
+})($8f8d2861b2e1d35f$export$a914443d1add2f4c || ($8f8d2861b2e1d35f$export$a914443d1add2f4c = {}));
+var $8f8d2861b2e1d35f$export$b00b62a09b73016e;
 (function(ContentDataType) {
     ContentDataType["Image"] = "image";
     ContentDataType["Video"] = "video";
     ContentDataType["Audio"] = "audio";
     ContentDataType["File"] = "file";
-})($9c38f06678b5673e$export$b00b62a09b73016e || ($9c38f06678b5673e$export$b00b62a09b73016e = {}));
-var $9c38f06678b5673e$export$1ae122a9008ff510;
+})($8f8d2861b2e1d35f$export$b00b62a09b73016e || ($8f8d2861b2e1d35f$export$b00b62a09b73016e = {}));
+var $8f8d2861b2e1d35f$export$1ae122a9008ff510;
 (function(ComplexDataType) {
     ComplexDataType["Object"] = "object";
     ComplexDataType["Array"] = "array";
-})($9c38f06678b5673e$export$1ae122a9008ff510 || ($9c38f06678b5673e$export$1ae122a9008ff510 = {}));
+})($8f8d2861b2e1d35f$export$1ae122a9008ff510 || ($8f8d2861b2e1d35f$export$1ae122a9008ff510 = {}));
 
 
 // SimpleDataType, FormatDataType, ContentDataType, ComplexDataType enums
-const $79311264d645bc52$var$simpleDataTypeSchema = $8zHUo$yup.mixed().oneOf(Object.values((0, $9c38f06678b5673e$export$2bd38b90f09fb16c)));
-const $79311264d645bc52$var$formatDataTypeSchema = $8zHUo$yup.mixed().oneOf(Object.values((0, $9c38f06678b5673e$export$a914443d1add2f4c)));
-const $79311264d645bc52$var$contentDataTypeSchema = $8zHUo$yup.mixed().oneOf(Object.values((0, $9c38f06678b5673e$export$b00b62a09b73016e)));
-const $79311264d645bc52$var$complexDataTypeSchema = $8zHUo$yup.mixed().oneOf(Object.values((0, $9c38f06678b5673e$export$1ae122a9008ff510)));
+const $3500a9346d7cfe7a$var$simpleDataTypeSchema = $hgUW1$mixed().oneOf(Object.values((0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c)));
+const $3500a9346d7cfe7a$var$formatDataTypeSchema = $hgUW1$mixed().oneOf(Object.values((0, $8f8d2861b2e1d35f$export$a914443d1add2f4c)));
+const $3500a9346d7cfe7a$var$contentDataTypeSchema = $hgUW1$mixed().oneOf(Object.values((0, $8f8d2861b2e1d35f$export$b00b62a09b73016e)));
+const $3500a9346d7cfe7a$var$complexDataTypeSchema = $hgUW1$mixed().oneOf(Object.values((0, $8f8d2861b2e1d35f$export$1ae122a9008ff510)));
 // DataTypes schema
-const $79311264d645bc52$var$dataTypesSchema = $8zHUo$yup.lazy((value)=>$8zHUo$yup.array().of($8zHUo$yup.mixed().oneOf([
-        $79311264d645bc52$var$simpleDataTypeSchema,
-        $79311264d645bc52$var$formatDataTypeSchema,
-        $79311264d645bc52$var$contentDataTypeSchema,
-        $79311264d645bc52$var$complexDataTypeSchema
+const $3500a9346d7cfe7a$var$dataTypesSchema = $hgUW1$lazy((value)=>$hgUW1$array().of($hgUW1$mixed().oneOf([
+        $3500a9346d7cfe7a$var$simpleDataTypeSchema,
+        $3500a9346d7cfe7a$var$formatDataTypeSchema,
+        $3500a9346d7cfe7a$var$contentDataTypeSchema,
+        $3500a9346d7cfe7a$var$complexDataTypeSchema
     ])).required());
 // Recursive DataSchema schema
-const $79311264d645bc52$var$dataSchema = $8zHUo$yup.object({
-    type: $79311264d645bc52$var$dataTypesSchema,
-    properties: $8zHUo$yup.lazy((value)=>$8zHUo$yup.object().shape(Object.keys(value).reduce((shape, key)=>{
-            shape[key] = $79311264d645bc52$var$dataSchema;
+const $3500a9346d7cfe7a$var$dataSchema = $hgUW1$object({
+    type: $3500a9346d7cfe7a$var$dataTypesSchema,
+    properties: $hgUW1$lazy((value)=>$hgUW1$object().shape(Object.keys(value).reduce((shape, key)=>{
+            shape[key] = $3500a9346d7cfe7a$var$dataSchema;
             return shape;
         }, {})).nullable()),
-    arrayType: $8zHUo$yup.lazy(()=>$79311264d645bc52$var$dataSchema.nullable()),
-    description: $8zHUo$yup.string().nullable(),
-    defaultValue: $8zHUo$yup.mixed().nullable(),
-    required: $8zHUo$yup.boolean().nullable()
+    arrayType: $hgUW1$lazy(()=>$3500a9346d7cfe7a$var$dataSchema.nullable()),
+    description: $hgUW1$string().nullable(),
+    defaultValue: $hgUW1$mixed().nullable(),
+    required: $hgUW1$boolean().nullable()
 });
-var $79311264d645bc52$export$2e2bcd8739ae039 = $79311264d645bc52$var$dataSchema;
+var $3500a9346d7cfe7a$export$2e2bcd8739ae039 = $3500a9346d7cfe7a$var$dataSchema;
 
 
-const $5a06354403e1cbe2$export$f2c1d8115810088c = $8zHUo$yup.object().shape({
-    name: $8zHUo$yup.string().required(),
-    label: $8zHUo$yup.string().required(),
-    type: (0, $79311264d645bc52$export$2e2bcd8739ae039).required(),
-    required: $8zHUo$yup.boolean().required(),
-    defaultValue: $8zHUo$yup.mixed().nullable()
+const $8e667be3765ae363$export$f2c1d8115810088c = $hgUW1$object().shape({
+    name: $hgUW1$string().required(),
+    label: $hgUW1$string().required(),
+    type: (0, $3500a9346d7cfe7a$export$2e2bcd8739ae039).required(),
+    required: $hgUW1$boolean().required(),
+    defaultValue: $hgUW1$mixed().nullable()
 });
-const $5a06354403e1cbe2$export$3f22e65960887329 = $8zHUo$yup.mixed().oneOf(Object.values((0, $53a7a2c32695d914$export$b58a0cc33096f1fb)));
-const $5a06354403e1cbe2$export$97a6fcb49b2b0798 = $8zHUo$yup.mixed().oneOf(Object.values((0, $53a7a2c32695d914$export$1f02415756f5fb16)));
-const $5a06354403e1cbe2$export$923e425a87884b8a = $8zHUo$yup.mixed().oneOf(Object.values((0, $53a7a2c32695d914$export$5c1a605137b9ecb3)));
-const $5a06354403e1cbe2$export$c50c1c96240d4cab = $8zHUo$yup.mixed().oneOf(Object.values((0, $53a7a2c32695d914$export$6c7545f640252ea7)));
-const $5a06354403e1cbe2$export$8da21ffd331f2922 = $8zHUo$yup.object().shape({
-    id: $8zHUo$yup.string().required(),
-    coordinates: $8zHUo$yup.object().shape({
-        start: $8zHUo$yup.array().of($8zHUo$yup.number()).min(2).max(2).required(),
-        end: $8zHUo$yup.array().of($8zHUo$yup.number()).min(2).max(2).required()
+const $8e667be3765ae363$export$3f22e65960887329 = $hgUW1$mixed().oneOf(Object.values((0, $b224c477343e41e6$export$b58a0cc33096f1fb)));
+const $8e667be3765ae363$export$97a6fcb49b2b0798 = $hgUW1$mixed().oneOf(Object.values((0, $b224c477343e41e6$export$1f02415756f5fb16)));
+const $8e667be3765ae363$export$923e425a87884b8a = $hgUW1$mixed().oneOf(Object.values((0, $b224c477343e41e6$export$5c1a605137b9ecb3)));
+const $8e667be3765ae363$export$c50c1c96240d4cab = $hgUW1$mixed().oneOf(Object.values((0, $b224c477343e41e6$export$6c7545f640252ea7)));
+const $8e667be3765ae363$export$8da21ffd331f2922 = $hgUW1$object().shape({
+    id: $hgUW1$string().required(),
+    coordinates: $hgUW1$object().shape({
+        start: $hgUW1$array().of($hgUW1$number()).min(2).max(2).required(),
+        end: $hgUW1$array().of($hgUW1$number()).min(2).max(2).required()
     }),
-    type: $5a06354403e1cbe2$export$3f22e65960887329.required()
+    type: $8e667be3765ae363$export$3f22e65960887329.required()
 });
-const $5a06354403e1cbe2$export$8df29c7063b7517d = $5a06354403e1cbe2$export$8da21ffd331f2922.concat($8zHUo$yup.object({
-    output: $8zHUo$yup.array().of($8zHUo$yup.string()).required(),
-    accessType: $5a06354403e1cbe2$export$97a6fcb49b2b0798.required()
+const $8e667be3765ae363$export$8df29c7063b7517d = $8e667be3765ae363$export$8da21ffd331f2922.concat($hgUW1$object({
+    output: $hgUW1$array().of($hgUW1$string()).required(),
+    accessType: $8e667be3765ae363$export$97a6fcb49b2b0798.required()
 }));
-const $5a06354403e1cbe2$export$334599776679ae92 = $5a06354403e1cbe2$export$8df29c7063b7517d.concat($8zHUo$yup.object({
-    accessType: $8zHUo$yup.mixed().oneOf([
-        (0, $53a7a2c32695d914$export$1f02415756f5fb16).Constant
+const $8e667be3765ae363$export$334599776679ae92 = $8e667be3765ae363$export$8df29c7063b7517d.concat($hgUW1$object({
+    accessType: $hgUW1$mixed().oneOf([
+        (0, $b224c477343e41e6$export$1f02415756f5fb16).Constant
     ]),
-    constantName: $8zHUo$yup.string().required()
+    constantName: $hgUW1$string().required()
 }));
-const $5a06354403e1cbe2$export$9c6325a7d66a12b2 = $5a06354403e1cbe2$export$8df29c7063b7517d.concat($8zHUo$yup.object({
-    accessType: $8zHUo$yup.mixed().oneOf([
-        (0, $53a7a2c32695d914$export$1f02415756f5fb16).DataIn
+const $8e667be3765ae363$export$9c6325a7d66a12b2 = $8e667be3765ae363$export$8df29c7063b7517d.concat($hgUW1$object({
+    accessType: $hgUW1$mixed().oneOf([
+        (0, $b224c477343e41e6$export$1f02415756f5fb16).DataIn
     ]),
-    dataInProps: $5a06354403e1cbe2$export$f2c1d8115810088c.required()
+    dataInProps: $8e667be3765ae363$export$f2c1d8115810088c.required()
 }));
-const $5a06354403e1cbe2$export$4d411ef10c1bed0e = $5a06354403e1cbe2$export$8df29c7063b7517d.concat($8zHUo$yup.object({
-    accessType: $8zHUo$yup.mixed().oneOf([
-        (0, $53a7a2c32695d914$export$1f02415756f5fb16).Memory
+const $8e667be3765ae363$export$4d411ef10c1bed0e = $8e667be3765ae363$export$8df29c7063b7517d.concat($hgUW1$object({
+    accessType: $hgUW1$mixed().oneOf([
+        (0, $b224c477343e41e6$export$1f02415756f5fb16).Memory
     ]),
-    memoryTileId: $8zHUo$yup.string().required()
+    memoryTileId: $hgUW1$string().required()
 }));
-const $5a06354403e1cbe2$export$334eda1600f280a7 = $5a06354403e1cbe2$export$8df29c7063b7517d.concat($8zHUo$yup.object({
-    accessType: $8zHUo$yup.mixed().oneOf([
-        (0, $53a7a2c32695d914$export$1f02415756f5fb16).Model
+const $8e667be3765ae363$export$334eda1600f280a7 = $8e667be3765ae363$export$8df29c7063b7517d.concat($hgUW1$object({
+    accessType: $hgUW1$mixed().oneOf([
+        (0, $b224c477343e41e6$export$1f02415756f5fb16).Model
     ]),
-    modelName: $8zHUo$yup.string().required(),
-    query: $8zHUo$yup.string().required(),
-    operation: $5a06354403e1cbe2$export$923e425a87884b8a.required()
+    modelName: $hgUW1$string().required(),
+    query: $hgUW1$string().required(),
+    operation: $8e667be3765ae363$export$923e425a87884b8a.required()
 }));
-const $5a06354403e1cbe2$export$c9c64d51056635a7 = $5a06354403e1cbe2$export$8da21ffd331f2922.concat($8zHUo$yup.object({
-    output: $8zHUo$yup.array().of($8zHUo$yup.string()).required(),
-    actionId: $8zHUo$yup.string().required(),
-    input: $8zHUo$yup.array().of($8zHUo$yup.string()).required()
+const $8e667be3765ae363$export$c9c64d51056635a7 = $8e667be3765ae363$export$8da21ffd331f2922.concat($hgUW1$object({
+    output: $hgUW1$array().of($hgUW1$string()).required(),
+    actionId: $hgUW1$string().required(),
+    input: $hgUW1$array().of($hgUW1$string()).required()
 }));
-const $5a06354403e1cbe2$export$48e226a6daf86e70 = $5a06354403e1cbe2$export$8da21ffd331f2922.concat($8zHUo$yup.object({
-    input: $8zHUo$yup.array().of($8zHUo$yup.string()).required(),
-    memoryType: $8zHUo$yup.mixed().oneOf(Object.values((0, $53a7a2c32695d914$export$90d94503f4d956ff))).required()
+const $8e667be3765ae363$export$48e226a6daf86e70 = $8e667be3765ae363$export$8da21ffd331f2922.concat($hgUW1$object({
+    input: $hgUW1$array().of($hgUW1$string()).required(),
+    memoryType: $hgUW1$mixed().oneOf(Object.values((0, $b224c477343e41e6$export$90d94503f4d956ff))).required()
 }));
-const $5a06354403e1cbe2$export$1253cb500ffddf18 = $5a06354403e1cbe2$export$48e226a6daf86e70.concat($8zHUo$yup.object({
-    memoryType: $8zHUo$yup.mixed().oneOf([
-        (0, $53a7a2c32695d914$export$90d94503f4d956ff).Model
+const $8e667be3765ae363$export$1253cb500ffddf18 = $8e667be3765ae363$export$48e226a6daf86e70.concat($hgUW1$object({
+    memoryType: $hgUW1$mixed().oneOf([
+        (0, $b224c477343e41e6$export$90d94503f4d956ff).Model
     ]),
-    modelName: $8zHUo$yup.string().required(),
-    query: $8zHUo$yup.string().required(),
-    operation: $5a06354403e1cbe2$export$c50c1c96240d4cab.required()
+    modelName: $hgUW1$string().required(),
+    query: $hgUW1$string().required(),
+    operation: $8e667be3765ae363$export$c50c1c96240d4cab.required()
 }));
 // Combined Tile schema
-const $5a06354403e1cbe2$var$tileSchema = $8zHUo$yup.lazy((value)=>{
+const $8e667be3765ae363$var$tileSchema = $hgUW1$lazy((value)=>{
     switch(value.type){
-        case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
+        case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Accessor:
             switch(value.accessType){
-                case (0, $53a7a2c32695d914$export$1f02415756f5fb16).Constant:
-                    return $5a06354403e1cbe2$export$334599776679ae92;
-                case (0, $53a7a2c32695d914$export$1f02415756f5fb16).DataIn:
-                    return $5a06354403e1cbe2$export$9c6325a7d66a12b2;
-                case (0, $53a7a2c32695d914$export$1f02415756f5fb16).Memory:
-                    return $5a06354403e1cbe2$export$4d411ef10c1bed0e;
-                case (0, $53a7a2c32695d914$export$1f02415756f5fb16).Model:
-                    return $5a06354403e1cbe2$export$334eda1600f280a7;
+                case (0, $b224c477343e41e6$export$1f02415756f5fb16).Constant:
+                    return $8e667be3765ae363$export$334599776679ae92;
+                case (0, $b224c477343e41e6$export$1f02415756f5fb16).DataIn:
+                    return $8e667be3765ae363$export$9c6325a7d66a12b2;
+                case (0, $b224c477343e41e6$export$1f02415756f5fb16).Memory:
+                    return $8e667be3765ae363$export$4d411ef10c1bed0e;
+                case (0, $b224c477343e41e6$export$1f02415756f5fb16).Model:
+                    return $8e667be3765ae363$export$334eda1600f280a7;
                 default:
-                    return $5a06354403e1cbe2$export$8df29c7063b7517d;
+                    return $8e667be3765ae363$export$8df29c7063b7517d;
             }
-        case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action:
-            return $5a06354403e1cbe2$export$c9c64d51056635a7;
-        case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory:
-            return value.memoryType === (0, $53a7a2c32695d914$export$90d94503f4d956ff).Model ? $5a06354403e1cbe2$export$1253cb500ffddf18 : $5a06354403e1cbe2$export$48e226a6daf86e70;
+        case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Action:
+            return $8e667be3765ae363$export$c9c64d51056635a7;
+        case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Memory:
+            return value.memoryType === (0, $b224c477343e41e6$export$90d94503f4d956ff).Model ? $8e667be3765ae363$export$1253cb500ffddf18 : $8e667be3765ae363$export$48e226a6daf86e70;
         default:
-            return $8zHUo$yup.object().shape({
-                type: $8zHUo$yup.mixed().oneOf(Object.values((0, $53a7a2c32695d914$export$b58a0cc33096f1fb))).required()
+            return $hgUW1$object().shape({
+                type: $hgUW1$mixed().oneOf(Object.values((0, $b224c477343e41e6$export$b58a0cc33096f1fb))).required()
             });
     }
 });
-var $5a06354403e1cbe2$export$2e2bcd8739ae039 = $5a06354403e1cbe2$var$tileSchema;
+var $8e667be3765ae363$export$2e2bcd8739ae039 = $8e667be3765ae363$var$tileSchema;
 
 
 // ActionMap schema
-const $2ef5ffc2b42722f3$var$actionMapSchema = $8zHUo$yup.object().shape({
-    id: $8zHUo$yup.string().required(),
-    name: $8zHUo$yup.string().required(),
-    outputs: $8zHUo$yup.array().of((0, $ec2df8c8c4925e94$export$2e2bcd8739ae039)).required(),
-    tiles: $8zHUo$yup.array().of((0, $5a06354403e1cbe2$export$2e2bcd8739ae039)).required()
+const $65496cb9dfa51acd$var$actionMapSchema = $hgUW1$object().shape({
+    id: $hgUW1$string().required(),
+    name: $hgUW1$string().required(),
+    outputs: $hgUW1$array().of((0, $0c1e32e0c308ab33$export$2e2bcd8739ae039)).required(),
+    tiles: $hgUW1$array().of((0, $8e667be3765ae363$export$2e2bcd8739ae039)).required()
 });
-var $2ef5ffc2b42722f3$export$2e2bcd8739ae039 = $2ef5ffc2b42722f3$var$actionMapSchema;
+var $65496cb9dfa51acd$export$2e2bcd8739ae039 = $65496cb9dfa51acd$var$actionMapSchema;
 
 
 
 
-class $763d6b25a3753a1a$export$e073683b1b98b026 {
+class $a3e7ad90fc86cc8c$export$e073683b1b98b026 {
     getPropertiesTree(schema) {
         return this.getPropertiesTreeFromSchema(schema);
     }
@@ -330,29 +311,29 @@ class $763d6b25a3753a1a$export$e073683b1b98b026 {
         return compatiblePaths.length > 0;
     }
     validateSchema(schema) {
-        if (schema.type !== (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object && schema.properties) return false;
+        if (schema.type !== (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Object && schema.properties) return false;
         return true;
     }
     walkThroughPropertiesRecursive(schema, callback) {
         switch(schema.type){
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Text:
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Number:
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Date:
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).YesNo:
-            case (0, $9c38f06678b5673e$export$b00b62a09b73016e).File:
-            case (0, $9c38f06678b5673e$export$b00b62a09b73016e).Image:
-            case (0, $9c38f06678b5673e$export$b00b62a09b73016e).Video:
-            case (0, $9c38f06678b5673e$export$b00b62a09b73016e).Audio:
+            case (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Text:
+            case (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Number:
+            case (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Date:
+            case (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).YesNo:
+            case (0, $8f8d2861b2e1d35f$export$b00b62a09b73016e).File:
+            case (0, $8f8d2861b2e1d35f$export$b00b62a09b73016e).Image:
+            case (0, $8f8d2861b2e1d35f$export$b00b62a09b73016e).Video:
+            case (0, $8f8d2861b2e1d35f$export$b00b62a09b73016e).Audio:
                 callback(schema, "");
                 break;
-            case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object:
+            case (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Object:
                 Object.entries(schema.properties || {}).forEach(([key, value])=>{
                     this.walkThroughPropertiesRecursive(value, (partialSchema, path)=>{
                         callback(partialSchema, `.${key}${path}`);
                     });
                 });
                 break;
-            case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Array:
+            case (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Array:
                 this.walkThroughPropertiesRecursive(schema.arrayType, (dSchema, path)=>{
                     callback(dSchema, `[]${path}`);
                 });
@@ -365,10 +346,10 @@ class $763d6b25a3753a1a$export$e073683b1b98b026 {
         const pathParts = path.split(/\.|\[\]/g).filter((part)=>part !== "");
         let currentSchema = schema;
         for (const pathPart of pathParts)switch(currentSchema.type){
-            case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object:
+            case (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Object:
                 currentSchema = currentSchema.properties[pathPart];
                 break;
-            case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Array:
+            case (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Array:
                 currentSchema = currentSchema.arrayType;
                 break;
             default:
@@ -379,22 +360,22 @@ class $763d6b25a3753a1a$export$e073683b1b98b026 {
     isSchemasCompatibleRecursive(schemaFrom, schemaTo) {
         if (schemaFrom.type !== schemaTo.type) return false;
         switch(schemaFrom.type){
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Text:
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Number:
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Date:
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).YesNo:
-            case (0, $9c38f06678b5673e$export$b00b62a09b73016e).File:
-            case (0, $9c38f06678b5673e$export$b00b62a09b73016e).Image:
-            case (0, $9c38f06678b5673e$export$b00b62a09b73016e).Video:
-            case (0, $9c38f06678b5673e$export$b00b62a09b73016e).Audio:
+            case (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Text:
+            case (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Number:
+            case (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Date:
+            case (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).YesNo:
+            case (0, $8f8d2861b2e1d35f$export$b00b62a09b73016e).File:
+            case (0, $8f8d2861b2e1d35f$export$b00b62a09b73016e).Image:
+            case (0, $8f8d2861b2e1d35f$export$b00b62a09b73016e).Video:
+            case (0, $8f8d2861b2e1d35f$export$b00b62a09b73016e).Audio:
                 return true;
-            case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object:
+            case (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Object:
                 return Object.entries(schemaFrom.properties || {}).every(([key, value])=>{
                     const schemaToProperty = schemaTo.properties?.[key];
                     if (!schemaToProperty) return false;
                     return this.isSchemasCompatibleRecursive(value, schemaToProperty);
                 });
-            case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Array:
+            case (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Array:
                 return this.isSchemasCompatibleRecursive(schemaFrom.arrayType, schemaTo.arrayType);
             default:
                 throw new Error(`Unsupported data type: ${schemaFrom.type}`);
@@ -402,14 +383,14 @@ class $763d6b25a3753a1a$export$e073683b1b98b026 {
     }
     getPropertiesTreeFromSchema(schema) {
         switch(schema.type){
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Text:
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Number:
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Date:
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).YesNo:
+            case (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Text:
+            case (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Number:
+            case (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Date:
+            case (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).YesNo:
                 return [];
-            case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Array:
+            case (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Array:
                 return this.getPropertiesTreeFromSchema(schema.arrayType);
-            case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object:
+            case (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Object:
                 return Object.entries(schema.properties || {}).map(([key, value])=>({
                         name: key,
                         type: value.type,
@@ -423,12 +404,12 @@ class $763d6b25a3753a1a$export$e073683b1b98b026 {
 
 
 
-class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
+class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
     constructor(actionMap, models, actionFetcher, options){
         this.models = models;
         this.actionFetcher = actionFetcher;
-        this.dataSchemaHandler = new (0, $763d6b25a3753a1a$export$e073683b1b98b026)();
-        this.actionMap = $86d69c5e11233160$export$a82bfd0bc6a25e39.emptyActionMap;
+        this.dataSchemaHandler = new (0, $a3e7ad90fc86cc8c$export$e073683b1b98b026)();
+        this.actionMap = $54eb9ffd392831bf$export$a82bfd0bc6a25e39.emptyActionMap;
         this.changeStack = [];
         this.futureStack = [];
         if (actionMap) {
@@ -442,7 +423,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
     }
     static get emptyActionMap() {
         return {
-            id: (0, $8zHUo$uuid.v4)(),
+            id: (0, $hgUW1$v4)(),
             name: "New Action Map",
             tiles: [],
             outputs: []
@@ -462,7 +443,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    */ createEmptyActionMap(name) {
         this.putCurrentToPreviousState();
         this.actionMap = {
-            id: (0, $8zHUo$uuid.v4)(),
+            id: (0, $hgUW1$v4)(),
             name: name ?? "New Action Map",
             tiles: [],
             outputs: []
@@ -491,7 +472,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    * @throws {Error} Throws an error if the action map fails schema validation,
    *         with details about the validation errors.
    */ async validateSchema() {
-        await (0, $2ef5ffc2b42722f3$export$2e2bcd8739ae039).validate(this.actionMap, {
+        await (0, $65496cb9dfa51acd$export$2e2bcd8739ae039).validate(this.actionMap, {
             abortEarly: false
         });
         return true;
@@ -515,20 +496,20 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         const sourceType = source[0];
         const sourceId = source[1];
         switch(tile.accessType){
-            case (0, $53a7a2c32695d914$export$1f02415756f5fb16).Memory:
+            case (0, $b224c477343e41e6$export$1f02415756f5fb16).Memory:
                 return this.getMemorySchema(sourceId);
-            case (0, $53a7a2c32695d914$export$1f02415756f5fb16).Model:
+            case (0, $b224c477343e41e6$export$1f02415756f5fb16).Model:
                 {
                     const modelSchema = this.getModelSchema(sourceId);
-                    if (tile.operation === (0, $53a7a2c32695d914$export$5c1a605137b9ecb3).FindMany) return {
-                        type: (0, $9c38f06678b5673e$export$1ae122a9008ff510).Array,
+                    if (tile.operation === (0, $b224c477343e41e6$export$5c1a605137b9ecb3).FindMany) return {
+                        type: (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Array,
                         arrayType: modelSchema
                     };
                     return modelSchema;
                 }
-            case (0, $53a7a2c32695d914$export$1f02415756f5fb16).Constant:
+            case (0, $b224c477343e41e6$export$1f02415756f5fb16).Constant:
                 throw new Error("No implementation");
-            case (0, $53a7a2c32695d914$export$1f02415756f5fb16).DataIn:
+            case (0, $b224c477343e41e6$export$1f02415756f5fb16).DataIn:
                 throw new Error("No implementation");
             default:
                 throw new Error(`Invalid accessor source type: ${sourceType}`);
@@ -548,18 +529,18 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    *         fails schema validation.
    */ async validateTile(tile) {
         switch(tile.type){
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
-                await (0, $5a06354403e1cbe2$export$8df29c7063b7517d).validate(tile, {
+            case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Accessor:
+                await (0, $8e667be3765ae363$export$8df29c7063b7517d).validate(tile, {
                     abortEarly: false
                 });
                 break;
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action:
-                (0, $5a06354403e1cbe2$export$c9c64d51056635a7).validate(tile, {
+            case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Action:
+                (0, $8e667be3765ae363$export$c9c64d51056635a7).validate(tile, {
                     abortEarly: false
                 });
                 break;
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory:
-                (0, $5a06354403e1cbe2$export$48e226a6daf86e70).validate(tile, {
+            case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Memory:
+                (0, $8e667be3765ae363$export$48e226a6daf86e70).validate(tile, {
                     abortEarly: false
                 });
                 break;
@@ -630,8 +611,8 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    */ async canConnectTiles(fromTileId, toTileId, cb) {
         const fromTile = this.actionMap.tiles.find((t)=>t.id === fromTileId);
         const toTile = this.actionMap.tiles.find((t)=>t.id === toTileId);
-        if (toTile?.type === (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory) return true;
-        if (toTile?.type !== (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action) return false;
+        if (toTile?.type === (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Memory) return true;
+        if (toTile?.type !== (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Action) return false;
         const fromSchema = await this.getTileOutputSchema(fromTile);
         const toSchema = await this.getActionArgumentsSchema(toTile.actionId);
         return this.dataSchemaHandler.isSchemaPartiallyCompatibleWithTopLevelProperties(fromSchema, toSchema, cb);
@@ -662,30 +643,30 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
             compatiblePaths = paths;
         })) throw new Error(`Tiles ${fromTileId} and ${toTileId} are not compatible`);
         // TODO: check compatiblePaths with output
-        const outputId = (0, $8zHUo$uuid.v4)();
+        const outputId = (0, $hgUW1$v4)();
         this.actionMap.outputs.push({
             id: outputId,
             ...output
         });
         switch(fromTile.type){
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
+            case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Accessor:
                 fromTile.output.push(outputId);
                 break;
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action:
+            case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Action:
                 fromTile.output.push(outputId);
                 break;
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory:
+            case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Memory:
                 throw new Error("Cannot add output to memory tile");
             default:
                 throw new Error(`Invalid tile type: ${fromTile.type}`);
         }
         switch(toTile.type){
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
+            case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Accessor:
                 throw new Error("Cannot add input to accessor tile");
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action:
+            case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Action:
                 toTile.input[parseInt(output.toArgument)] = outputId;
                 break;
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory:
+            case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Memory:
                 toTile.input.push(outputId);
                 break;
             default:
@@ -718,14 +699,14 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
                 ...tile
             };
             switch(tile.type){
-                case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
+                case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Accessor:
                     tileCopy.output = tile.output.filter((outputId)=>outputId !== id);
                     break;
-                case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action:
+                case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Action:
                     tileCopy.input = tile.input.filter((outputId)=>outputId !== id);
                     tileCopy.output = tile.output.filter((outputId)=>outputId !== id);
                     break;
-                case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory:
+                case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Memory:
                     tileCopy.input = tile.input.filter((outputId)=>outputId !== id);
                     break;
                 default:
@@ -834,11 +815,11 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    * @throws {Error} Throws an error if the tile type is invalid or unrecognized.
    */ async getTileOutputSchema(tile) {
         switch(tile.type){
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
+            case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Accessor:
                 return this.getAccessorOutputSchema(tile);
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action:
+            case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Action:
                 return this.getActionOutputSchema(tile.actionId);
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory:
+            case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Memory:
                 return this.getMemorySchema(tile.id);
             default:
                 throw new Error(`Invalid tile type: ${tile.type}`);
@@ -894,7 +875,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
     // PROTECTED -----------------------------------------------------------------
     pushNewState(actionMap) {
         this.clearFutureStack();
-        const bsonAM = (0, $8zHUo$bson.BSON).serialize(this.actionMap);
+        const bsonAM = (0, $hgUW1$BSON).serialize(this.actionMap);
         this.changeStack.push(bsonAM);
         if (this.changeStack.length > 10) this.changeStack.shift();
         this.actionMap = actionMap;
@@ -903,19 +884,19 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
     returnToPreviousState() {
         this.putCurrentToFutureState();
         const bsonAM = this.changeStack.pop();
-        if (bsonAM) this.actionMap = (0, $8zHUo$bson.BSON).deserialize(bsonAM);
+        if (bsonAM) this.actionMap = (0, $hgUW1$BSON).deserialize(bsonAM);
         return this.actionMap;
     }
     putCurrentToFutureState() {
         if (!this.actionMap) return this.actionMap;
-        const bsonAM = (0, $8zHUo$bson.BSON).serialize(this.actionMap);
+        const bsonAM = (0, $hgUW1$BSON).serialize(this.actionMap);
         this.futureStack.push(bsonAM);
         if (this.futureStack.length > 10) this.futureStack.shift();
         return this.actionMap;
     }
     putCurrentToPreviousState() {
         if (!this.actionMap) return this.actionMap;
-        const bsonAM = (0, $8zHUo$bson.BSON).serialize(this.actionMap);
+        const bsonAM = (0, $hgUW1$BSON).serialize(this.actionMap);
         this.changeStack.push(bsonAM);
         if (this.changeStack.length > 10) this.changeStack.shift();
         return this.actionMap;
@@ -927,7 +908,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
     returnToFutureState() {
         this.putCurrentToPreviousState();
         const bsonAM = this.futureStack.pop();
-        if (bsonAM) this.actionMap = (0, $8zHUo$bson.BSON).deserialize(bsonAM);
+        if (bsonAM) this.actionMap = (0, $hgUW1$BSON).deserialize(bsonAM);
         return this.actionMap;
     }
     getOutputDirection(tile, neighbor) {
@@ -939,10 +920,10 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         const neighborXEnd = neighbor.coordinates.end[0];
         const neighborYStart = neighbor.coordinates.start[1];
         const neighborYEnd = neighbor.coordinates.end[1];
-        if (neighborXStart === xEnd) return (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Right;
-        if (neighborXEnd === xStart) return (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Left;
-        if (neighborYStart === yEnd) return (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Down;
-        if (neighborYEnd === yStart) return (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Up;
+        if (neighborXStart === xEnd) return (0, $b224c477343e41e6$export$dec6c71a4257ac74).Right;
+        if (neighborXEnd === xStart) return (0, $b224c477343e41e6$export$dec6c71a4257ac74).Left;
+        if (neighborYStart === yEnd) return (0, $b224c477343e41e6$export$dec6c71a4257ac74).Down;
+        if (neighborYEnd === yStart) return (0, $b224c477343e41e6$export$dec6c71a4257ac74).Up;
         throw new Error("Invalid output direction");
     }
     getOutputCoordinates(tile, neighbor, direction) {
@@ -951,22 +932,22 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         const neighborYStart = neighbor.coordinates.start[1];
         const neighborYEnd = neighbor.coordinates.end[1];
         switch(direction){
-            case (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Down:
+            case (0, $b224c477343e41e6$export$dec6c71a4257ac74).Down:
                 return [
                     neighborXStart,
                     neighborYStart - 1
                 ];
-            case (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Right:
+            case (0, $b224c477343e41e6$export$dec6c71a4257ac74).Right:
                 return [
                     neighborXStart - 1,
                     neighborYStart
                 ];
-            case (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Up:
+            case (0, $b224c477343e41e6$export$dec6c71a4257ac74).Up:
                 return [
                     neighborXStart,
                     neighborYEnd + 1
                 ];
-            case (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Left:
+            case (0, $b224c477343e41e6$export$dec6c71a4257ac74).Left:
                 return [
                     neighborXEnd + 1,
                     neighborYStart
@@ -999,7 +980,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         return JSON.parse(model.schema);
     }
     getMemoryById(id) {
-        return this.actionMap.tiles.find((tile)=>tile.type === (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory && tile.id === id) || null;
+        return this.actionMap.tiles.find((tile)=>tile.type === (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Memory && tile.id === id) || null;
     }
     async getMemorySchema(id) {
         // Retrieve a memory object by its ID. Throws an error if not found.
@@ -1019,7 +1000,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         });
         // Return the combined schema.
         return {
-            type: (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object,
+            type: (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Object,
             properties: properties
         };
     }
@@ -1076,11 +1057,11 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
     getSourceTileForOutput(outputId) {
         const tile = this.actionMap.tiles.find((t)=>{
             switch(t.type){
-                case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
+                case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Accessor:
                     return t.output.includes(outputId);
-                case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action:
+                case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Action:
                     return t.output.includes(outputId);
-                case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory:
+                case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Memory:
                     return false;
                 default:
                     throw new Error(`Invalid tile type: ${t.type}`);
@@ -1097,4 +1078,5 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
 
 
 
-//# sourceMappingURL=index.js.map
+export {$b224c477343e41e6$export$b58a0cc33096f1fb as TileType, $b224c477343e41e6$export$be94d7b677b041dd as OutputType, $b224c477343e41e6$export$dec6c71a4257ac74 as OutputDirection, $b224c477343e41e6$export$e035c9caa79ccaa9 as ConditionOperator, $b224c477343e41e6$export$a82221618652cb9f as CONSTANT_SELECTOR, $b224c477343e41e6$export$ede5a19a386fa7ea as MEMORY_SELECTOR, $b224c477343e41e6$export$85ca6aa0f7ebde22 as MODEL_SELECTOR, $b224c477343e41e6$export$bf648471fa87db4a as OUTPUT_SELECTOR, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c as SimpleDataType, $8f8d2861b2e1d35f$export$a914443d1add2f4c as FormatDataType, $54eb9ffd392831bf$export$a82bfd0bc6a25e39 as ActionMapHandler, $a3e7ad90fc86cc8c$export$e073683b1b98b026 as DataSchemaHandler, $8f8d2861b2e1d35f$export$1ae122a9008ff510 as ComplexDataType, $8f8d2861b2e1d35f$export$b00b62a09b73016e as ContentDataType};
+//# sourceMappingURL=module.js.map

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { BSON } from '../lib/bson/bson.cjs';
+import { BSON } from 'bson';
 import {
   ActionMap,
   AccessorTile,
