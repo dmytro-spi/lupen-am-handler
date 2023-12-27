@@ -1,4 +1,3 @@
-import * as yup from 'yup';
 import { DataSchema } from '../../dataSchema/types/dataSchema';
 
 // User language types ---------------------------------------------------------

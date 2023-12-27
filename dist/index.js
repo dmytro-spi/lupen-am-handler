@@ -1,5 +1,4 @@
 var $8zHUo$uuid = require("uuid");
-var $8zHUo$bson = require("bson");
 var $8zHUo$yup = require("yup");
 
 
@@ -23,7 +22,6 @@ $parcel$export(module.exports, "ComplexDataType", () => $9c38f06678b5673e$export
 $parcel$export(module.exports, "ContentDataType", () => $9c38f06678b5673e$export$b00b62a09b73016e);
 $parcel$export(module.exports, "AccessorType", () => $53a7a2c32695d914$export$1f02415756f5fb16);
 $parcel$export(module.exports, "MemoryType", () => $53a7a2c32695d914$export$90d94503f4d956ff);
-
 
 const $53a7a2c32695d914$export$ede5a19a386fa7ea = (id)=>`memory::${id}`;
 const $53a7a2c32695d914$export$a82221618652cb9f = (name)=>`constant::${name}`;
@@ -896,29 +894,24 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
     // PROTECTED -----------------------------------------------------------------
     pushNewState(actionMap) {
         this.clearFutureStack();
-        const bsonAM = (0, $8zHUo$bson.BSON).serialize(this.actionMap);
-        this.changeStack.push(bsonAM);
+        this.changeStack.push(this.actionMap);
         if (this.changeStack.length > 10) this.changeStack.shift();
         this.actionMap = actionMap;
         return actionMap;
     }
     returnToPreviousState() {
         this.putCurrentToFutureState();
-        const bsonAM = this.changeStack.pop();
-        if (bsonAM) this.actionMap = (0, $8zHUo$bson.BSON).deserialize(bsonAM);
-        return this.actionMap;
+        return this.changeStack.pop() ?? this.actionMap;
     }
     putCurrentToFutureState() {
         if (!this.actionMap) return this.actionMap;
-        const bsonAM = (0, $8zHUo$bson.BSON).serialize(this.actionMap);
-        this.futureStack.push(bsonAM);
+        this.futureStack.push(this.actionMap);
         if (this.futureStack.length > 10) this.futureStack.shift();
         return this.actionMap;
     }
     putCurrentToPreviousState() {
         if (!this.actionMap) return this.actionMap;
-        const bsonAM = (0, $8zHUo$bson.BSON).serialize(this.actionMap);
-        this.changeStack.push(bsonAM);
+        this.changeStack.push(this.actionMap);
         if (this.changeStack.length > 10) this.changeStack.shift();
         return this.actionMap;
     }
@@ -928,9 +921,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
     }
     returnToFutureState() {
         this.putCurrentToPreviousState();
-        const bsonAM = this.futureStack.pop();
-        if (bsonAM) this.actionMap = (0, $8zHUo$bson.BSON).deserialize(bsonAM);
-        return this.actionMap;
+        return this.futureStack.pop() ?? this.actionMap;
     }
     getOutputDirection(tile, neighbor) {
         const xStart = tile.coordinates.start[0];
