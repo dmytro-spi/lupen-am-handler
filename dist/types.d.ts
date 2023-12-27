@@ -211,8 +211,8 @@ export class ActionMapHandler {
     protected readonly actionFetcher: (actionId: string) => Promise<Action | undefined>;
     protected readonly dataSchemaHandler: DataSchemaHandler;
     protected actionMap: ActionMap;
-    protected changeStack: Uint8Array[];
-    protected futureStack: Uint8Array[];
+    protected changeStack: ActionMap[];
+    protected futureStack: ActionMap[];
     constructor(actionMap: ActionMap | null, models: Model[], actionFetcher: (actionId: string) => Promise<Action | undefined>, options?: {
         skipValidation?: boolean;
     });

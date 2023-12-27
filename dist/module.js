@@ -1,7 +1,5 @@
 import {v4 as $hgUW1$v4} from "uuid";
-import {BSON as $hgUW1$BSON} from "bson";
 import {object as $hgUW1$object, string as $hgUW1$string, array as $hgUW1$array, mixed as $hgUW1$mixed, number as $hgUW1$number, lazy as $hgUW1$lazy, boolean as $hgUW1$boolean} from "yup";
-
 
 
 const $b224c477343e41e6$export$ede5a19a386fa7ea = (id)=>`memory::${id}`;
@@ -875,29 +873,24 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
     // PROTECTED -----------------------------------------------------------------
     pushNewState(actionMap) {
         this.clearFutureStack();
-        const bsonAM = (0, $hgUW1$BSON).serialize(this.actionMap);
-        this.changeStack.push(bsonAM);
+        this.changeStack.push(this.actionMap);
         if (this.changeStack.length > 10) this.changeStack.shift();
         this.actionMap = actionMap;
         return actionMap;
     }
     returnToPreviousState() {
         this.putCurrentToFutureState();
-        const bsonAM = this.changeStack.pop();
-        if (bsonAM) this.actionMap = (0, $hgUW1$BSON).deserialize(bsonAM);
-        return this.actionMap;
+        return this.changeStack.pop() ?? this.actionMap;
     }
     putCurrentToFutureState() {
         if (!this.actionMap) return this.actionMap;
-        const bsonAM = (0, $hgUW1$BSON).serialize(this.actionMap);
-        this.futureStack.push(bsonAM);
+        this.futureStack.push(this.actionMap);
         if (this.futureStack.length > 10) this.futureStack.shift();
         return this.actionMap;
     }
     putCurrentToPreviousState() {
         if (!this.actionMap) return this.actionMap;
-        const bsonAM = (0, $hgUW1$BSON).serialize(this.actionMap);
-        this.changeStack.push(bsonAM);
+        this.changeStack.push(this.actionMap);
         if (this.changeStack.length > 10) this.changeStack.shift();
         return this.actionMap;
     }
@@ -907,9 +900,7 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
     }
     returnToFutureState() {
         this.putCurrentToPreviousState();
-        const bsonAM = this.futureStack.pop();
-        if (bsonAM) this.actionMap = (0, $hgUW1$BSON).deserialize(bsonAM);
-        return this.actionMap;
+        return this.futureStack.pop() ?? this.actionMap;
     }
     getOutputDirection(tile, neighbor) {
         const xStart = tile.coordinates.start[0];

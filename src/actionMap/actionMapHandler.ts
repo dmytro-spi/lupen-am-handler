@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import { BSON } from 'bson';
 import {
   ActionMap,
   AccessorTile,
@@ -29,8 +28,8 @@ export type PossibleOutput = {
 export class ActionMapHandler {
   protected readonly dataSchemaHandler: DataSchemaHandler = new DataSchemaHandler();
   protected actionMap: ActionMap = ActionMapHandler.emptyActionMap;
-  protected changeStack: Uint8Array[] = [];
-  protected futureStack: Uint8Array[] = [];
+  protected changeStack: ActionMap[] = []; // TODO: optimize
+  protected futureStack: ActionMap[] = [];
 
   constructor(
     actionMap: ActionMap | null,
@@ -667,8 +666,7 @@ export class ActionMapHandler {
   protected pushNewState(actionMap: ActionMap): ActionMap {
     this.clearFutureStack();
 
-    const bsonAM = BSON.serialize(this.actionMap);
-    this.changeStack.push(bsonAM);
+    this.changeStack.push(this.actionMap);
     if (this.changeStack.length > 10) {
       this.changeStack.shift();
     }
@@ -681,12 +679,7 @@ export class ActionMapHandler {
   protected returnToPreviousState(): ActionMap {
     this.putCurrentToFutureState();
 
-    const bsonAM = this.changeStack.pop();
-    if (bsonAM) {
-      this.actionMap = BSON.deserialize(bsonAM) as ActionMap;
-    }
-
-    return this.actionMap;
+    return this.changeStack.pop() ?? this.actionMap;
   }
 
   protected putCurrentToFutureState(): ActionMap {
@@ -694,8 +687,7 @@ export class ActionMapHandler {
       return this.actionMap;
     }
 
-    const bsonAM = BSON.serialize(this.actionMap);
-    this.futureStack.push(bsonAM);
+    this.futureStack.push(this.actionMap);
     if (this.futureStack.length > 10) {
       this.futureStack.shift();
     }
@@ -708,8 +700,7 @@ export class ActionMapHandler {
       return this.actionMap;
     }
 
-    const bsonAM = BSON.serialize(this.actionMap);
-    this.changeStack.push(bsonAM);
+    this.changeStack.push(this.actionMap);
     if (this.changeStack.length > 10) {
       this.changeStack.shift();
     }
@@ -725,12 +716,7 @@ export class ActionMapHandler {
   protected returnToFutureState(): ActionMap {
     this.putCurrentToPreviousState();
 
-    const bsonAM = this.futureStack.pop();
-    if (bsonAM) {
-      this.actionMap = BSON.deserialize(bsonAM) as ActionMap;
-    }
-
-    return this.actionMap;
+    return this.futureStack.pop() ?? this.actionMap;
   }
 
   protected getOutputDirection(tile: Tile, neighbor: Tile): OutputDirection {
