@@ -88,7 +88,7 @@ type TileGeneral = {
     };
     type: TileType;
 };
-enum AccessorType {
+export enum AccessorType {
     Model = "model",
     Constant = "constant",
     Memory = "memory",
@@ -127,7 +127,7 @@ export type ActionTile = TileGeneral & {
     actionId: string;
     input: Output['id'][];
 };
-enum MemoryType {
+export enum MemoryType {
     DataOut = "dataOut",
     Internal = "internal",
     Model = "model"

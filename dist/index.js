@@ -21,6 +21,8 @@ $parcel$export(module.exports, "ActionMapHandler", () => $86d69c5e11233160$expor
 $parcel$export(module.exports, "DataSchemaHandler", () => $763d6b25a3753a1a$export$e073683b1b98b026);
 $parcel$export(module.exports, "ComplexDataType", () => $9c38f06678b5673e$export$1ae122a9008ff510);
 $parcel$export(module.exports, "ContentDataType", () => $9c38f06678b5673e$export$b00b62a09b73016e);
+$parcel$export(module.exports, "AccessorType", () => $53a7a2c32695d914$export$1f02415756f5fb16);
+$parcel$export(module.exports, "MemoryType", () => $53a7a2c32695d914$export$90d94503f4d956ff);
 
 
 const $53a7a2c32695d914$export$ede5a19a386fa7ea = (id)=>`memory::${id}`;
