@@ -22,8 +22,10 @@ import {
     OutputGeneral,
     OutputType,
     Tile,
-    TileType
- } from './actionMap/types/actionMap';
+    TileType,
+    AccessorType,
+    MemoryType,
+} from './actionMap/types/actionMap';
 import {
     ComplexDataType,ContentDataType,DataSchema,DataTypes,FormatDataType,SimpleDataType
 } from './dataSchema/types/dataSchema';
@@ -42,7 +44,9 @@ export {
     ActionMapHandler,
     DataSchemaHandler,
     ComplexDataType,
-    ContentDataType
+    ContentDataType,
+    AccessorType,
+    MemoryType,
 }
 export type {
     Tile,
