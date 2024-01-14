@@ -49,8 +49,8 @@ export {
     ContentDataType,
     AccessorType,
     MemoryType,
-    userModel,
-    combineAction,
+    userModel as UserModel,
+    combineAction as CombineAction,
 }
 export type {
     Tile,

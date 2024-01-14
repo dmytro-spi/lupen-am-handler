@@ -47,13 +47,13 @@ interface Action {
     functionCall: string;
     output: string;
 }
-export const combineAction: Action;
+declare const combineAction: Action;
 export interface Model {
     id: string;
     name: string;
     schema: string;
 }
-export const userModel: Model;
+declare const userModel: Model;
 export const MEMORY_SELECTOR: (id: string) => string;
 export const CONSTANT_SELECTOR: (name: string) => string;
 export const MODEL_SELECTOR: (name: string) => string;
