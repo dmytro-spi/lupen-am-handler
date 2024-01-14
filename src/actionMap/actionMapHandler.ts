@@ -11,6 +11,7 @@ import {
   AccessorType,
   ModelAccessorTile,
   ModelAccessOperation,
+  DataInAccessorTile,
 } from './types/actionMap';
 import actionMapSchema from './schema/actionMap.schema';
 import { Model } from '../model/types/model';
@@ -161,7 +162,7 @@ export class ActionMapHandler {
       case AccessorType.Constant:
         throw new Error('No implementation');
       case AccessorType.DataIn:
-        throw new Error('No implementation');
+        return (tile as DataInAccessorTile).dataInProps.type;
       default:
         throw new Error(`Invalid accessor source type: ${sourceType}`);
     }
@@ -181,6 +182,10 @@ export class ActionMapHandler {
    *         fails schema validation.
    */
   public async validateTile(tile: Tile): Promise<boolean> {
+    if (this.checkIfTileHasIntersections(tile)) {
+      throw new Error('Tile has intersections');
+    }
+
     switch (tile.type) {
       case TileType.Accessor:
         await accessorTileSchema.validate(tile, {
@@ -973,5 +978,33 @@ export class ActionMapHandler {
     }
 
     return tile;
+  }
+
+  protected checkIfTileHasIntersections(tile: Tile): boolean {
+    const xStart = tile.coordinates.start[0];
+    const xEnd = tile.coordinates.end[0];
+    const yStart = tile.coordinates.start[1];
+    const yEnd = tile.coordinates.end[1];
+
+    return this.actionMap.tiles.some((t: Tile) => {
+      const tXStart = t.coordinates.start[0];
+      const tXEnd = t.coordinates.end[0];
+      const tYStart = t.coordinates.start[1];
+      const tYEnd = t.coordinates.end[1];
+
+      return (
+        // Existing corner checks
+        (tXStart >= xStart && tXStart <= xEnd && tYStart >= yStart && tYStart <= yEnd) ||
+        (tXEnd >= xStart && tXEnd <= xEnd && tYEnd >= yStart && tYEnd <= yEnd) ||
+        (tXStart >= xStart && tXStart <= xEnd && tYEnd >= yStart && tYEnd <= yEnd) ||
+        (tXEnd >= xStart && tXEnd <= xEnd && tYStart >= yStart && tYStart <= yEnd) ||
+
+        // Check if tile is completely within t
+        (xStart >= tXStart && xEnd <= tXEnd && yStart >= tYStart && yEnd <= tYEnd) ||
+
+        // Check if t is completely within tile
+        (tXStart >= xStart && tXEnd <= xEnd && tYStart >= yStart && tYEnd <= yEnd)
+      );
+    });
   }
 }
