@@ -2,6 +2,59 @@ import {v4 as $hgUW1$v4} from "uuid";
 import {object as $hgUW1$object, string as $hgUW1$string, array as $hgUW1$array, mixed as $hgUW1$mixed, number as $hgUW1$number, lazy as $hgUW1$lazy, boolean as $hgUW1$boolean} from "yup";
 
 
+var $8f8d2861b2e1d35f$export$2bd38b90f09fb16c;
+(function(SimpleDataType) {
+    SimpleDataType["Text"] = "text";
+    SimpleDataType["Number"] = "number";
+    SimpleDataType["Date"] = "date";
+    SimpleDataType["YesNo"] = "yesNo";
+})($8f8d2861b2e1d35f$export$2bd38b90f09fb16c || ($8f8d2861b2e1d35f$export$2bd38b90f09fb16c = {}));
+var $8f8d2861b2e1d35f$export$a914443d1add2f4c;
+(function(FormatDataType) {
+    FormatDataType["Money"] = "money";
+    FormatDataType["PhoneNumber"] = "phoneNumber";
+    FormatDataType["Email"] = "email";
+    FormatDataType["Url"] = "url";
+})($8f8d2861b2e1d35f$export$a914443d1add2f4c || ($8f8d2861b2e1d35f$export$a914443d1add2f4c = {}));
+var $8f8d2861b2e1d35f$export$b00b62a09b73016e;
+(function(ContentDataType) {
+    ContentDataType["Image"] = "image";
+    ContentDataType["Video"] = "video";
+    ContentDataType["Audio"] = "audio";
+    ContentDataType["File"] = "file";
+})($8f8d2861b2e1d35f$export$b00b62a09b73016e || ($8f8d2861b2e1d35f$export$b00b62a09b73016e = {}));
+var $8f8d2861b2e1d35f$export$1ae122a9008ff510;
+(function(ComplexDataType) {
+    ComplexDataType["Object"] = "object";
+    ComplexDataType["Array"] = "array";
+})($8f8d2861b2e1d35f$export$1ae122a9008ff510 || ($8f8d2861b2e1d35f$export$1ae122a9008ff510 = {}));
+
+
+const $fd42a2123675ef71$export$431bbfaa07941dc7 = {
+    type: (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Object,
+    properties: {
+        email: {
+            type: (0, $8f8d2861b2e1d35f$export$a914443d1add2f4c).Email
+        },
+        firstName: {
+            type: (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Text
+        },
+        lastName: {
+            type: (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Text
+        },
+        dateOfBirth: {
+            type: (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Date
+        }
+    }
+};
+const $fd42a2123675ef71$export$54582e7b17f0fab7 = {
+    id: (0, $hgUW1$v4)(),
+    name: "user",
+    schema: JSON.stringify($fd42a2123675ef71$export$431bbfaa07941dc7)
+};
+
+
+
 const $b224c477343e41e6$export$ede5a19a386fa7ea = (id)=>`memory::${id}`;
 const $b224c477343e41e6$export$a82221618652cb9f = (name)=>`constant::${name}`;
 const $b224c477343e41e6$export$85ca6aa0f7ebde22 = (name)=>`model::${name}`;
@@ -117,33 +170,6 @@ var $0c1e32e0c308ab33$export$2e2bcd8739ae039 = $0c1e32e0c308ab33$var$outputSchem
 
 
 
-
-var $8f8d2861b2e1d35f$export$2bd38b90f09fb16c;
-(function(SimpleDataType) {
-    SimpleDataType["Text"] = "text";
-    SimpleDataType["Number"] = "number";
-    SimpleDataType["Date"] = "date";
-    SimpleDataType["YesNo"] = "yesNo";
-})($8f8d2861b2e1d35f$export$2bd38b90f09fb16c || ($8f8d2861b2e1d35f$export$2bd38b90f09fb16c = {}));
-var $8f8d2861b2e1d35f$export$a914443d1add2f4c;
-(function(FormatDataType) {
-    FormatDataType["Money"] = "money";
-    FormatDataType["PhoneNumber"] = "phoneNumber";
-    FormatDataType["Email"] = "email";
-    FormatDataType["Url"] = "url";
-})($8f8d2861b2e1d35f$export$a914443d1add2f4c || ($8f8d2861b2e1d35f$export$a914443d1add2f4c = {}));
-var $8f8d2861b2e1d35f$export$b00b62a09b73016e;
-(function(ContentDataType) {
-    ContentDataType["Image"] = "image";
-    ContentDataType["Video"] = "video";
-    ContentDataType["Audio"] = "audio";
-    ContentDataType["File"] = "file";
-})($8f8d2861b2e1d35f$export$b00b62a09b73016e || ($8f8d2861b2e1d35f$export$b00b62a09b73016e = {}));
-var $8f8d2861b2e1d35f$export$1ae122a9008ff510;
-(function(ComplexDataType) {
-    ComplexDataType["Object"] = "object";
-    ComplexDataType["Array"] = "array";
-})($8f8d2861b2e1d35f$export$1ae122a9008ff510 || ($8f8d2861b2e1d35f$export$1ae122a9008ff510 = {}));
 
 
 // SimpleDataType, FormatDataType, ContentDataType, ComplexDataType enums
@@ -508,7 +534,7 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
             case (0, $b224c477343e41e6$export$1f02415756f5fb16).Constant:
                 throw new Error("No implementation");
             case (0, $b224c477343e41e6$export$1f02415756f5fb16).DataIn:
-                throw new Error("No implementation");
+                return tile.dataInProps.type;
             default:
                 throw new Error(`Invalid accessor source type: ${sourceType}`);
         }
@@ -526,6 +552,7 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
    * @throws {Error} Throws an error if the tile type is invalid or if the tile
    *         fails schema validation.
    */ async validateTile(tile) {
+        if (this.checkIfTileHasIntersections(tile)) throw new Error("Tile has intersections");
         switch(tile.type){
             case (0, $b224c477343e41e6$export$b58a0cc33096f1fb).Accessor:
                 await (0, $8e667be3765ae363$export$8df29c7063b7517d).validate(tile, {
@@ -1061,6 +1088,22 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
         if (!tile) throw new Error(`Tile for output ${outputId} not found`);
         return tile;
     }
+    checkIfTileHasIntersections(tile) {
+        const xStart = tile.coordinates.start[0];
+        const xEnd = tile.coordinates.end[0];
+        const yStart = tile.coordinates.start[1];
+        const yEnd = tile.coordinates.end[1];
+        return this.actionMap.tiles.some((t)=>{
+            const tXStart = t.coordinates.start[0];
+            const tXEnd = t.coordinates.end[0];
+            const tYStart = t.coordinates.start[1];
+            const tYEnd = t.coordinates.end[1];
+            return(// Existing corner checks
+            tXStart >= xStart && tXStart <= xEnd && tYStart >= yStart && tYStart <= yEnd || tXEnd >= xStart && tXEnd <= xEnd && tYEnd >= yStart && tYEnd <= yEnd || tXStart >= xStart && tXStart <= xEnd && tYEnd >= yStart && tYEnd <= yEnd || tXEnd >= xStart && tXEnd <= xEnd && tYStart >= yStart && tYStart <= yEnd || // Check if tile is completely within t
+            xStart >= tXStart && xEnd <= tXEnd && yStart >= tYStart && yEnd <= tYEnd || // Check if t is completely within tile
+            tXStart >= xStart && tXEnd <= xEnd && tYStart >= yStart && tYEnd <= yEnd);
+        });
+    }
 }
 
 
@@ -1069,5 +1112,5 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
 
 
 
-export {$b224c477343e41e6$export$b58a0cc33096f1fb as TileType, $b224c477343e41e6$export$be94d7b677b041dd as OutputType, $b224c477343e41e6$export$dec6c71a4257ac74 as OutputDirection, $b224c477343e41e6$export$e035c9caa79ccaa9 as ConditionOperator, $b224c477343e41e6$export$a82221618652cb9f as CONSTANT_SELECTOR, $b224c477343e41e6$export$ede5a19a386fa7ea as MEMORY_SELECTOR, $b224c477343e41e6$export$85ca6aa0f7ebde22 as MODEL_SELECTOR, $b224c477343e41e6$export$bf648471fa87db4a as OUTPUT_SELECTOR, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c as SimpleDataType, $8f8d2861b2e1d35f$export$a914443d1add2f4c as FormatDataType, $54eb9ffd392831bf$export$a82bfd0bc6a25e39 as ActionMapHandler, $a3e7ad90fc86cc8c$export$e073683b1b98b026 as DataSchemaHandler, $8f8d2861b2e1d35f$export$1ae122a9008ff510 as ComplexDataType, $8f8d2861b2e1d35f$export$b00b62a09b73016e as ContentDataType, $b224c477343e41e6$export$1f02415756f5fb16 as AccessorType, $b224c477343e41e6$export$90d94503f4d956ff as MemoryType};
+export {$b224c477343e41e6$export$b58a0cc33096f1fb as TileType, $b224c477343e41e6$export$be94d7b677b041dd as OutputType, $b224c477343e41e6$export$dec6c71a4257ac74 as OutputDirection, $b224c477343e41e6$export$e035c9caa79ccaa9 as ConditionOperator, $b224c477343e41e6$export$a82221618652cb9f as CONSTANT_SELECTOR, $b224c477343e41e6$export$ede5a19a386fa7ea as MEMORY_SELECTOR, $b224c477343e41e6$export$85ca6aa0f7ebde22 as MODEL_SELECTOR, $b224c477343e41e6$export$bf648471fa87db4a as OUTPUT_SELECTOR, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c as SimpleDataType, $8f8d2861b2e1d35f$export$a914443d1add2f4c as FormatDataType, $54eb9ffd392831bf$export$a82bfd0bc6a25e39 as ActionMapHandler, $a3e7ad90fc86cc8c$export$e073683b1b98b026 as DataSchemaHandler, $8f8d2861b2e1d35f$export$1ae122a9008ff510 as ComplexDataType, $8f8d2861b2e1d35f$export$b00b62a09b73016e as ContentDataType, $b224c477343e41e6$export$1f02415756f5fb16 as AccessorType, $b224c477343e41e6$export$90d94503f4d956ff as MemoryType, $fd42a2123675ef71$export$54582e7b17f0fab7 as userModel};
 //# sourceMappingURL=module.js.map

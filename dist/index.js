@@ -22,6 +22,60 @@ $parcel$export(module.exports, "ComplexDataType", () => $9c38f06678b5673e$export
 $parcel$export(module.exports, "ContentDataType", () => $9c38f06678b5673e$export$b00b62a09b73016e);
 $parcel$export(module.exports, "AccessorType", () => $53a7a2c32695d914$export$1f02415756f5fb16);
 $parcel$export(module.exports, "MemoryType", () => $53a7a2c32695d914$export$90d94503f4d956ff);
+$parcel$export(module.exports, "userModel", () => $5e1189d2af7b41be$export$54582e7b17f0fab7);
+
+var $9c38f06678b5673e$export$2bd38b90f09fb16c;
+(function(SimpleDataType) {
+    SimpleDataType["Text"] = "text";
+    SimpleDataType["Number"] = "number";
+    SimpleDataType["Date"] = "date";
+    SimpleDataType["YesNo"] = "yesNo";
+})($9c38f06678b5673e$export$2bd38b90f09fb16c || ($9c38f06678b5673e$export$2bd38b90f09fb16c = {}));
+var $9c38f06678b5673e$export$a914443d1add2f4c;
+(function(FormatDataType) {
+    FormatDataType["Money"] = "money";
+    FormatDataType["PhoneNumber"] = "phoneNumber";
+    FormatDataType["Email"] = "email";
+    FormatDataType["Url"] = "url";
+})($9c38f06678b5673e$export$a914443d1add2f4c || ($9c38f06678b5673e$export$a914443d1add2f4c = {}));
+var $9c38f06678b5673e$export$b00b62a09b73016e;
+(function(ContentDataType) {
+    ContentDataType["Image"] = "image";
+    ContentDataType["Video"] = "video";
+    ContentDataType["Audio"] = "audio";
+    ContentDataType["File"] = "file";
+})($9c38f06678b5673e$export$b00b62a09b73016e || ($9c38f06678b5673e$export$b00b62a09b73016e = {}));
+var $9c38f06678b5673e$export$1ae122a9008ff510;
+(function(ComplexDataType) {
+    ComplexDataType["Object"] = "object";
+    ComplexDataType["Array"] = "array";
+})($9c38f06678b5673e$export$1ae122a9008ff510 || ($9c38f06678b5673e$export$1ae122a9008ff510 = {}));
+
+
+const $5e1189d2af7b41be$export$431bbfaa07941dc7 = {
+    type: (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object,
+    properties: {
+        email: {
+            type: (0, $9c38f06678b5673e$export$a914443d1add2f4c).Email
+        },
+        firstName: {
+            type: (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Text
+        },
+        lastName: {
+            type: (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Text
+        },
+        dateOfBirth: {
+            type: (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Date
+        }
+    }
+};
+const $5e1189d2af7b41be$export$54582e7b17f0fab7 = {
+    id: (0, $8zHUo$uuid.v4)(),
+    name: "user",
+    schema: JSON.stringify($5e1189d2af7b41be$export$431bbfaa07941dc7)
+};
+
+
 
 const $53a7a2c32695d914$export$ede5a19a386fa7ea = (id)=>`memory::${id}`;
 const $53a7a2c32695d914$export$a82221618652cb9f = (name)=>`constant::${name}`;
@@ -138,33 +192,6 @@ var $ec2df8c8c4925e94$export$2e2bcd8739ae039 = $ec2df8c8c4925e94$var$outputSchem
 
 
 
-
-var $9c38f06678b5673e$export$2bd38b90f09fb16c;
-(function(SimpleDataType) {
-    SimpleDataType["Text"] = "text";
-    SimpleDataType["Number"] = "number";
-    SimpleDataType["Date"] = "date";
-    SimpleDataType["YesNo"] = "yesNo";
-})($9c38f06678b5673e$export$2bd38b90f09fb16c || ($9c38f06678b5673e$export$2bd38b90f09fb16c = {}));
-var $9c38f06678b5673e$export$a914443d1add2f4c;
-(function(FormatDataType) {
-    FormatDataType["Money"] = "money";
-    FormatDataType["PhoneNumber"] = "phoneNumber";
-    FormatDataType["Email"] = "email";
-    FormatDataType["Url"] = "url";
-})($9c38f06678b5673e$export$a914443d1add2f4c || ($9c38f06678b5673e$export$a914443d1add2f4c = {}));
-var $9c38f06678b5673e$export$b00b62a09b73016e;
-(function(ContentDataType) {
-    ContentDataType["Image"] = "image";
-    ContentDataType["Video"] = "video";
-    ContentDataType["Audio"] = "audio";
-    ContentDataType["File"] = "file";
-})($9c38f06678b5673e$export$b00b62a09b73016e || ($9c38f06678b5673e$export$b00b62a09b73016e = {}));
-var $9c38f06678b5673e$export$1ae122a9008ff510;
-(function(ComplexDataType) {
-    ComplexDataType["Object"] = "object";
-    ComplexDataType["Array"] = "array";
-})($9c38f06678b5673e$export$1ae122a9008ff510 || ($9c38f06678b5673e$export$1ae122a9008ff510 = {}));
 
 
 // SimpleDataType, FormatDataType, ContentDataType, ComplexDataType enums
@@ -529,7 +556,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
             case (0, $53a7a2c32695d914$export$1f02415756f5fb16).Constant:
                 throw new Error("No implementation");
             case (0, $53a7a2c32695d914$export$1f02415756f5fb16).DataIn:
-                throw new Error("No implementation");
+                return tile.dataInProps.type;
             default:
                 throw new Error(`Invalid accessor source type: ${sourceType}`);
         }
@@ -547,6 +574,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    * @throws {Error} Throws an error if the tile type is invalid or if the tile
    *         fails schema validation.
    */ async validateTile(tile) {
+        if (this.checkIfTileHasIntersections(tile)) throw new Error("Tile has intersections");
         switch(tile.type){
             case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
                 await (0, $5a06354403e1cbe2$export$8df29c7063b7517d).validate(tile, {
@@ -1081,6 +1109,22 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         });
         if (!tile) throw new Error(`Tile for output ${outputId} not found`);
         return tile;
+    }
+    checkIfTileHasIntersections(tile) {
+        const xStart = tile.coordinates.start[0];
+        const xEnd = tile.coordinates.end[0];
+        const yStart = tile.coordinates.start[1];
+        const yEnd = tile.coordinates.end[1];
+        return this.actionMap.tiles.some((t)=>{
+            const tXStart = t.coordinates.start[0];
+            const tXEnd = t.coordinates.end[0];
+            const tYStart = t.coordinates.start[1];
+            const tYEnd = t.coordinates.end[1];
+            return(// Existing corner checks
+            tXStart >= xStart && tXStart <= xEnd && tYStart >= yStart && tYStart <= yEnd || tXEnd >= xStart && tXEnd <= xEnd && tYEnd >= yStart && tYEnd <= yEnd || tXStart >= xStart && tXStart <= xEnd && tYEnd >= yStart && tYEnd <= yEnd || tXEnd >= xStart && tXEnd <= xEnd && tYStart >= yStart && tYStart <= yEnd || // Check if tile is completely within t
+            xStart >= tXStart && xEnd <= tXEnd && yStart >= tYStart && yEnd <= tYEnd || // Check if t is completely within tile
+            tXStart >= xStart && tXEnd <= xEnd && tYStart >= yStart && tYEnd <= yEnd);
+        });
     }
 }
 
