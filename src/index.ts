@@ -1,3 +1,4 @@
+import { userModel } from './model/definitions/user';
 import { ActionMapHandler } from './actionMap/actionMapHandler';
 import { DataSchemaHandler } from './dataSchema/dataSchema';
 import type { PossibleOutput } from './actionMap/actionMapHandler'
@@ -47,6 +48,7 @@ export {
     ContentDataType,
     AccessorType,
     MemoryType,
+    userModel,
 }
 export type {
     Tile,
