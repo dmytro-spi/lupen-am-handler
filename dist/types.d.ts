@@ -31,6 +31,12 @@ export type DataSchema = {
     defaultValue?: any;
     required?: boolean;
 };
+export interface Model {
+    id: string;
+    name: string;
+    schema: string;
+}
+export const userModel: Model;
 export const MEMORY_SELECTOR: (id: string) => string;
 export const CONSTANT_SELECTOR: (name: string) => string;
 export const MODEL_SELECTOR: (name: string) => string;
@@ -161,11 +167,6 @@ export type ActionMap = {
     outputs: Output[];
     tiles: Tile[];
 };
-export interface Model {
-    id: string;
-    name: string;
-    schema: string;
-}
 interface Category {
     id: string;
     name: string;
@@ -256,6 +257,7 @@ export class ActionMapHandler {
     protected getOutputById(id: string): Output;
     protected getOutputsByIds(ids: string[]): Output[];
     protected getSourceTileForOutput(outputId: string): Tile;
+    protected checkIfTileHasIntersections(tile: Tile): boolean;
 }
 
 //# sourceMappingURL=types.d.ts.map
