@@ -30,6 +30,105 @@ var $8f8d2861b2e1d35f$export$1ae122a9008ff510;
 })($8f8d2861b2e1d35f$export$1ae122a9008ff510 || ($8f8d2861b2e1d35f$export$1ae122a9008ff510 = {}));
 
 
+
+const $bdd949795ffeb68f$export$2c76aca27257bcfa = [
+    {
+        id: (0, $hgUW1$v4)(),
+        name: "string",
+        label: "String"
+    },
+    {
+        id: (0, $hgUW1$v4)(),
+        name: "array",
+        label: "Array"
+    },
+    {
+        id: (0, $hgUW1$v4)(),
+        name: "object",
+        label: "Object"
+    },
+    {
+        id: (0, $hgUW1$v4)(),
+        name: "math",
+        label: "Math"
+    },
+    {
+        id: (0, $hgUW1$v4)(),
+        name: "date",
+        label: "Date"
+    },
+    {
+        id: (0, $hgUW1$v4)(),
+        name: "url",
+        label: "URL"
+    },
+    {
+        id: (0, $hgUW1$v4)(),
+        name: "json",
+        label: "JSON"
+    },
+    {
+        id: (0, $hgUW1$v4)(),
+        name: "utility",
+        label: "Utility"
+    }
+];
+
+
+const $24eeb2528eee365c$export$4b297bc2fa8c669c = {
+    type: (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Object,
+    properties: {
+        strings: {
+            type: (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Array,
+            description: "An array of strings to be concatenated.",
+            arrayType: {
+                type: (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Text
+            },
+            required: true
+        },
+        divider: {
+            type: (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Text,
+            description: "The divider to be used between strings. Default is a space.",
+            defaultValue: " "
+        }
+    }
+};
+const $24eeb2528eee365c$export$6d59db4903f20f7d = `
+Concatenates an array of strings into a single string.
+`;
+const $24eeb2528eee365c$export$92ebad0065552617 = `
+const concat = (strings, divider = ' ') => {
+  const validate = ajv.compile($actionArguments$);
+  const valid = validate({ strings, divider });
+
+  if (!valid) {
+    throw new Error(\`Invalid arguments for action $actionName$: \${ajv.errorsText(validate.errors)}\`);
+  }
+
+  return strings.join(divider);
+}
+`;
+const $24eeb2528eee365c$export$85c8af99bbe9dd50 = `
+const $variable$ = concat($strings$, $divider$);
+`;
+const $24eeb2528eee365c$export$7955756ec726d219 = {
+    type: (0, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c).Text
+};
+const $24eeb2528eee365c$export$9b31c90f56636e45 = {
+    id: (0, $hgUW1$v4)(),
+    category: (0, $bdd949795ffeb68f$export$2c76aca27257bcfa).find((category)=>category.name === "string")?.id || "",
+    name: "combine",
+    label: "Combine",
+    arguments: JSON.stringify($24eeb2528eee365c$export$4b297bc2fa8c669c),
+    description: $24eeb2528eee365c$export$6d59db4903f20f7d.trim(),
+    implementation: $24eeb2528eee365c$export$92ebad0065552617.trim(),
+    functionCall: $24eeb2528eee365c$export$85c8af99bbe9dd50.trim(),
+    output: JSON.stringify($24eeb2528eee365c$export$7955756ec726d219)
+};
+
+
+
+
 const $fd42a2123675ef71$export$431bbfaa07941dc7 = {
     type: (0, $8f8d2861b2e1d35f$export$1ae122a9008ff510).Object,
     properties: {
@@ -1112,5 +1211,5 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
 
 
 
-export {$b224c477343e41e6$export$b58a0cc33096f1fb as TileType, $b224c477343e41e6$export$be94d7b677b041dd as OutputType, $b224c477343e41e6$export$dec6c71a4257ac74 as OutputDirection, $b224c477343e41e6$export$e035c9caa79ccaa9 as ConditionOperator, $b224c477343e41e6$export$a82221618652cb9f as CONSTANT_SELECTOR, $b224c477343e41e6$export$ede5a19a386fa7ea as MEMORY_SELECTOR, $b224c477343e41e6$export$85ca6aa0f7ebde22 as MODEL_SELECTOR, $b224c477343e41e6$export$bf648471fa87db4a as OUTPUT_SELECTOR, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c as SimpleDataType, $8f8d2861b2e1d35f$export$a914443d1add2f4c as FormatDataType, $54eb9ffd392831bf$export$a82bfd0bc6a25e39 as ActionMapHandler, $a3e7ad90fc86cc8c$export$e073683b1b98b026 as DataSchemaHandler, $8f8d2861b2e1d35f$export$1ae122a9008ff510 as ComplexDataType, $8f8d2861b2e1d35f$export$b00b62a09b73016e as ContentDataType, $b224c477343e41e6$export$1f02415756f5fb16 as AccessorType, $b224c477343e41e6$export$90d94503f4d956ff as MemoryType, $fd42a2123675ef71$export$54582e7b17f0fab7 as userModel};
+export {$b224c477343e41e6$export$b58a0cc33096f1fb as TileType, $b224c477343e41e6$export$be94d7b677b041dd as OutputType, $b224c477343e41e6$export$dec6c71a4257ac74 as OutputDirection, $b224c477343e41e6$export$e035c9caa79ccaa9 as ConditionOperator, $b224c477343e41e6$export$a82221618652cb9f as CONSTANT_SELECTOR, $b224c477343e41e6$export$ede5a19a386fa7ea as MEMORY_SELECTOR, $b224c477343e41e6$export$85ca6aa0f7ebde22 as MODEL_SELECTOR, $b224c477343e41e6$export$bf648471fa87db4a as OUTPUT_SELECTOR, $8f8d2861b2e1d35f$export$2bd38b90f09fb16c as SimpleDataType, $8f8d2861b2e1d35f$export$a914443d1add2f4c as FormatDataType, $54eb9ffd392831bf$export$a82bfd0bc6a25e39 as ActionMapHandler, $a3e7ad90fc86cc8c$export$e073683b1b98b026 as DataSchemaHandler, $8f8d2861b2e1d35f$export$1ae122a9008ff510 as ComplexDataType, $8f8d2861b2e1d35f$export$b00b62a09b73016e as ContentDataType, $b224c477343e41e6$export$1f02415756f5fb16 as AccessorType, $b224c477343e41e6$export$90d94503f4d956ff as MemoryType, $fd42a2123675ef71$export$54582e7b17f0fab7 as userModel, $24eeb2528eee365c$export$9b31c90f56636e45 as combineAction};
 //# sourceMappingURL=module.js.map

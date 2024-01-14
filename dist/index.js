@@ -23,6 +23,7 @@ $parcel$export(module.exports, "ContentDataType", () => $9c38f06678b5673e$export
 $parcel$export(module.exports, "AccessorType", () => $53a7a2c32695d914$export$1f02415756f5fb16);
 $parcel$export(module.exports, "MemoryType", () => $53a7a2c32695d914$export$90d94503f4d956ff);
 $parcel$export(module.exports, "userModel", () => $5e1189d2af7b41be$export$54582e7b17f0fab7);
+$parcel$export(module.exports, "combineAction", () => $1303ce4d25c6cacb$export$9b31c90f56636e45);
 
 var $9c38f06678b5673e$export$2bd38b90f09fb16c;
 (function(SimpleDataType) {
@@ -50,6 +51,105 @@ var $9c38f06678b5673e$export$1ae122a9008ff510;
     ComplexDataType["Object"] = "object";
     ComplexDataType["Array"] = "array";
 })($9c38f06678b5673e$export$1ae122a9008ff510 || ($9c38f06678b5673e$export$1ae122a9008ff510 = {}));
+
+
+
+const $48a89b5658c74628$export$2c76aca27257bcfa = [
+    {
+        id: (0, $8zHUo$uuid.v4)(),
+        name: "string",
+        label: "String"
+    },
+    {
+        id: (0, $8zHUo$uuid.v4)(),
+        name: "array",
+        label: "Array"
+    },
+    {
+        id: (0, $8zHUo$uuid.v4)(),
+        name: "object",
+        label: "Object"
+    },
+    {
+        id: (0, $8zHUo$uuid.v4)(),
+        name: "math",
+        label: "Math"
+    },
+    {
+        id: (0, $8zHUo$uuid.v4)(),
+        name: "date",
+        label: "Date"
+    },
+    {
+        id: (0, $8zHUo$uuid.v4)(),
+        name: "url",
+        label: "URL"
+    },
+    {
+        id: (0, $8zHUo$uuid.v4)(),
+        name: "json",
+        label: "JSON"
+    },
+    {
+        id: (0, $8zHUo$uuid.v4)(),
+        name: "utility",
+        label: "Utility"
+    }
+];
+
+
+const $1303ce4d25c6cacb$export$4b297bc2fa8c669c = {
+    type: (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object,
+    properties: {
+        strings: {
+            type: (0, $9c38f06678b5673e$export$1ae122a9008ff510).Array,
+            description: "An array of strings to be concatenated.",
+            arrayType: {
+                type: (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Text
+            },
+            required: true
+        },
+        divider: {
+            type: (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Text,
+            description: "The divider to be used between strings. Default is a space.",
+            defaultValue: " "
+        }
+    }
+};
+const $1303ce4d25c6cacb$export$6d59db4903f20f7d = `
+Concatenates an array of strings into a single string.
+`;
+const $1303ce4d25c6cacb$export$92ebad0065552617 = `
+const concat = (strings, divider = ' ') => {
+  const validate = ajv.compile($actionArguments$);
+  const valid = validate({ strings, divider });
+
+  if (!valid) {
+    throw new Error(\`Invalid arguments for action $actionName$: \${ajv.errorsText(validate.errors)}\`);
+  }
+
+  return strings.join(divider);
+}
+`;
+const $1303ce4d25c6cacb$export$85c8af99bbe9dd50 = `
+const $variable$ = concat($strings$, $divider$);
+`;
+const $1303ce4d25c6cacb$export$7955756ec726d219 = {
+    type: (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Text
+};
+const $1303ce4d25c6cacb$export$9b31c90f56636e45 = {
+    id: (0, $8zHUo$uuid.v4)(),
+    category: (0, $48a89b5658c74628$export$2c76aca27257bcfa).find((category)=>category.name === "string")?.id || "",
+    name: "combine",
+    label: "Combine",
+    arguments: JSON.stringify($1303ce4d25c6cacb$export$4b297bc2fa8c669c),
+    description: $1303ce4d25c6cacb$export$6d59db4903f20f7d.trim(),
+    implementation: $1303ce4d25c6cacb$export$92ebad0065552617.trim(),
+    functionCall: $1303ce4d25c6cacb$export$85c8af99bbe9dd50.trim(),
+    output: JSON.stringify($1303ce4d25c6cacb$export$7955756ec726d219)
+};
+
+
 
 
 const $5e1189d2af7b41be$export$431bbfaa07941dc7 = {

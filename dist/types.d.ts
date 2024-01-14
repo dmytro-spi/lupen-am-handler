@@ -31,6 +31,23 @@ export type DataSchema = {
     defaultValue?: any;
     required?: boolean;
 };
+interface Category {
+    id: string;
+    name: string;
+    label: string;
+}
+interface Action {
+    id: string;
+    category: Category['id'];
+    name: string;
+    label: string;
+    arguments: string;
+    description: string;
+    implementation: string;
+    functionCall: string;
+    output: string;
+}
+export const combineAction: Action;
 export interface Model {
     id: string;
     name: string;
@@ -167,22 +184,6 @@ export type ActionMap = {
     outputs: Output[];
     tiles: Tile[];
 };
-interface Category {
-    id: string;
-    name: string;
-    label: string;
-}
-interface Action {
-    id: string;
-    category: Category['id'];
-    name: string;
-    label: string;
-    arguments: string;
-    description: string;
-    implementation: string;
-    functionCall: string;
-    output: string;
-}
 type PropertyItem = {
     name: string;
     type: DataTypes | DataTypes[];
