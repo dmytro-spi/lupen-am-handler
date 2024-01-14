@@ -1,4 +1,4 @@
-import { combineAction } from './action/definitions/combine';
+import actionDefinitions from './action/definitions';
 import { userModel } from './model/definitions/user';
 import { ActionMapHandler } from './actionMap/actionMapHandler';
 import { DataSchemaHandler } from './dataSchema/dataSchema';
@@ -50,7 +50,7 @@ export {
     AccessorType,
     MemoryType,
     userModel,
-    combineAction,
+    actionDefinitions,
 }
 export type {
     Tile,

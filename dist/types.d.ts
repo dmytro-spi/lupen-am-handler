@@ -47,7 +47,7 @@ interface Action {
     functionCall: string;
     output: string;
 }
-export const combineAction: Action;
+export default _default;
 export interface Model {
     id: string;
     name: string;
