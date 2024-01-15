@@ -311,10 +311,7 @@ const $8e667be3765ae363$export$923e425a87884b8a = $hgUW1$mixed().oneOf(Object.va
 const $8e667be3765ae363$export$c50c1c96240d4cab = $hgUW1$mixed().oneOf(Object.values((0, $b224c477343e41e6$export$6c7545f640252ea7)));
 const $8e667be3765ae363$export$8da21ffd331f2922 = $hgUW1$object().shape({
     id: $hgUW1$string().required(),
-    coordinates: $hgUW1$object().shape({
-        start: $hgUW1$array().of($hgUW1$number()).min(2).max(2).required(),
-        end: $hgUW1$array().of($hgUW1$number()).min(2).max(2).required()
-    }),
+    coordinates: $hgUW1$array().of($hgUW1$number()).min(2).max(2).required(),
     type: $8e667be3765ae363$export$3f22e65960887329.required()
 });
 const $8e667be3765ae363$export$8df29c7063b7517d = $8e667be3765ae363$export$8da21ffd331f2922.concat($hgUW1$object({

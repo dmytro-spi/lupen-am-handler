@@ -33,20 +33,7 @@ export const modelMemoryOperationSchema = yup
 // Base TileGeneral schema
 export const tileGeneralSchema = yup.object().shape({
   id: yup.string().required(),
-  coordinates: yup.object().shape({
-    start: yup
-      .array()
-      .of(yup.number())
-      .min(2)
-      .max(2)
-      .required(),
-    end: yup
-      .array()
-      .of(yup.number())
-      .min(2)
-      .max(2)
-      .required(),
-  }),
+  coordinates: yup.array().of(yup.number()).min(2).max(2).required(),
   type: tileTypeSchema.required(),
 });
 

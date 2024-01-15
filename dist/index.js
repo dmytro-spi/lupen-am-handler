@@ -333,10 +333,7 @@ const $5a06354403e1cbe2$export$923e425a87884b8a = $8zHUo$yup.mixed().oneOf(Objec
 const $5a06354403e1cbe2$export$c50c1c96240d4cab = $8zHUo$yup.mixed().oneOf(Object.values((0, $53a7a2c32695d914$export$6c7545f640252ea7)));
 const $5a06354403e1cbe2$export$8da21ffd331f2922 = $8zHUo$yup.object().shape({
     id: $8zHUo$yup.string().required(),
-    coordinates: $8zHUo$yup.object().shape({
-        start: $8zHUo$yup.array().of($8zHUo$yup.number()).min(2).max(2).required(),
-        end: $8zHUo$yup.array().of($8zHUo$yup.number()).min(2).max(2).required()
-    }),
+    coordinates: $8zHUo$yup.array().of($8zHUo$yup.number()).min(2).max(2).required(),
     type: $5a06354403e1cbe2$export$3f22e65960887329.required()
 });
 const $5a06354403e1cbe2$export$8df29c7063b7517d = $5a06354403e1cbe2$export$8da21ffd331f2922.concat($8zHUo$yup.object({
