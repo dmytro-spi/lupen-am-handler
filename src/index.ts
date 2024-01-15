@@ -2,7 +2,7 @@ import { combineAction } from './action/definitions/combine';
 import { userModel } from './model/definitions/user';
 import { ActionMapHandler } from './actionMap/actionMapHandler';
 import { DataSchemaHandler } from './dataSchema/dataSchema';
-import type { PossibleOutput } from './actionMap/actionMapHandler'
+// import type { PossibleOutput } from './actionMap/actionMapHandler'
 import type { CompatiblePaths } from './dataSchema/dataSchema'
 import type { Model } from './model/types/model'
 import {
@@ -20,7 +20,7 @@ import {
     MemoryTile,
     OUTPUT_SELECTOR,
     Output,
-    OutputDirection,
+    // OutputDirection,
     OutputGeneral,
     OutputType,
     Tile,
@@ -35,7 +35,7 @@ import {
 export {
     TileType,
     OutputType,
-    OutputDirection,
+    // OutputDirection,
     ConditionOperator,
     CONSTANT_SELECTOR,
     MEMORY_SELECTOR,
@@ -65,7 +65,7 @@ export type {
     AccessorTile,
     DataTypes,
     DataSchema,
-    PossibleOutput,
+    // PossibleOutput,
     CompatiblePaths,
     Model,
     ActionMap,

@@ -19,12 +19,12 @@ export enum ConditionOperator {
 }
 
 // Output types ----------------------------------------------------------------
-export enum OutputDirection {
-  Down = 'down',
-  Right = 'right',
-  Up = 'up',
-  Left = 'left',
-}
+// export enum OutputDirection {
+//   Down = 'down',
+//   Right = 'right',
+//   Up = 'up',
+//   Left = 'left',
+// }
 
 export enum OutputType {
   Default = 'default',
@@ -34,8 +34,8 @@ export enum OutputType {
 
 export type OutputGeneral = {
   id: string;
-  direction: OutputDirection;
-  coordinates: [number, number];
+  // direction: OutputDirection;
+  // coordinates: [number, number];
   toArgument?: string;
   type: OutputType;
   outputPath?: string; // .field.nestedField
@@ -65,7 +65,7 @@ export enum TileType {
 
 export type TileGeneral = {
   id: string;
-  coordinates: { start: [number, number]; end: [number, number] };
+  coordinates: [number, number];
   type: TileType;
 };
 

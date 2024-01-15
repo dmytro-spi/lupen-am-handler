@@ -1,10 +1,10 @@
 import * as yup from 'yup';
-import { OutputDirection, OutputType } from '../types/actionMap';
+import { OutputType } from '../types/actionMap';
 
 // OutputDirection schema
-const outputDirectionSchema = yup
-  .mixed<OutputDirection>()
-  .oneOf(Object.values(OutputDirection));
+// const outputDirectionSchema = yup
+//   .mixed<OutputDirection>()
+//   .oneOf(Object.values(OutputDirection));
 
 // OutputType schema
 const outputTypeSchema = yup
@@ -14,13 +14,13 @@ const outputTypeSchema = yup
 // Base OutputGeneral schema
 const outputGeneralSchema = yup.object().shape({
   id: yup.string().required(),
-  direction: outputDirectionSchema.required(),
-  coordinates: yup
-    .array()
-    .of(yup.number())
-    .min(2)
-    .max(2)
-    .required(),
+  // direction: outputDirectionSchema.required(),
+  // coordinates: yup
+  //   .array()
+  //   .of(yup.number())
+  //   .min(2)
+  //   .max(2)
+  //   .required(),
   toArgument: yup.string().nullable(),
   type: outputTypeSchema.required(),
   outputPath: yup.string().nullable(),

@@ -68,12 +68,6 @@ export enum ConditionOperator {
     LessThan = "<",
     LessThanOrEqual = "<="
 }
-export enum OutputDirection {
-    Down = "down",
-    Right = "right",
-    Up = "up",
-    Left = "left"
-}
 export enum OutputType {
     Default = "default",
     Conditional = "conditional",
@@ -81,8 +75,6 @@ export enum OutputType {
 }
 export type OutputGeneral = {
     id: string;
-    direction: OutputDirection;
-    coordinates: [number, number];
     toArgument?: string;
     type: OutputType;
     outputPath?: string;
@@ -105,10 +97,7 @@ export enum TileType {
 }
 type TileGeneral = {
     id: string;
-    coordinates: {
-        start: [number, number];
-        end: [number, number];
-    };
+    coordinates: [number, number];
     type: TileType;
 };
 export enum AccessorType {
@@ -203,11 +192,6 @@ export class DataSchemaHandler {
     walkThroughPropertiesRecursive(schema: DataSchema, callback: (partialSchema: DataSchema, path: string) => void): void;
     getSchemaFromPath(schema: DataSchema, path: string): DataSchema;
 }
-export type PossibleOutput = {
-    coordinates: [number, number];
-    direction: OutputDirection;
-    active: boolean;
-};
 export class ActionMapHandler {
     protected readonly models: Model[];
     protected readonly actionFetcher: (actionId: string) => Promise<Action | undefined>;
@@ -230,12 +214,10 @@ export class ActionMapHandler {
     canConnectTiles(fromTileId: string, toTileId: string, cb: (compatiblePaths: CompatiblePaths) => void): Promise<boolean>;
     addOutput(output: Omit<Output, 'id'>, fromTileId: string, toTileId: string): Promise<ActionMap>;
     removeOutput(id: string): ActionMap;
-    updateTileCoordinates(id: string, start: [number, number], end: [number, number]): ActionMap;
-    updateCoordinatesForTilesAndOutputs(tile: Tile, start: [number, number], end: [number, number]): void;
-    tilesIntersect(start: [number, number], end: [number, number]): boolean;
+    updateTileCoordinates(id: string, position: [number, number]): ActionMap;
+    tilesIntersect(position: [number, number]): boolean;
     getTileOutputSchema(tile: Tile): Promise<DataSchema>;
     getActionArgumentsSchema(actionId: string): Promise<DataSchema>;
-    getTilePossibleOutputs(tile: Tile): Promise<PossibleOutput[]>;
     undo(): ActionMap;
     redo(): ActionMap;
     protected pushNewState(actionMap: ActionMap): ActionMap;
@@ -244,9 +226,6 @@ export class ActionMapHandler {
     protected putCurrentToPreviousState(): ActionMap;
     protected clearFutureStack(): ActionMap;
     protected returnToFutureState(): ActionMap;
-    protected getOutputDirection(tile: Tile, neighbor: Tile): OutputDirection;
-    protected getOutputCoordinates(tile: Tile, neighbor: Tile, direction: OutputDirection): [number, number];
-    protected getTileNeighbors(tile: Tile): Tile[];
     protected getActionOutputSchema(actionId: string): Promise<DataSchema>;
     protected getModelSchema(modelName: string): DataSchema;
     protected getMemoryById(id: string): MemoryTile | null;
@@ -258,7 +237,6 @@ export class ActionMapHandler {
     protected getOutputById(id: string): Output;
     protected getOutputsByIds(ids: string[]): Output[];
     protected getSourceTileForOutput(outputId: string): Tile;
-    protected checkIfTileHasIntersections(tile: Tile): boolean;
 }
 
 //# sourceMappingURL=types.d.ts.map

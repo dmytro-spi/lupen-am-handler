@@ -8,7 +8,6 @@ function $parcel$export(e, n, v, s) {
 
 $parcel$export(module.exports, "TileType", () => $53a7a2c32695d914$export$b58a0cc33096f1fb);
 $parcel$export(module.exports, "OutputType", () => $53a7a2c32695d914$export$be94d7b677b041dd);
-$parcel$export(module.exports, "OutputDirection", () => $53a7a2c32695d914$export$dec6c71a4257ac74);
 $parcel$export(module.exports, "ConditionOperator", () => $53a7a2c32695d914$export$e035c9caa79ccaa9);
 $parcel$export(module.exports, "CONSTANT_SELECTOR", () => $53a7a2c32695d914$export$a82221618652cb9f);
 $parcel$export(module.exports, "MEMORY_SELECTOR", () => $53a7a2c32695d914$export$ede5a19a386fa7ea);
@@ -192,13 +191,6 @@ var $53a7a2c32695d914$export$e035c9caa79ccaa9;
     ConditionOperator["LessThan"] = "<";
     ConditionOperator["LessThanOrEqual"] = "<=";
 })($53a7a2c32695d914$export$e035c9caa79ccaa9 || ($53a7a2c32695d914$export$e035c9caa79ccaa9 = {}));
-var $53a7a2c32695d914$export$dec6c71a4257ac74;
-(function(OutputDirection) {
-    OutputDirection["Down"] = "down";
-    OutputDirection["Right"] = "right";
-    OutputDirection["Up"] = "up";
-    OutputDirection["Left"] = "left";
-})($53a7a2c32695d914$export$dec6c71a4257ac74 || ($53a7a2c32695d914$export$dec6c71a4257ac74 = {}));
 var $53a7a2c32695d914$export$be94d7b677b041dd;
 (function(OutputType) {
     OutputType["Default"] = "default";
@@ -243,14 +235,21 @@ var $53a7a2c32695d914$export$6c7545f640252ea7;
 
 
 // OutputDirection schema
-const $ec2df8c8c4925e94$var$outputDirectionSchema = $8zHUo$yup.mixed().oneOf(Object.values((0, $53a7a2c32695d914$export$dec6c71a4257ac74)));
+// const outputDirectionSchema = yup
+//   .mixed<OutputDirection>()
+//   .oneOf(Object.values(OutputDirection));
 // OutputType schema
 const $ec2df8c8c4925e94$var$outputTypeSchema = $8zHUo$yup.mixed().oneOf(Object.values((0, $53a7a2c32695d914$export$be94d7b677b041dd)));
 // Base OutputGeneral schema
 const $ec2df8c8c4925e94$var$outputGeneralSchema = $8zHUo$yup.object().shape({
     id: $8zHUo$yup.string().required(),
-    direction: $ec2df8c8c4925e94$var$outputDirectionSchema.required(),
-    coordinates: $8zHUo$yup.array().of($8zHUo$yup.number()).min(2).max(2).required(),
+    // direction: outputDirectionSchema.required(),
+    // coordinates: yup
+    //   .array()
+    //   .of(yup.number())
+    //   .min(2)
+    //   .max(2)
+    //   .required(),
     toArgument: $8zHUo$yup.string().nullable(),
     type: $ec2df8c8c4925e94$var$outputTypeSchema.required(),
     outputPath: $8zHUo$yup.string().nullable()
@@ -674,7 +673,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    * @throws {Error} Throws an error if the tile type is invalid or if the tile
    *         fails schema validation.
    */ async validateTile(tile) {
-        if (this.checkIfTileHasIntersections(tile)) throw new Error("Tile has intersections");
+        if (this.tilesIntersect(tile.coordinates)) throw new Error("Tile has intersections");
         switch(tile.type){
             case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
                 await (0, $5a06354403e1cbe2$export$8df29c7063b7517d).validate(tile, {
@@ -875,13 +874,13 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    * @param {[number, number]} end - The new ending coordinates of the tile.
    * @returns {ActionMap} The updated action map containing the modified tile.
    * @throws {Error} Throws an error if the tile with the specified ID is not found.
-   */ updateTileCoordinates(id, start, end) {
+   */ updateTileCoordinates(id, position) {
         const tile = this.actionMap.tiles.find((t)=>t.id === id);
         if (!tile) throw new Error(`Tile ${id} not found`);
-        const anotherTileIntersects = this.tilesIntersect(start, end);
-        if (anotherTileIntersects) this.updateCoordinatesForTilesAndOutputs(tile, start, end); // TODO: check if it's ok
-        tile.coordinates.start = start;
-        tile.coordinates.end = end;
+        const anotherTileIntersects = this.tilesIntersect(position);
+        if (anotherTileIntersects) // this.updateCoordinatesForTilesAndOutputs(tile, start, end); // TODO: check if it's ok
+        throw new Error("Tile intersects with another tile");
+        tile.coordinates = position;
         return this.actionMap;
     }
     /**
@@ -896,34 +895,43 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    * @param {Tile} tile - The tile that was dragged to a new location.
    * @param {[number, number]} start - The new starting coordinates of the tile.
    * @param {[number, number]} end - The new ending coordinates of the tile.
-   */ updateCoordinatesForTilesAndOutputs(tile, start, end) {
-        // get difference between old and new coordinates
-        const xDiff = start[0] - tile.coordinates.start[0];
-        const yDiff = start[1] - tile.coordinates.start[1];
-        // get all tiles that are intersect or after the dragged tile
-        const tilesToMove = this.actionMap.tiles.filter((t)=>{
-            const xStart = t.coordinates.start[0];
-            const xEnd = t.coordinates.end[0];
-            const yStart = t.coordinates.start[1];
-            const yEnd = t.coordinates.end[1];
-            return xStart >= start[0] && yStart >= start[1] || xEnd >= start[0] && yEnd >= start[1] || xStart >= start[0] && yEnd >= start[1] || xEnd >= start[0] && yStart >= start[1];
-        });
-        // move tiles
-        tilesToMove.forEach((t)=>{
-            t.coordinates.start[0] += xDiff;
-            t.coordinates.start[1] += yDiff;
-            t.coordinates.end[0] += xDiff;
-            t.coordinates.end[1] += yDiff;
-        });
-        // move outputs
-        this.actionMap.outputs.forEach((o)=>{
-            const fromTile = this.getSourceTileForOutput(o.id);
-            if (tilesToMove.includes(fromTile)) {
-                o.coordinates[0] += xDiff;
-                o.coordinates[1] += yDiff;
-            }
-        });
-    }
+   */ // public updateCoordinatesForTilesAndOutputs(
+    //   tile: Tile,
+    //   start: [number, number],
+    //   end: [number, number],
+    // ): void {
+    //   // get difference between old and new coordinates
+    //   const xDiff = start[0] - tile.coordinates.start[0];
+    //   const yDiff = start[1] - tile.coordinates.start[1];
+    //   // get all tiles that are intersect or after the dragged tile
+    //   const tilesToMove = this.actionMap.tiles.filter((t: Tile) => {
+    //     const xStart = t.coordinates.start[0];
+    //     const xEnd = t.coordinates.end[0];
+    //     const yStart = t.coordinates.start[1];
+    //     const yEnd = t.coordinates.end[1];
+    //     return (
+    //       (xStart >= start[0] && yStart >= start[1])
+    //       || (xEnd >= start[0] && yEnd >= start[1])
+    //       || (xStart >= start[0] && yEnd >= start[1])
+    //       || (xEnd >= start[0] && yStart >= start[1])
+    //     );
+    //   });
+    //   // move tiles
+    //   tilesToMove.forEach((t: Tile) => {
+    //     t.coordinates.start[0] += xDiff;
+    //     t.coordinates.start[1] += yDiff;
+    //     t.coordinates.end[0] += xDiff;
+    //     t.coordinates.end[1] += yDiff;
+    //   });
+    //   // move outputs
+    //   this.actionMap.outputs.forEach((o: Output) => {
+    //     const fromTile = this.getSourceTileForOutput(o.id);
+    //     if (tilesToMove.includes(fromTile)) {
+    //       o.coordinates[0] += xDiff;
+    //       o.coordinates[1] += yDiff;
+    //     }
+    //   });
+    // }
     /**
    * Checks if a tile intersects with any other tile in the action map.
    *
@@ -934,18 +942,24 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    * @param {[number, number]} start - The starting coordinates of the tile to be checked.
    * @param {[number, number]} end - The ending coordinates of the tile to be checked.
    * @returns {boolean} True if the tile intersects with another tile, false otherwise.
-   */ tilesIntersect(start, end) {
-        const xStart = start[0];
-        const xEnd = end[0];
-        const yStart = start[1];
-        const yEnd = end[1];
-        return this.actionMap.tiles.some((t)=>{
-            const tXStart = t.coordinates.start[0];
-            const tXEnd = t.coordinates.end[0];
-            const tYStart = t.coordinates.start[1];
-            const tYEnd = t.coordinates.end[1];
-            return tXStart >= xStart && tXStart <= xEnd && tYStart >= yStart && tYStart <= yEnd || tXEnd >= xStart && tXEnd <= xEnd && tYEnd >= yStart && tYEnd <= yEnd || tXStart >= xStart && tXStart <= xEnd && tYEnd >= yStart && tYEnd <= yEnd || tXEnd >= xStart && tXEnd <= xEnd && tYStart >= yStart && tYStart <= yEnd;
-        });
+   */ tilesIntersect(position) {
+        // const xStart = start[0];
+        // const xEnd = end[0];
+        // const yStart = start[1];
+        // const yEnd = end[1];
+        // return this.actionMap.tiles.some((t: Tile) => {
+        //   const tXStart = t.coordinates.start[0];
+        //   const tXEnd = t.coordinates.end[0];
+        //   const tYStart = t.coordinates.start[1];
+        //   const tYEnd = t.coordinates.end[1];
+        //   return (
+        //     (tXStart >= xStart && tXStart <= xEnd && tYStart >= yStart && tYStart <= yEnd)
+        //     || (tXEnd >= xStart && tXEnd <= xEnd && tYEnd >= yStart && tYEnd <= yEnd)
+        //     || (tXStart >= xStart && tXStart <= xEnd && tYEnd >= yStart && tYEnd <= yEnd)
+        //     || (tXEnd >= xStart && tXEnd <= xEnd && tYStart >= yStart && tYStart <= yEnd)
+        //   );
+        // });
+        return Boolean(this.actionMap.tiles.find((t)=>t.coordinates[0] === position[0] && t.coordinates[1] === position[1]));
     }
     /**
    * Asynchronously retrieves the output schema for a given tile.
@@ -999,20 +1013,22 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    * @returns {Promise<PossibleOutput[]>} A promise that resolves to an array of 
    *           possible outputs. Each output includes coordinates, direction, and 
    *           a boolean indicating if the output is active.
-   */ async getTilePossibleOutputs(tile) {
-        const neighbors = await this.getTileNeighbors(tile);
-        const possibleOutputs = await Promise.all(neighbors.map(async (neighbor)=>{
-            const canBeConnected = await this.canConnectTiles(tile.id, neighbor.id, ()=>{});
-            const direction = this.getOutputDirection(tile, neighbor);
-            const coordinates = this.getOutputCoordinates(tile, neighbor, direction);
-            return {
-                coordinates: coordinates,
-                direction: direction,
-                active: canBeConnected
-            };
-        }));
-        return possibleOutputs;
-    }
+   */ // public async getTilePossibleOutputs(tile: Tile): Promise<PossibleOutput[]> {
+    //   const neighbors = await this.getTileNeighbors(tile);
+    //   const possibleOutputs: PossibleOutput[] = await Promise.all(
+    //     neighbors.map(async (neighbor: Tile) => {
+    //       const canBeConnected = await this.canConnectTiles(tile.id, neighbor.id, () => {});
+    //       const direction = this.getOutputDirection(tile, neighbor);
+    //       const coordinates = this.getOutputCoordinates(tile, neighbor, direction);
+    //       return {
+    //         coordinates,
+    //         direction,
+    //         active: canBeConnected,
+    //       };
+    //     }),
+    //   );
+    //   return possibleOutputs;
+    // }
     undo() {
         return this.returnToPreviousState();
     }
@@ -1051,64 +1067,79 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         this.putCurrentToPreviousState();
         return this.futureStack.pop() ?? this.actionMap;
     }
-    getOutputDirection(tile, neighbor) {
-        const xStart = tile.coordinates.start[0];
-        const xEnd = tile.coordinates.end[0];
-        const yStart = tile.coordinates.start[1];
-        const yEnd = tile.coordinates.end[1];
-        const neighborXStart = neighbor.coordinates.start[0];
-        const neighborXEnd = neighbor.coordinates.end[0];
-        const neighborYStart = neighbor.coordinates.start[1];
-        const neighborYEnd = neighbor.coordinates.end[1];
-        if (neighborXStart === xEnd) return (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Right;
-        if (neighborXEnd === xStart) return (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Left;
-        if (neighborYStart === yEnd) return (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Down;
-        if (neighborYEnd === yStart) return (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Up;
-        throw new Error("Invalid output direction");
-    }
-    getOutputCoordinates(tile, neighbor, direction) {
-        const neighborXStart = neighbor.coordinates.start[0];
-        const neighborXEnd = neighbor.coordinates.end[0];
-        const neighborYStart = neighbor.coordinates.start[1];
-        const neighborYEnd = neighbor.coordinates.end[1];
-        switch(direction){
-            case (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Down:
-                return [
-                    neighborXStart,
-                    neighborYStart - 1
-                ];
-            case (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Right:
-                return [
-                    neighborXStart - 1,
-                    neighborYStart
-                ];
-            case (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Up:
-                return [
-                    neighborXStart,
-                    neighborYEnd + 1
-                ];
-            case (0, $53a7a2c32695d914$export$dec6c71a4257ac74).Left:
-                return [
-                    neighborXEnd + 1,
-                    neighborYStart
-                ];
-            default:
-                throw new Error("Invalid output direction");
-        }
-    }
-    getTileNeighbors(tile) {
-        const neighbors = [];
-        // get coordinates of current tile and find any tiles that have
-        // coordinates +1 by x right, -1 by x left, +1 by y bottom, -1 by y top
-        const xStart = tile.coordinates.start[0];
-        const xEnd = tile.coordinates.end[0];
-        const yStart = tile.coordinates.start[1];
-        const yEnd = tile.coordinates.end[1];
-        this.actionMap.tiles.forEach((t)=>{
-            if (t.coordinates.start[0] === xEnd && t.coordinates.start[1] >= yStart && t.coordinates.start[1] <= yEnd || t.coordinates.end[0] === xStart && t.coordinates.end[1] >= yStart && t.coordinates.end[1] <= yEnd || t.coordinates.start[1] === yEnd && t.coordinates.start[0] >= xStart && t.coordinates.start[0] <= xEnd || t.coordinates.end[1] === yStart && t.coordinates.end[0] >= xStart && t.coordinates.end[0] <= xEnd) neighbors.push(t);
-        });
-        return neighbors;
-    }
+    // protected getOutputDirection(tile: Tile, neighbor: Tile): OutputDirection {
+    //   const xStart = tile.coordinates.start[0];
+    //   const xEnd = tile.coordinates.end[0];
+    //   const yStart = tile.coordinates.start[1];
+    //   const yEnd = tile.coordinates.end[1];
+    //   const neighborXStart = neighbor.coordinates.start[0];
+    //   const neighborXEnd = neighbor.coordinates.end[0];
+    //   const neighborYStart = neighbor.coordinates.start[1];
+    //   const neighborYEnd = neighbor.coordinates.end[1];
+    //   if (neighborXStart === xEnd) {
+    //     return OutputDirection.Right;
+    //   }
+    //   if (neighborXEnd === xStart) {
+    //     return OutputDirection.Left;
+    //   }
+    //   if (neighborYStart === yEnd) {
+    //     return OutputDirection.Down;
+    //   }
+    //   if (neighborYEnd === yStart) {
+    //     return OutputDirection.Up;
+    //   }
+    //   throw new Error('Invalid output direction');
+    // }
+    // protected getOutputCoordinates(
+    //   tile: Tile,
+    //   neighbor: Tile,
+    //   direction: OutputDirection,
+    // ): [number, number] {
+    //   const neighborXStart = neighbor.coordinates.start[0];
+    //   const neighborXEnd = neighbor.coordinates.end[0];
+    //   const neighborYStart = neighbor.coordinates.start[1];
+    //   const neighborYEnd = neighbor.coordinates.end[1];
+    //   switch (direction) {
+    //     case OutputDirection.Down:
+    //       return [neighborXStart, neighborYStart - 1];
+    //     case OutputDirection.Right:
+    //       return [neighborXStart - 1, neighborYStart];
+    //     case OutputDirection.Up:
+    //       return [neighborXStart, neighborYEnd + 1];
+    //     case OutputDirection.Left:
+    //       return [neighborXEnd + 1, neighborYStart];
+    //     default:
+    //       throw new Error('Invalid output direction');
+    //   }
+    // }
+    // protected getTileNeighbors(tile: Tile): Tile[] {
+    //   const neighbors: Tile[] = [];
+    //   // get coordinates of current tile and find any tiles that have
+    //   // coordinates +1 by x right, -1 by x left, +1 by y bottom, -1 by y top
+    //   const xStart = tile.coordinates.start[0];
+    //   const xEnd = tile.coordinates.end[0];
+    //   const yStart = tile.coordinates.start[1];
+    //   const yEnd = tile.coordinates.end[1];
+    //   this.actionMap.tiles.forEach((t: Tile) => {
+    //     if (
+    //       (t.coordinates.start[0] === xEnd
+    //         && t.coordinates.start[1] >= yStart
+    //         && t.coordinates.start[1] <= yEnd)
+    //       || (t.coordinates.end[0] === xStart
+    //         && t.coordinates.end[1] >= yStart
+    //         && t.coordinates.end[1] <= yEnd)
+    //       || (t.coordinates.start[1] === yEnd
+    //         && t.coordinates.start[0] >= xStart
+    //         && t.coordinates.start[0] <= xEnd)
+    //       || (t.coordinates.end[1] === yStart
+    //         && t.coordinates.end[0] >= xStart
+    //         && t.coordinates.end[0] <= xEnd)
+    //     ) {
+    //       neighbors.push(t);
+    //     }
+    //   });
+    //   return neighbors;
+    // }
     async getActionOutputSchema(actionId) {
         const action = await this.actionFetcher(actionId);
         if (!action) throw new Error(`Action ${actionId} not found`);
@@ -1209,22 +1240,6 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         });
         if (!tile) throw new Error(`Tile for output ${outputId} not found`);
         return tile;
-    }
-    checkIfTileHasIntersections(tile) {
-        const xStart = tile.coordinates.start[0];
-        const xEnd = tile.coordinates.end[0];
-        const yStart = tile.coordinates.start[1];
-        const yEnd = tile.coordinates.end[1];
-        return this.actionMap.tiles.some((t)=>{
-            const tXStart = t.coordinates.start[0];
-            const tXEnd = t.coordinates.end[0];
-            const tYStart = t.coordinates.start[1];
-            const tYEnd = t.coordinates.end[1];
-            return(// Existing corner checks
-            tXStart >= xStart && tXStart <= xEnd && tYStart >= yStart && tYStart <= yEnd || tXEnd >= xStart && tXEnd <= xEnd && tYEnd >= yStart && tYEnd <= yEnd || tXStart >= xStart && tXStart <= xEnd && tYEnd >= yStart && tYEnd <= yEnd || tXEnd >= xStart && tXEnd <= xEnd && tYStart >= yStart && tYStart <= yEnd || // Check if tile is completely within t
-            xStart >= tXStart && xEnd <= tXEnd && yStart >= tYStart && yEnd <= tYEnd || // Check if t is completely within tile
-            tXStart >= xStart && tXEnd <= xEnd && tYStart >= yStart && tYEnd <= yEnd);
-        });
     }
 }
 
