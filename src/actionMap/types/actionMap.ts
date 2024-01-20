@@ -1,4 +1,4 @@
-import { DataSchema } from '../../dataSchema/types/dataSchema';
+import { DataSchema, DataSchemaWithCompatibility } from '../../dataSchema/types/dataSchema';
 
 // User language types ---------------------------------------------------------
 export const MEMORY_SELECTOR = (id: string) => `memory::${id}`;
@@ -6,7 +6,20 @@ export const CONSTANT_SELECTOR = (name: string) => `constant::${name}`;
 export const MODEL_SELECTOR = (name: string) => `model::${name}`;
 export const OUTPUT_SELECTOR = (id: string) => `output::${id}`;
 
-// condition operators
+// Data access types -----------------------------------------------------------
+export enum SourceType {
+  Constant = 'constant',
+  Memory = 'memory',
+  Model = 'model',
+  Input = 'input',
+}
+
+export type DataSource = {
+  type: SourceType;
+  name: string;
+};
+
+// Condition operators ---------------------------------------------------------
 export enum ConditionOperator {
   Equal = '==',
   StrongEqual = '===',
@@ -16,29 +29,43 @@ export enum ConditionOperator {
   GreaterThanOrEqual = '>=',
   LessThan = '<',
   LessThanOrEqual = '<=',
+  Not = '!',
 }
 
-// Output types ----------------------------------------------------------------
-// export enum OutputDirection {
-//   Down = 'down',
-//   Right = 'right',
-//   Up = 'up',
-//   Left = 'left',
-// }
+export enum LogicalOperator {
+  And = '&&',
+  Or = '||',
+}
 
+export type Condition = {
+  operator: ConditionOperator;
+  leftValue: DataSource | Condition;
+  rightValue?: DataSource | Condition;
+};
+
+// Output types ----------------------------------------------------------------
 export enum OutputType {
   Default = 'default',
   Conditional = 'conditional',
   ForEach = 'forEach',
 }
 
+export type OutputCompatiblePaths = {
+  from: DataSchemaWithCompatibility;
+  to: DataSchemaWithCompatibility;
+};
+
+export type ConnectionDataMap = {
+  outputPath: string;
+  inputPath: string;
+};
+
 export type OutputGeneral = {
   id: string;
-  // direction: OutputDirection;
-  // coordinates: [number, number];
-  toArgument?: string;
   type: OutputType;
-  outputPath?: string; // .field.nestedField
+  outputTileId: Tile['id'];
+  inputTileId: Tile['id'];
+  dataMap: ConnectionDataMap[];
 };
 
 export type DefaultOutput = OutputGeneral & {
@@ -47,11 +74,12 @@ export type DefaultOutput = OutputGeneral & {
 
 export type ConditionalOutput = OutputGeneral & {
   type: OutputType.Conditional;
-  condition: string;
+  condition: Condition;
 };
 
 export type ForEachOutput = OutputGeneral & {
   type: OutputType.ForEach;
+  forEachDataMap: ConnectionDataMap;
 };
 
 export type Output = DefaultOutput | ConditionalOutput | ForEachOutput;
@@ -111,19 +139,16 @@ export type ModelAccessorTile = AccessorTile & {
 };
 
 export type ActionTile = TileGeneral & {
-  output: string[];
   actionId: string;
-  input: Output['id'][];
 };
 
-export enum MemoryType {
+export enum MemoryType { // TODO: reimplement data schema for this
   DataOut = 'dataOut',
   Internal = 'internal',
   Model = 'model',
 }
 
 export type MemoryTile = TileGeneral & {
-  input: Output['id'][];
   memoryType: MemoryType;
 };
 
@@ -140,6 +165,18 @@ export type ModelMemoryTile = MemoryTile & {
   operation: ModelMemoryOperation;
 };
 
+export type DataOutMemoryTile = MemoryTile & {
+  memoryType: MemoryType.DataOut;
+  memoryName: string;
+  properties: string[];
+};
+
+export type InternalMemoryTile = MemoryTile & {
+  memoryType: MemoryType.Internal;
+  memoryName: string;
+  properties: string[];
+};
+
 export type Tile = AccessorTile
 | ActionTile
 | MemoryTile
@@ -148,6 +185,13 @@ export type Tile = AccessorTile
 | ConstantAccessorTile
 | DataInAccessorTile
 | MemoryAccessorTile;
+
+// Action data schemas ---------------------------------------------------------
+export type ActionDataSchema = {
+  actionId: string;
+  arguments: DataSchema;
+  output: DataSchema;
+};
 
 // Data in types ---------------------------------------------------------------
 export type DataIn = {
