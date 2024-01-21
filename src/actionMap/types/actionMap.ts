@@ -1,11 +1,5 @@
 import { DataSchema, DataSchemaWithCompatibility } from '../../dataSchema/types/dataSchema';
 
-// User language types ---------------------------------------------------------
-export const MEMORY_SELECTOR = (id: string) => `memory::${id}`;
-export const CONSTANT_SELECTOR = (name: string) => `constant::${name}`;
-export const MODEL_SELECTOR = (name: string) => `model::${name}`;
-export const OUTPUT_SELECTOR = (id: string) => `output::${id}`;
-
 // Data access types -----------------------------------------------------------
 export enum SourceType {
   Constant = 'constant',
@@ -105,7 +99,6 @@ export enum AccessorType {
 }
 
 export type AccessorTile = TileGeneral & {
-  output: Output['id'][];
   accessType: AccessorType;
 };
 

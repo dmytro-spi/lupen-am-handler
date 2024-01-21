@@ -10,10 +10,6 @@ function $parcel$export(e, n, v, s) {
 $parcel$export(module.exports, "TileType", () => $53a7a2c32695d914$export$b58a0cc33096f1fb);
 $parcel$export(module.exports, "OutputType", () => $53a7a2c32695d914$export$be94d7b677b041dd);
 $parcel$export(module.exports, "ConditionOperator", () => $53a7a2c32695d914$export$e035c9caa79ccaa9);
-$parcel$export(module.exports, "CONSTANT_SELECTOR", () => $53a7a2c32695d914$export$a82221618652cb9f);
-$parcel$export(module.exports, "MEMORY_SELECTOR", () => $53a7a2c32695d914$export$ede5a19a386fa7ea);
-$parcel$export(module.exports, "MODEL_SELECTOR", () => $53a7a2c32695d914$export$85ca6aa0f7ebde22);
-$parcel$export(module.exports, "OUTPUT_SELECTOR", () => $53a7a2c32695d914$export$bf648471fa87db4a);
 $parcel$export(module.exports, "SimpleDataType", () => $9c38f06678b5673e$export$2bd38b90f09fb16c);
 $parcel$export(module.exports, "FormatDataType", () => $9c38f06678b5673e$export$a914443d1add2f4c);
 $parcel$export(module.exports, "ActionMapHandler", () => $86d69c5e11233160$export$a82bfd0bc6a25e39);
@@ -192,10 +188,6 @@ const $5e1189d2af7b41be$export$54582e7b17f0fab7 = {
 
 
 
-const $53a7a2c32695d914$export$ede5a19a386fa7ea = (id)=>`memory::${id}`;
-const $53a7a2c32695d914$export$a82221618652cb9f = (name)=>`constant::${name}`;
-const $53a7a2c32695d914$export$85ca6aa0f7ebde22 = (name)=>`model::${name}`;
-const $53a7a2c32695d914$export$bf648471fa87db4a = (id)=>`output::${id}`;
 var $53a7a2c32695d914$export$d95e7684b6658cc2;
 (function(SourceType) {
     SourceType["Constant"] = "constant";

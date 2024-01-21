@@ -77,10 +77,6 @@ export interface Model {
     schema: string;
 }
 declare const userModel: Model;
-export const MEMORY_SELECTOR: (id: string) => string;
-export const CONSTANT_SELECTOR: (name: string) => string;
-export const MODEL_SELECTOR: (name: string) => string;
-export const OUTPUT_SELECTOR: (id: string) => string;
 enum SourceType {
     Constant = "constant",
     Memory = "memory",
@@ -156,7 +152,6 @@ export enum AccessorType {
     DataIn = "dataIn"
 }
 export type AccessorTile = TileGeneral & {
-    output: Output['id'][];
     accessType: AccessorType;
 };
 type ConstantAccessorTile = AccessorTile & {

@@ -33,12 +33,7 @@ import {
 export {
     TileType,
     OutputType,
-    // OutputDirection,
     ConditionOperator,
-    CONSTANT_SELECTOR,
-    MEMORY_SELECTOR,
-    MODEL_SELECTOR,
-    OUTPUT_SELECTOR,
     SimpleDataType,
     FormatDataType,
     ActionMapHandler,
