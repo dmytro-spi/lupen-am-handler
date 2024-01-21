@@ -387,14 +387,15 @@ export class ActionMapHandler {
       throw new Error(`Tile ${output.inputTileId} not found`);
     }
 
+    // TODO: enable this
     let compatiblePaths: OutputCompatiblePaths;
-    if (
-      !this.canConnectTiles(output.outputTileId, output.inputTileId, (paths) => {
-        compatiblePaths = paths;
-      })
-    ) {
-      throw new Error(`Tiles ${output.outputTileId} and ${output.inputTileId} are not compatible`);
-    }
+    // if (
+    //   !this.canConnectTiles(output.outputTileId, output.inputTileId, (paths) => {
+    //     compatiblePaths = paths;
+    //   })
+    // ) {
+    //   throw new Error(`Tiles ${output.outputTileId} and ${output.inputTileId} are not compatible`);
+    // }
 
     // TODO: reimplement this
     // if (!output.dataMap.every((dataMap) => compatiblePaths.some((path) => path.from === dataMap.outputPath && path.to === dataMap.inputPath))) {
