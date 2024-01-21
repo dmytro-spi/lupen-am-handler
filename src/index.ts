@@ -7,24 +7,20 @@ import {
     AccessorTile,
     ActionMap,
     ActionTile,
-    CONSTANT_SELECTOR,
     ConditionalOutput,
     DataIn,
     ConditionOperator,
     DefaultOutput,
     ForEachOutput,
-    MEMORY_SELECTOR,
-    MODEL_SELECTOR,
     MemoryTile,
-    OUTPUT_SELECTOR,
     Output,
-    // OutputDirection,
     OutputGeneral,
     OutputType,
     Tile,
     TileType,
     AccessorType,
     MemoryType,
+    ModelAccessOperation,
 } from './actionMap/types/actionMap';
 import {
     ComplexDataType,ContentDataType,DataSchema,DataTypes,FormatDataType,SimpleDataType
@@ -44,6 +40,7 @@ export {
     MemoryType,
     userModel as UserModel,
     combineAction as CombineAction,
+    ModelAccessOperation,
 }
 export type {
     Tile,

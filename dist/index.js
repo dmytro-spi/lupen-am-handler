@@ -20,6 +20,7 @@ $parcel$export(module.exports, "AccessorType", () => $53a7a2c32695d914$export$1f
 $parcel$export(module.exports, "MemoryType", () => $53a7a2c32695d914$export$90d94503f4d956ff);
 $parcel$export(module.exports, "UserModel", () => $5e1189d2af7b41be$export$54582e7b17f0fab7);
 $parcel$export(module.exports, "CombineAction", () => $1303ce4d25c6cacb$export$9b31c90f56636e45);
+$parcel$export(module.exports, "ModelAccessOperation", () => $53a7a2c32695d914$export$5c1a605137b9ecb3);
 
 var $9c38f06678b5673e$export$2bd38b90f09fb16c;
 (function(SimpleDataType) {

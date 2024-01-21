@@ -166,7 +166,7 @@ type MemoryAccessorTile = AccessorTile & {
     accessType: AccessorType.Memory;
     memoryTileId: string;
 };
-enum ModelAccessOperation {
+export enum ModelAccessOperation {
     FindOne = "findOne",
     FindMany = "findMany",
     FindFirst = "findFirst",
