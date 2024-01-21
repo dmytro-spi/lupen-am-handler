@@ -1,5 +1,6 @@
 var $8zHUo$uuid = require("uuid");
 var $8zHUo$yup = require("yup");
+var $8zHUo$lodash = require("lodash");
 
 
 function $parcel$export(e, n, v, s) {
@@ -50,6 +51,21 @@ var $9c38f06678b5673e$export$1ae122a9008ff510;
     ComplexDataType["Object"] = "object";
     ComplexDataType["Array"] = "array";
 })($9c38f06678b5673e$export$1ae122a9008ff510 || ($9c38f06678b5673e$export$1ae122a9008ff510 = {}));
+var $9c38f06678b5673e$export$485ee20ccac73046;
+(function(SpecialDataType) {
+    SpecialDataType["Any"] = "any";
+})($9c38f06678b5673e$export$485ee20ccac73046 || ($9c38f06678b5673e$export$485ee20ccac73046 = {}));
+var $9c38f06678b5673e$export$4587e7df7bf7da4;
+(function(CompatibilitySide) {
+    CompatibilitySide["Source"] = "source";
+    CompatibilitySide["Target"] = "target";
+})($9c38f06678b5673e$export$4587e7df7bf7da4 || ($9c38f06678b5673e$export$4587e7df7bf7da4 = {}));
+var $9c38f06678b5673e$export$f254a14107c93b29;
+(function(SchemasCompatibilityTypes) {
+    SchemasCompatibilityTypes["Direct"] = "direct";
+    SchemasCompatibilityTypes["Conditional"] = "conditional";
+    SchemasCompatibilityTypes["ArrayItem"] = "arrayItem";
+})($9c38f06678b5673e$export$f254a14107c93b29 || ($9c38f06678b5673e$export$f254a14107c93b29 = {}));
 
 
 
@@ -180,6 +196,13 @@ const $53a7a2c32695d914$export$ede5a19a386fa7ea = (id)=>`memory::${id}`;
 const $53a7a2c32695d914$export$a82221618652cb9f = (name)=>`constant::${name}`;
 const $53a7a2c32695d914$export$85ca6aa0f7ebde22 = (name)=>`model::${name}`;
 const $53a7a2c32695d914$export$bf648471fa87db4a = (id)=>`output::${id}`;
+var $53a7a2c32695d914$export$d95e7684b6658cc2;
+(function(SourceType) {
+    SourceType["Constant"] = "constant";
+    SourceType["Memory"] = "memory";
+    SourceType["Model"] = "model";
+    SourceType["Input"] = "input";
+})($53a7a2c32695d914$export$d95e7684b6658cc2 || ($53a7a2c32695d914$export$d95e7684b6658cc2 = {}));
 var $53a7a2c32695d914$export$e035c9caa79ccaa9;
 (function(ConditionOperator) {
     ConditionOperator["Equal"] = "==";
@@ -190,7 +213,13 @@ var $53a7a2c32695d914$export$e035c9caa79ccaa9;
     ConditionOperator["GreaterThanOrEqual"] = ">=";
     ConditionOperator["LessThan"] = "<";
     ConditionOperator["LessThanOrEqual"] = "<=";
+    ConditionOperator["Not"] = "!";
 })($53a7a2c32695d914$export$e035c9caa79ccaa9 || ($53a7a2c32695d914$export$e035c9caa79ccaa9 = {}));
+var $53a7a2c32695d914$export$e1de7239b7c0d20c;
+(function(LogicalOperator) {
+    LogicalOperator["And"] = "&&";
+    LogicalOperator["Or"] = "||";
+})($53a7a2c32695d914$export$e1de7239b7c0d20c || ($53a7a2c32695d914$export$e1de7239b7c0d20c = {}));
 var $53a7a2c32695d914$export$be94d7b677b041dd;
 (function(OutputType) {
     OutputType["Default"] = "default";
@@ -424,34 +453,121 @@ var $2ef5ffc2b42722f3$export$2e2bcd8739ae039 = $2ef5ffc2b42722f3$var$actionMapSc
 
 
 
+
+
+const $5d6c89ad12d38273$var$pathValidateAndFormat = (path, chainLength)=>{
+    if (!path) return "";
+    const symbols = path.match(/[^\.a-zA-Z0-9\[\]]/g);
+    if (symbols) throw new Error(`Invalid symbols in path: ${path}`);
+    if (path[0] === ".") return path.slice(1);
+    if (chainLength && path.split(".").length !== chainLength) throw new Error(`Invalid path length: ${path}`);
+    return path;
+};
+var $5d6c89ad12d38273$export$2e2bcd8739ae039 = $5d6c89ad12d38273$var$pathValidateAndFormat;
+
+
 class $763d6b25a3753a1a$export$e073683b1b98b026 {
-    getPropertiesTree(schema) {
-        return this.getPropertiesTreeFromSchema(schema);
-    }
+    // public getPropertiesTree(schema: DataSchema): PropertyTree {
+    //   return this.getPropertiesTreeFromSchema(schema);
+    // }
     isSchemasCompatible(schema, schemaToCompare) {
         return this.isSchemasCompatibleRecursive(schema, schemaToCompare);
     }
-    isSchemaPartiallyCompatible(schemaFrom, schemaTo, cb) {
-        const compatiblePaths = [];
-        this.walkThroughPropertiesRecursive(schemaFrom, (partialSchema, path)=>{
-            if (this.isSchemasCompatibleRecursive(partialSchema, schemaTo)) compatiblePaths.push(path);
+    findCompatibilities(source, target, cb) {
+        if (!this.validateSchema(source) || !this.validateSchema(target)) throw new Error("Invalid schemas");
+        const someCompatible = false;
+        const sourceC = (0, $8zHUo$lodash.cloneDeep)(source);
+        const targetC = (0, $8zHUo$lodash.cloneDeep)(target);
+        const sourceDataSchemas = [];
+        const targetDataSchemas = Object.values(targetC.properties || {});
+        this.walkThroughPropertiesRecursive(sourceC, (partialSchema)=>{
+            sourceDataSchemas.push(partialSchema);
         });
-        cb(compatiblePaths);
-        return compatiblePaths.length > 0;
-    }
-    isSchemaPartiallyCompatibleWithTopLevelProperties(schemaFrom, schemaTo, cb) {
-        const compatiblePaths = [];
-        Object.entries(schemaTo.properties || {}).forEach(([key, value])=>{
-            this.walkThroughPropertiesRecursive(schemaFrom, (partialSchema, path)=>{
-                if (this.isSchemasCompatibleRecursive(partialSchema, value)) compatiblePaths.push({
-                    from: path,
-                    to: `.${key}`
+        for (const sourceSchema of sourceDataSchemas)for (const targetSchema of targetDataSchemas){
+            if (this.isSchemasCompatibleRecursive({
+                ...sourceSchema,
+                required: true
+            }, targetSchema)) {
+                sourceSchema.compatibility = sourceSchema.compatibility || [];
+                targetSchema.compatibility = targetSchema.compatibility || [];
+                const uuid = (0, $8zHUo$uuid.v4)();
+                const type = !sourceSchema.required && targetSchema.required ? (0, $9c38f06678b5673e$export$f254a14107c93b29).Conditional : (0, $9c38f06678b5673e$export$f254a14107c93b29).Direct;
+                sourceSchema.compatibility.push({
+                    id: uuid,
+                    side: (0, $9c38f06678b5673e$export$4587e7df7bf7da4).Source,
+                    type: type
                 });
-            });
-        });
-        cb(compatiblePaths);
-        return compatiblePaths.length > 0;
+                targetSchema.compatibility.push({
+                    id: uuid,
+                    side: (0, $9c38f06678b5673e$export$4587e7df7bf7da4).Target,
+                    type: type
+                });
+            }
+            if (sourceSchema.type === (0, $9c38f06678b5673e$export$1ae122a9008ff510).Array && this.isSchemasCompatibleRecursive(sourceSchema.arrayType, targetSchema)) {
+                sourceSchema.compatibility = sourceSchema.compatibility || [];
+                targetSchema.compatibility = targetSchema.compatibility || [];
+                const uuid = (0, $8zHUo$uuid.v4)();
+                sourceSchema.compatibility.push({
+                    id: uuid,
+                    side: (0, $9c38f06678b5673e$export$4587e7df7bf7da4).Source,
+                    type: (0, $9c38f06678b5673e$export$f254a14107c93b29).ArrayItem
+                });
+                targetSchema.compatibility.push({
+                    id: uuid,
+                    side: (0, $9c38f06678b5673e$export$4587e7df7bf7da4).Target,
+                    type: (0, $9c38f06678b5673e$export$f254a14107c93b29).ArrayItem
+                });
+            }
+        }
+        return someCompatible;
     }
+    // public isSchemaPartiallyCompatible(
+    //   schemaFrom: DataSchema,
+    //   schemaTo: DataSchema,
+    //   cb: (compatiblePaths: string[]) => any,
+    // ): boolean {
+    //   const compatiblePaths: string[] = [];
+    //   this.walkThroughPropertiesRecursive(schemaFrom, (partialSchema, path) => {
+    //     if (this.isSchemasCompatibleRecursive(partialSchema, schemaTo)) {
+    //       compatiblePaths.push(path);
+    //     }
+    //   });
+    //   cb(compatiblePaths);
+    //   return compatiblePaths.length > 0;
+    // }
+    // public isPartiallyCompatible(
+    //   schemaFrom: DataSchema,
+    //   schemaTo: DataSchema,
+    //   cb: (compatiblePaths: CompatiblePaths) => any,
+    // ): boolean {
+    //   const compatiblePaths: CompatiblePaths = [];
+    //   Object.entries(schemaTo.properties || {}).forEach(([key, destProperty]) => {
+    //     this.walkThroughPropertiesRecursive(schemaFrom, (partialSchema, path) => {
+    //       if (this.isSchemasCompatibleRecursive(partialSchema, destProperty)) {
+    //         compatiblePaths.push({ from: path, to: key, compatibilityType: SchemasCompatibilityTypes.Direct });
+    //       }
+    //       if (
+    //         !partialSchema.required
+    //           && destProperty.required
+    //           && this.isSchemasCompatibleRecursive({ ...partialSchema, required: true }, destProperty)
+    //       ) {
+    //         compatiblePaths.push({ from: path, to: key, compatibilityType: SchemasCompatibilityTypes.Conditional });
+    //       }
+    //       if (
+    //         partialSchema.type === ComplexDataType.Array
+    //           && this.isSchemasCompatibleRecursive(partialSchema.arrayType!, destProperty)
+    //       ) {
+    //         compatiblePaths.push({
+    //           from: path,
+    //           to: key,
+    //           compatibilityType: SchemasCompatibilityTypes.ForEach,
+    //         });
+    //       }
+    //     });
+    //   });
+    //   cb(compatiblePaths);
+    //   return compatiblePaths.length > 0;
+    // }
     validateSchema(schema) {
         if (schema.type !== (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object && schema.properties) return false;
         return true;
@@ -466,18 +582,19 @@ class $763d6b25a3753a1a$export$e073683b1b98b026 {
             case (0, $9c38f06678b5673e$export$b00b62a09b73016e).Image:
             case (0, $9c38f06678b5673e$export$b00b62a09b73016e).Video:
             case (0, $9c38f06678b5673e$export$b00b62a09b73016e).Audio:
-                callback(schema, "");
+            case (0, $9c38f06678b5673e$export$485ee20ccac73046).Any:
+                callback(schema);
                 break;
             case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object:
                 Object.entries(schema.properties || {}).forEach(([key, value])=>{
-                    this.walkThroughPropertiesRecursive(value, (partialSchema, path)=>{
-                        callback(partialSchema, `.${key}${path}`);
+                    this.walkThroughPropertiesRecursive(value, (partialSchema)=>{
+                        callback(partialSchema);
                     });
                 });
                 break;
             case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Array:
-                this.walkThroughPropertiesRecursive(schema.arrayType, (dSchema, path)=>{
-                    callback(dSchema, `[]${path}`);
+                this.walkThroughPropertiesRecursive(schema.arrayType, (dSchema)=>{
+                    callback(dSchema);
                 });
                 break;
             default:
@@ -485,7 +602,7 @@ class $763d6b25a3753a1a$export$e073683b1b98b026 {
         }
     }
     getSchemaFromPath(schema, path) {
-        const pathParts = path.split(/\.|\[\]/g).filter((part)=>part !== "");
+        const pathParts = (0, $5d6c89ad12d38273$export$2e2bcd8739ae039)(path).replace(/[\[\]\d]/g, "").split(".").filter((part)=>part !== "");
         let currentSchema = schema;
         for (const pathPart of pathParts)switch(currentSchema.type){
             case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object:
@@ -510,7 +627,7 @@ class $763d6b25a3753a1a$export$e073683b1b98b026 {
             case (0, $9c38f06678b5673e$export$b00b62a09b73016e).Image:
             case (0, $9c38f06678b5673e$export$b00b62a09b73016e).Video:
             case (0, $9c38f06678b5673e$export$b00b62a09b73016e).Audio:
-                return true;
+                return schemaFrom.required === schemaTo.required || !schemaTo.required;
             case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object:
                 return Object.entries(schemaFrom.properties || {}).every(([key, value])=>{
                     const schemaToProperty = schemaTo.properties?.[key];
@@ -523,40 +640,24 @@ class $763d6b25a3753a1a$export$e073683b1b98b026 {
                 throw new Error(`Unsupported data type: ${schemaFrom.type}`);
         }
     }
-    getPropertiesTreeFromSchema(schema) {
-        switch(schema.type){
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Text:
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Number:
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).Date:
-            case (0, $9c38f06678b5673e$export$2bd38b90f09fb16c).YesNo:
-                return [];
-            case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Array:
-                return this.getPropertiesTreeFromSchema(schema.arrayType);
-            case (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object:
-                return Object.entries(schema.properties || {}).map(([key, value])=>({
-                        name: key,
-                        type: value.type,
-                        children: this.getPropertiesTreeFromSchema(value)
-                    }));
-            default:
-                throw new Error(`Unsupported data type: ${schema.type}`);
-        }
-    }
 }
 
 
 
 class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
-    constructor(actionMap, models, actionFetcher, options){
+    constructor(actionMap, models, options){
         this.models = models;
-        this.actionFetcher = actionFetcher;
         this.dataSchemaHandler = new (0, $763d6b25a3753a1a$export$e073683b1b98b026)();
         this.actionMap = $86d69c5e11233160$export$a82bfd0bc6a25e39.emptyActionMap;
+        this.usedActions = [];
         this.changeStack = [];
         this.futureStack = [];
         if (actionMap) {
             this.actionMap = actionMap;
-            if (!options?.skipValidation) this.validateSchema();
+            if (!options?.skipValidation) {
+                const { isValid: isValid } = this.validateSchema();
+                if (!isValid) throw new Error("Invalid action map schema");
+            }
         } else this.createEmptyActionMap();
     }
     // PUBLIC ------------------------------------------------------------------
@@ -571,11 +672,19 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
             outputs: []
         };
     }
+    forceUpdateActionMap(actionMap) {
+        this.actionMap = actionMap;
+        return this.actionMap;
+    }
+    // TODO: implement!
+    isTileNeedsForInputs(tileId) {
+        throw new Error("Not implemented");
+    }
     /**
    * Creates an empty ActionMap with a unique ID and optional name.
    * If no name is provided, the default name 'New Action Map' is used.
    * The function initializes empty arrays for tiles and outputs.
-   * 
+   *
    * @param {string} [name] - Optional name for the ActionMap. Defaults to 'New Action Map'.
    * @returns {ActionMap} An object representing the new ActionMap with the following properties:
    *                       - id: a unique identifier generated by uuidv4.
@@ -595,7 +704,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
     /**
    * Renames the current ActionMap with a new specified name.
    * This method updates the 'name' property of the ActionMap and then returns the updated ActionMap.
-   * 
+   *
    * @param {string} name - The new name to be assigned to the ActionMap.
    * @returns {ActionMap} The updated ActionMap with the new name.
    */ renameActionMap(name) {
@@ -613,14 +722,24 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    *           the schema.
    * @throws {Error} Throws an error if the action map fails schema validation,
    *         with details about the validation errors.
-   */ async validateSchema() {
-        await (0, $2ef5ffc2b42722f3$export$2e2bcd8739ae039).validate(this.actionMap, {
-            abortEarly: false
-        });
-        return true;
+   */ validateSchema() {
+        try {
+            (0, $2ef5ffc2b42722f3$export$2e2bcd8739ae039).validateSync(this.actionMap, {
+                abortEarly: false
+            });
+            return {
+                isValid: true,
+                errors: []
+            };
+        } catch (e) {
+            return {
+                isValid: false,
+                errors: e.errors
+            };
+        }
     }
     /**
-   * Asynchronously retrieves the output schema for an Accessor tile.
+   * Retrieves the output schema for an Accessor tile.
    *
    * This function determines the schema based on the source type of the Accessor
    * tile, which is derived from its 'source' property. The source type can be
@@ -633,7 +752,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    *           associated with the Accessor tile's source.
    * @throws {Error} Throws an error for the Constant source type or if the accessor
    *         source type is invalid.
-   */ async getAccessorOutputSchema(tile) {
+   */ getAccessorOutputSchema(tile) {
         const source = tile.accessType;
         const sourceType = source[0];
         const sourceId = source[1];
@@ -669,11 +788,11 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    * @returns {boolean} Returns true if the tile is valid according to its schema.
    * @throws {Error} Throws an error if the tile type is invalid or if the tile
    *         fails schema validation.
-   */ async validateTile(tile) {
+   */ validateTile(tile) {
         if (this.tilesIntersect(tile.coordinates)) throw new Error("Tile has intersections");
         switch(tile.type){
             case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
-                await (0, $5a06354403e1cbe2$export$8df29c7063b7517d).validate(tile, {
+                (0, $5a06354403e1cbe2$export$8df29c7063b7517d).validate(tile, {
                     abortEarly: false
                 });
                 break;
@@ -702,8 +821,14 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    *
    * @param {Tile} tile - The tile object to be added to the action map.
    * @returns {ActionMap} The updated action map with the new tile added.
-   */ addTile(tile) {
+   */ addTile(tile, actionSchemas) {
         this.validateTile(tile);
+        // check action schemas and cache them
+        if (tile.type === (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action) {
+            if (!actionSchemas) throw new Error("Action schemas are not provided");
+            if (tile.actionId !== actionSchemas.actionId) throw new Error("Action schemas are not for this action");
+            if (!this.usedActions.some((usedAction)=>usedAction.actionId === actionSchemas.actionId)) this.usedActions.push(actionSchemas);
+        }
         this.pushNewState({
             ...this.actionMap,
             tiles: [
@@ -726,15 +851,15 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    *           associated inputs and outputs have been removed.
    * @throws {Error} Throws an error if the tile with the specified ID is not found.
    */ removeTile(id) {
-        const index = this.actionMap.tiles.findIndex((t)=>t.id === id);
-        if (index === -1) throw new Error(`Tile ${id} not found`);
+        const tile = this.actionMap.tiles.find((t)=>t.id === id);
+        if (!tile) throw new Error(`Tile ${id} not found`);
         // delete inputs ant outputs for this tile
-        const outputsForDelete = this.actionMap.outputs.filter((o)=>this.actionMap.tiles[index].output?.includes(o.id) || this.actionMap.tiles[index].input?.includes(o.id));
-        outputsForDelete.forEach((o)=>{
-            this.removeOutput(o.id);
+        const newOutputs = this.actionMap.outputs.filter((o)=>o.outputTileId !== id && o.inputTileId !== id);
+        return this.pushNewState({
+            ...this.actionMap,
+            tiles: this.actionMap.tiles.filter((t)=>t.id !== id),
+            outputs: newOutputs
         });
-        this.actionMap.tiles.splice(index, 1);
-        return this.actionMap;
     }
     /**
    * Asynchronously determines if two tiles can be connected.
@@ -751,14 +876,18 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    *        that receives compatible paths determined during the evaluation.
    * @returns {Promise<boolean>} A promise that resolves to a boolean indicating
    *           whether the tiles can be connected.
-   */ async canConnectTiles(fromTileId, toTileId, cb) {
+   */ canConnectTiles(fromTileId, toTileId, cb) {
         const fromTile = this.actionMap.tiles.find((t)=>t.id === fromTileId);
         const toTile = this.actionMap.tiles.find((t)=>t.id === toTileId);
-        if (toTile?.type === (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory) return true;
-        if (toTile?.type !== (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action) return false;
-        const fromSchema = await this.getTileOutputSchema(fromTile);
-        const toSchema = await this.getActionArgumentsSchema(toTile.actionId);
-        return this.dataSchemaHandler.isSchemaPartiallyCompatibleWithTopLevelProperties(fromSchema, toSchema, cb);
+        let toSchema = null;
+        if (toTile?.type === (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory) toSchema = this.getMemorySchema(toTile.id);
+        if (toTile?.type === (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action) toSchema = this.getActionArgumentsSchema(toTile.actionId);
+        if (!toSchema) return false;
+        const fromSchema = this.getTileOutputSchema(fromTile);
+        return this.dataSchemaHandler.findCompatibilities(fromSchema, toSchema, (source, target)=>cb({
+                from: source,
+                to: target
+            }));
     }
     /**
    * Asynchronously adds a new output to the action map and updates related tiles.
@@ -776,45 +905,40 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    *           with the new output and updated tile connections.
    * @throws {Error} Throws an error if source or destination tiles are not found,
    *           if they are not compatible, or if their types are invalid for adding outputs.
-   */ async addOutput(output, fromTileId, toTileId) {
-        const fromTile = this.actionMap.tiles.find((t)=>t.id === fromTileId);
-        if (!fromTile) throw new Error(`Tile ${fromTileId} not found`);
-        const toTile = this.actionMap.tiles.find((t)=>t.id === toTileId);
-        if (!toTile) throw new Error(`Tile ${toTileId} not found`);
-        let compatiblePaths = [];
-        if (!this.canConnectTiles(fromTileId, toTileId, (paths)=>{
-            compatiblePaths = paths;
-        })) throw new Error(`Tiles ${fromTileId} and ${toTileId} are not compatible`);
-        // TODO: check compatiblePaths with output
+   */ addOutput(output) {
+        // TODO: Add output validation
+        const fromTile = this.actionMap.tiles.find((t)=>t.id === output.outputTileId);
+        if (!fromTile) throw new Error(`Tile ${output.outputTileId} not found`);
+        const toTile = this.actionMap.tiles.find((t)=>t.id === output.inputTileId);
+        if (!toTile) throw new Error(`Tile ${output.inputTileId} not found`);
+        // TODO: enable this
+        let compatiblePaths;
+        // if (
+        //   !this.canConnectTiles(output.outputTileId, output.inputTileId, (paths) => {
+        //     compatiblePaths = paths;
+        //   })
+        // ) {
+        //   throw new Error(`Tiles ${output.outputTileId} and ${output.inputTileId} are not compatible`);
+        // }
+        // TODO: reimplement this
+        // if (!output.dataMap.every((dataMap) => compatiblePaths.some((path) => path.from === dataMap.outputPath && path.to === dataMap.inputPath))) {
+        //   throw new Error('Output data map is not compatible with tiles');
+        // }
         const outputId = (0, $8zHUo$uuid.v4)();
-        this.actionMap.outputs.push({
-            id: outputId,
-            ...output
+        this.pushNewState({
+            ...this.actionMap,
+            outputs: [
+                ...this.actionMap.outputs,
+                {
+                    ...output,
+                    id: outputId
+                }
+            ]
         });
-        switch(fromTile.type){
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
-                fromTile.output.push(outputId);
-                break;
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action:
-                fromTile.output.push(outputId);
-                break;
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory:
-                throw new Error("Cannot add output to memory tile");
-            default:
-                throw new Error(`Invalid tile type: ${fromTile.type}`);
-        }
-        switch(toTile.type){
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
-                throw new Error("Cannot add input to accessor tile");
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action:
-                toTile.input[parseInt(output.toArgument)] = outputId;
-                break;
-            case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory:
-                toTile.input.push(outputId);
-                break;
-            default:
-                throw new Error(`Invalid tile type: ${toTile.type}`);
-        }
+        this.actionMap.outputs.push({
+            ...output,
+            id: outputId
+        });
         return this.actionMap;
     }
     /**
@@ -832,33 +956,41 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    *           updating related tiles.
    * @throws {Error} Throws an error if the output with the specified ID is not found.
    * @throws {Error} Throws an error if it encounters an invalid or unrecognized tile type.
-   */ removeOutput(id) {
-        const index = this.actionMap.outputs.findIndex((o)=>o.id === id);
-        if (index === -1) throw new Error(`Output ${id} not found`);
-        this.actionMap.outputs.splice(index, 1);
-        // remove output from tiles
-        this.actionMap.tiles = this.actionMap.tiles.map((tile)=>{
-            const tileCopy = {
-                ...tile
-            };
-            switch(tile.type){
-                case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
-                    tileCopy.output = tile.output.filter((outputId)=>outputId !== id);
-                    break;
-                case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action:
-                    tileCopy.input = tile.input.filter((outputId)=>outputId !== id);
-                    tileCopy.output = tile.output.filter((outputId)=>outputId !== id);
-                    break;
-                case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory:
-                    tileCopy.input = tile.input.filter((outputId)=>outputId !== id);
-                    break;
-                default:
-                    throw new Error(`Invalid tile type: ${tile.type}`);
-            }
-            return tile;
-        });
-        return this.actionMap;
-    }
+   */ // public removeOutput(id: string): ActionMap {
+    //   const index = this.actionMap.outputs.findIndex((o: Output) => o.id === id);
+    //   if (index === -1) {
+    //     throw new Error(`Output ${id} not found`);
+    //   }
+    //   this.actionMap.outputs.splice(index, 1);
+    //   // remove output from tiles
+    //   this.actionMap.tiles = this.actionMap.tiles.map((tile: Tile) => {
+    //     const tileCopy = { ...tile };
+    //     switch (tile.type) {
+    //       case TileType.Accessor:
+    //         (tileCopy as AccessorTile).output = (
+    //           tile as AccessorTile
+    //         ).output.filter((outputId: string) => outputId !== id);
+    //         break;
+    //       case TileType.Action:
+    //         (tileCopy as ActionTile).input = (tile as ActionTile).input.filter(
+    //           (outputId: string) => outputId !== id,
+    //         );
+    //         (tileCopy as ActionTile).output = (tile as ActionTile).output.filter(
+    //           (outputId: string) => outputId !== id,
+    //         );
+    //         break;
+    //       case TileType.Memory:
+    //         (tileCopy as MemoryTile).input = (tile as MemoryTile).input.filter(
+    //           (outputId: string) => outputId !== id,
+    //         );
+    //         break;
+    //       default:
+    //         throw new Error(`Invalid tile type: ${tile.type}`);
+    //     }
+    //     return tile;
+    //   });
+    //   return this.actionMap;
+    // }
     /**
    * Updates the coordinates of a specific tile in the action map.
    *
@@ -875,60 +1007,18 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         const tile = this.actionMap.tiles.find((t)=>t.id === id);
         if (!tile) throw new Error(`Tile ${id} not found`);
         const anotherTileIntersects = this.tilesIntersect(position);
-        if (anotherTileIntersects) // this.updateCoordinatesForTilesAndOutputs(tile, start, end); // TODO: check if it's ok
-        throw new Error("Tile intersects with another tile");
-        tile.coordinates = position;
-        return this.actionMap;
+        if (anotherTileIntersects) throw new Error("Tile intersects with another tile");
+        return this.pushNewState({
+            ...this.actionMap,
+            tiles: this.actionMap.tiles.map((t)=>{
+                if (t.id === id) return {
+                    ...t,
+                    coordinates: position
+                };
+                return t;
+            })
+        });
     }
-    /**
-   * Updates the coordinates of all tiles and outputs that intersect with a given tile.
-   *
-   * This function updates the coordinates of all tiles and outputs that intersect
-   * with a given tile. It is used to update the coordinates of a tile when it is
-   * dragged to a new location. The function checks if the tile intersects with
-   * any other tiles in the action map. If so, it updates the coordinates of the
-   * intersecting tiles and any outputs that are connected to them.
-   *
-   * @param {Tile} tile - The tile that was dragged to a new location.
-   * @param {[number, number]} start - The new starting coordinates of the tile.
-   * @param {[number, number]} end - The new ending coordinates of the tile.
-   */ // public updateCoordinatesForTilesAndOutputs(
-    //   tile: Tile,
-    //   start: [number, number],
-    //   end: [number, number],
-    // ): void {
-    //   // get difference between old and new coordinates
-    //   const xDiff = start[0] - tile.coordinates.start[0];
-    //   const yDiff = start[1] - tile.coordinates.start[1];
-    //   // get all tiles that are intersect or after the dragged tile
-    //   const tilesToMove = this.actionMap.tiles.filter((t: Tile) => {
-    //     const xStart = t.coordinates.start[0];
-    //     const xEnd = t.coordinates.end[0];
-    //     const yStart = t.coordinates.start[1];
-    //     const yEnd = t.coordinates.end[1];
-    //     return (
-    //       (xStart >= start[0] && yStart >= start[1])
-    //       || (xEnd >= start[0] && yEnd >= start[1])
-    //       || (xStart >= start[0] && yEnd >= start[1])
-    //       || (xEnd >= start[0] && yStart >= start[1])
-    //     );
-    //   });
-    //   // move tiles
-    //   tilesToMove.forEach((t: Tile) => {
-    //     t.coordinates.start[0] += xDiff;
-    //     t.coordinates.start[1] += yDiff;
-    //     t.coordinates.end[0] += xDiff;
-    //     t.coordinates.end[1] += yDiff;
-    //   });
-    //   // move outputs
-    //   this.actionMap.outputs.forEach((o: Output) => {
-    //     const fromTile = this.getSourceTileForOutput(o.id);
-    //     if (tilesToMove.includes(fromTile)) {
-    //       o.coordinates[0] += xDiff;
-    //       o.coordinates[1] += yDiff;
-    //     }
-    //   });
-    // }
     /**
    * Checks if a tile intersects with any other tile in the action map.
    *
@@ -936,26 +1026,9 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    * intersects with any other tile in the action map. If an intersection is found,
    * it returns true. Otherwise, it returns false.
    *
-   * @param {[number, number]} start - The starting coordinates of the tile to be checked.
-   * @param {[number, number]} end - The ending coordinates of the tile to be checked.
+   * @param {[number, number]} position - The coordinates of the tile to be checked.
    * @returns {boolean} True if the tile intersects with another tile, false otherwise.
    */ tilesIntersect(position) {
-        // const xStart = start[0];
-        // const xEnd = end[0];
-        // const yStart = start[1];
-        // const yEnd = end[1];
-        // return this.actionMap.tiles.some((t: Tile) => {
-        //   const tXStart = t.coordinates.start[0];
-        //   const tXEnd = t.coordinates.end[0];
-        //   const tYStart = t.coordinates.start[1];
-        //   const tYEnd = t.coordinates.end[1];
-        //   return (
-        //     (tXStart >= xStart && tXStart <= xEnd && tYStart >= yStart && tYStart <= yEnd)
-        //     || (tXEnd >= xStart && tXEnd <= xEnd && tYEnd >= yStart && tYEnd <= yEnd)
-        //     || (tXStart >= xStart && tXStart <= xEnd && tYEnd >= yStart && tYEnd <= yEnd)
-        //     || (tXEnd >= xStart && tXEnd <= xEnd && tYStart >= yStart && tYStart <= yEnd)
-        //   );
-        // });
         return Boolean(this.actionMap.tiles.find((t)=>t.coordinates[0] === position[0] && t.coordinates[1] === position[1]));
     }
     /**
@@ -971,7 +1044,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    *           associated with the tile's output. The specific schema returned
    *           depends on the tile type.
    * @throws {Error} Throws an error if the tile type is invalid or unrecognized.
-   */ async getTileOutputSchema(tile) {
+   */ getTileOutputSchema(tile) {
         switch(tile.type){
             case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
                 return this.getAccessorOutputSchema(tile);
@@ -994,38 +1067,11 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    * @returns {Promise<DataSchema>} A promise that resolves to the data schema of
    *           the action's arguments. The schema is parsed from a JSON string.
    * @throws {Error} Throws an error if the action is not found.
-   */ async getActionArgumentsSchema(actionId) {
-        const action = await this.actionFetcher(actionId);
+   */ getActionArgumentsSchema(actionId) {
+        const action = this.usedActions.find((a)=>a.actionId === actionId);
         if (!action) throw new Error(`Action ${actionId} not found`);
-        return JSON.parse(action.arguments);
+        return action.arguments;
     }
-    /**
-   * Asynchronously retrieves all possible outputs for a given tile.
-   *
-   * This function calculates possible outputs by examining each neighboring tile.
-   * For each neighbor, it determines if a connection is possible, the direction 
-   * of the output, and the coordinates of the output.
-   *
-   * @param {Tile} tile - The tile for which to find possible outputs.
-   * @returns {Promise<PossibleOutput[]>} A promise that resolves to an array of 
-   *           possible outputs. Each output includes coordinates, direction, and 
-   *           a boolean indicating if the output is active.
-   */ // public async getTilePossibleOutputs(tile: Tile): Promise<PossibleOutput[]> {
-    //   const neighbors = await this.getTileNeighbors(tile);
-    //   const possibleOutputs: PossibleOutput[] = await Promise.all(
-    //     neighbors.map(async (neighbor: Tile) => {
-    //       const canBeConnected = await this.canConnectTiles(tile.id, neighbor.id, () => {});
-    //       const direction = this.getOutputDirection(tile, neighbor);
-    //       const coordinates = this.getOutputCoordinates(tile, neighbor, direction);
-    //       return {
-    //         coordinates,
-    //         direction,
-    //         active: canBeConnected,
-    //       };
-    //     }),
-    //   );
-    //   return possibleOutputs;
-    // }
     undo() {
         return this.returnToPreviousState();
     }
@@ -1033,6 +1079,23 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         return this.returnToFutureState();
     }
     // PROTECTED -----------------------------------------------------------------
+    getMemoryInitialSchema(tileId) {
+        const memory = this.getMemoryById(tileId);
+        if (!memory) throw new Error(`Memory ${tileId} not found`);
+        if (memory.memoryType === (0, $53a7a2c32695d914$export$90d94503f4d956ff).Model) return this.getModelSchema(memory.modelName);
+        const initialMemorySchema = {
+            type: (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object,
+            properties: memory.properties.reduce((acc, prop)=>{
+                acc[prop] = {
+                    type: (0, $9c38f06678b5673e$export$485ee20ccac73046).Any,
+                    required: true
+                };
+                return acc;
+            }, {}),
+            required: true
+        };
+        return initialMemorySchema;
+    }
     pushNewState(actionMap) {
         this.clearFutureStack();
         this.changeStack.push(this.actionMap);
@@ -1042,7 +1105,8 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
     }
     returnToPreviousState() {
         this.putCurrentToFutureState();
-        return this.changeStack.pop() ?? this.actionMap;
+        this.actionMap = this.changeStack.pop() ?? this.actionMap;
+        return this.actionMap;
     }
     putCurrentToFutureState() {
         if (!this.actionMap) return this.actionMap;
@@ -1062,85 +1126,13 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
     }
     returnToFutureState() {
         this.putCurrentToPreviousState();
-        return this.futureStack.pop() ?? this.actionMap;
+        this.actionMap = this.futureStack.pop() ?? this.actionMap;
+        return this.actionMap;
     }
-    // protected getOutputDirection(tile: Tile, neighbor: Tile): OutputDirection {
-    //   const xStart = tile.coordinates.start[0];
-    //   const xEnd = tile.coordinates.end[0];
-    //   const yStart = tile.coordinates.start[1];
-    //   const yEnd = tile.coordinates.end[1];
-    //   const neighborXStart = neighbor.coordinates.start[0];
-    //   const neighborXEnd = neighbor.coordinates.end[0];
-    //   const neighborYStart = neighbor.coordinates.start[1];
-    //   const neighborYEnd = neighbor.coordinates.end[1];
-    //   if (neighborXStart === xEnd) {
-    //     return OutputDirection.Right;
-    //   }
-    //   if (neighborXEnd === xStart) {
-    //     return OutputDirection.Left;
-    //   }
-    //   if (neighborYStart === yEnd) {
-    //     return OutputDirection.Down;
-    //   }
-    //   if (neighborYEnd === yStart) {
-    //     return OutputDirection.Up;
-    //   }
-    //   throw new Error('Invalid output direction');
-    // }
-    // protected getOutputCoordinates(
-    //   tile: Tile,
-    //   neighbor: Tile,
-    //   direction: OutputDirection,
-    // ): [number, number] {
-    //   const neighborXStart = neighbor.coordinates.start[0];
-    //   const neighborXEnd = neighbor.coordinates.end[0];
-    //   const neighborYStart = neighbor.coordinates.start[1];
-    //   const neighborYEnd = neighbor.coordinates.end[1];
-    //   switch (direction) {
-    //     case OutputDirection.Down:
-    //       return [neighborXStart, neighborYStart - 1];
-    //     case OutputDirection.Right:
-    //       return [neighborXStart - 1, neighborYStart];
-    //     case OutputDirection.Up:
-    //       return [neighborXStart, neighborYEnd + 1];
-    //     case OutputDirection.Left:
-    //       return [neighborXEnd + 1, neighborYStart];
-    //     default:
-    //       throw new Error('Invalid output direction');
-    //   }
-    // }
-    // protected getTileNeighbors(tile: Tile): Tile[] {
-    //   const neighbors: Tile[] = [];
-    //   // get coordinates of current tile and find any tiles that have
-    //   // coordinates +1 by x right, -1 by x left, +1 by y bottom, -1 by y top
-    //   const xStart = tile.coordinates.start[0];
-    //   const xEnd = tile.coordinates.end[0];
-    //   const yStart = tile.coordinates.start[1];
-    //   const yEnd = tile.coordinates.end[1];
-    //   this.actionMap.tiles.forEach((t: Tile) => {
-    //     if (
-    //       (t.coordinates.start[0] === xEnd
-    //         && t.coordinates.start[1] >= yStart
-    //         && t.coordinates.start[1] <= yEnd)
-    //       || (t.coordinates.end[0] === xStart
-    //         && t.coordinates.end[1] >= yStart
-    //         && t.coordinates.end[1] <= yEnd)
-    //       || (t.coordinates.start[1] === yEnd
-    //         && t.coordinates.start[0] >= xStart
-    //         && t.coordinates.start[0] <= xEnd)
-    //       || (t.coordinates.end[1] === yStart
-    //         && t.coordinates.end[0] >= xStart
-    //         && t.coordinates.end[0] <= xEnd)
-    //     ) {
-    //       neighbors.push(t);
-    //     }
-    //   });
-    //   return neighbors;
-    // }
-    async getActionOutputSchema(actionId) {
-        const action = await this.actionFetcher(actionId);
+    getActionOutputSchema(actionId) {
+        const action = this.usedActions.find((a)=>a.actionId === actionId);
         if (!action) throw new Error(`Action ${actionId} not found`);
-        return JSON.parse(action.output);
+        return action.output;
     }
     getModelSchema(modelName) {
         const model = this.models.find((m)=>m.name === modelName);
@@ -1150,27 +1142,13 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
     getMemoryById(id) {
         return this.actionMap.tiles.find((tile)=>tile.type === (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory && tile.id === id) || null;
     }
-    async getMemorySchema(id) {
+    getMemorySchema(id) {
         // Retrieve a memory object by its ID. Throws an error if not found.
         const memory = this.getMemoryById(id);
         if (!memory) throw new Error(`Memory ${id} not found`);
         // Fetch the outputs associated with the memory's input IDs.
-        const inOutputs = this.getOutputsByIds(memory.input);
-        // This array will hold the schemas for each input.
-        const inputSchemas = await this.processOutputs(inOutputs);
-        // If there's only one input schema without an argument, return it directly.
-        if (inputSchemas.length === 1 && !inputSchemas[0].argument) return inputSchemas[0].schema;
-        // Prepare to construct a combined schema for multiple inputs.
-        const properties = {};
-        // For each input schema, add a reference to it in the properties of the combined schema.
-        inputSchemas.forEach((schema)=>{
-            if (schema.argument) properties[schema.argument] = schema.schema;
-        });
-        // Return the combined schema.
-        return {
-            type: (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object,
-            properties: properties
-        };
+        const inOutputs = this.getOutputsByOutputTileId(memory.id);
+        return this.outputsToDataSchema(inOutputs);
     }
     /**
    * Asynchronously processes a list of outputs and retrieves their corresponding data schemas.
@@ -1196,23 +1174,22 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
    *    If the outputPath is not valid, an error is thrown.
    * 4. If no outputPath is specified, the entire schema from the source tile is used.
    * 5. The resulting schema and any argument are added to the return array.
-   */ async processOutputs(inOutputs) {
-        const inputSchemas = await Promise.all(inOutputs.map(async (output)=>{
+   */ outputsToDataSchema(inOutputs) {
+        const dataSchema = {
+            type: (0, $9c38f06678b5673e$export$1ae122a9008ff510).Object,
+            properties: {},
+            required: true
+        };
+        inOutputs.forEach((output)=>{
             const sourceTile = this.getSourceTileForOutput(output.id);
-            // Refactored schema retrieval into a separate function for clarity
-            const sourceTileOutputSchema = await this.getTileOutputSchema(sourceTile);
-            let outputSchema;
-            if (output.outputPath) {
-                if (!this.dataSchemaHandler.validateSchema(sourceTileOutputSchema)) throw new Error(`Invalid schema for tile ${sourceTile.id}`);
-                outputSchema = this.dataSchemaHandler.getSchemaFromPath(sourceTileOutputSchema, output.outputPath);
-                if (!this.dataSchemaHandler.validateSchema(outputSchema)) throw new Error(`Output field ${output.outputPath} not found in tile ${sourceTile.id}`);
-            } else outputSchema = sourceTileOutputSchema;
-            return {
-                argument: output.toArgument,
-                schema: outputSchema
-            };
-        }));
-        return inputSchemas;
+            const sourceTileOutputSchema = this.getTileOutputSchema(sourceTile);
+            output.dataMap.forEach((dataMap)=>{
+                const outputSchema = this.dataSchemaHandler.getSchemaFromPath(sourceTileOutputSchema, dataMap.outputPath);
+                if (!this.dataSchemaHandler.validateSchema(outputSchema)) throw new Error(`Output field ${dataMap.outputPath} not found in tile ${sourceTile.id}`);
+                dataSchema.properties[dataMap.inputPath] = outputSchema;
+            });
+        });
+        return dataSchema;
     }
     getOutputById(id) {
         const output = this.actionMap.outputs.find((o)=>o.id === id);
@@ -1220,21 +1197,15 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         return output;
     }
     getOutputsByIds(ids) {
-        return ids.map((id)=>this.getOutputById(id));
+        return this.actionMap.outputs.filter((o)=>ids.includes(o.id));
+    }
+    getOutputsByOutputTileId(id) {
+        return this.actionMap.outputs.filter((o)=>o.outputTileId === id);
     }
     getSourceTileForOutput(outputId) {
-        const tile = this.actionMap.tiles.find((t)=>{
-            switch(t.type){
-                case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Accessor:
-                    return t.output.includes(outputId);
-                case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Action:
-                    return t.output.includes(outputId);
-                case (0, $53a7a2c32695d914$export$b58a0cc33096f1fb).Memory:
-                    return false;
-                default:
-                    throw new Error(`Invalid tile type: ${t.type}`);
-            }
-        });
+        const output = this.actionMap.outputs.find((o)=>o.id === outputId);
+        if (!output) throw new Error(`Output ${outputId} not found`);
+        const tile = this.actionMap.tiles.find((t)=>t.id === output?.outputTileId);
         if (!tile) throw new Error(`Tile for output ${outputId} not found`);
         return tile;
     }

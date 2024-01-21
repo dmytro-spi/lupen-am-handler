@@ -135,7 +135,7 @@ export class ActionMapHandler {
         isValid: true,
         errors: [],
       };
-    } catch (e) {
+    } catch (e: any) {
       return {
         isValid: false,
         errors: e.errors,

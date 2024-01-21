@@ -20,9 +20,12 @@ export enum ComplexDataType {
     Object = "object",
     Array = "array"
 }
-export type DataTypes = SimpleDataType | ComplexDataType | FormatDataType | ContentDataType;
+enum SpecialDataType {
+    Any = "any"
+}
+export type DataTypes = SimpleDataType | ComplexDataType | FormatDataType | ContentDataType | SpecialDataType;
 export type DataSchema = {
-    type: DataTypes | DataTypes[];
+    type: DataTypes;
     properties?: {
         [key: string]: DataSchema;
     };
@@ -30,6 +33,26 @@ export type DataSchema = {
     description?: string;
     defaultValue?: any;
     required?: boolean;
+};
+enum CompatibilitySide {
+    Source = "source",
+    Target = "target"
+}
+enum SchemasCompatibilityTypes {
+    Direct = "direct",
+    Conditional = "conditional",
+    ArrayItem = "arrayItem"
+}
+type Compatibility = {
+    id: string;
+    side: CompatibilitySide;
+    type: SchemasCompatibilityTypes;
+};
+type DataSchemaWithCompatibility = DataSchema & {
+    properties?: {
+        [key: string]: DataSchemaWithCompatibility;
+    };
+    compatibility?: Compatibility[];
 };
 interface Category {
     id: string;
@@ -58,6 +81,16 @@ export const MEMORY_SELECTOR: (id: string) => string;
 export const CONSTANT_SELECTOR: (name: string) => string;
 export const MODEL_SELECTOR: (name: string) => string;
 export const OUTPUT_SELECTOR: (id: string) => string;
+enum SourceType {
+    Constant = "constant",
+    Memory = "memory",
+    Model = "model",
+    Input = "input"
+}
+type DataSource = {
+    type: SourceType;
+    name: string;
+};
 export enum ConditionOperator {
     Equal = "==",
     StrongEqual = "===",
@@ -66,28 +99,44 @@ export enum ConditionOperator {
     GreaterThan = ">",
     GreaterThanOrEqual = ">=",
     LessThan = "<",
-    LessThanOrEqual = "<="
+    LessThanOrEqual = "<=",
+    Not = "!"
 }
+type Condition = {
+    operator: ConditionOperator;
+    leftValue: DataSource | Condition;
+    rightValue?: DataSource | Condition;
+};
 export enum OutputType {
     Default = "default",
     Conditional = "conditional",
     ForEach = "forEach"
 }
+type OutputCompatiblePaths = {
+    from: DataSchemaWithCompatibility;
+    to: DataSchemaWithCompatibility;
+};
+type ConnectionDataMap = {
+    outputPath: string;
+    inputPath: string;
+};
 export type OutputGeneral = {
     id: string;
-    toArgument?: string;
     type: OutputType;
-    outputPath?: string;
+    outputTileId: Tile['id'];
+    inputTileId: Tile['id'];
+    dataMap: ConnectionDataMap[];
 };
 export type DefaultOutput = OutputGeneral & {
     type: OutputType.Default;
 };
 export type ConditionalOutput = OutputGeneral & {
     type: OutputType.Conditional;
-    condition: string;
+    condition: Condition;
 };
 export type ForEachOutput = OutputGeneral & {
     type: OutputType.ForEach;
+    forEachDataMap: ConnectionDataMap;
 };
 export type Output = DefaultOutput | ConditionalOutput | ForEachOutput;
 export enum TileType {
@@ -135,9 +184,7 @@ type ModelAccessorTile = AccessorTile & {
     operation: ModelAccessOperation;
 };
 export type ActionTile = TileGeneral & {
-    output: string[];
     actionId: string;
-    input: Output['id'][];
 };
 export enum MemoryType {
     DataOut = "dataOut",
@@ -145,7 +192,6 @@ export enum MemoryType {
     Model = "model"
 }
 export type MemoryTile = TileGeneral & {
-    input: Output['id'][];
     memoryType: MemoryType;
 };
 enum ModelMemoryOperation {
@@ -160,6 +206,11 @@ type ModelMemoryTile = MemoryTile & {
     operation: ModelMemoryOperation;
 };
 export type Tile = AccessorTile | ActionTile | MemoryTile | ModelMemoryTile | ModelAccessorTile | ConstantAccessorTile | DataInAccessorTile | MemoryAccessorTile;
+type ActionDataSchema = {
+    actionId: string;
+    arguments: DataSchema;
+    output: DataSchema;
+};
 export type DataIn = {
     name: string;
     label: string;
@@ -173,69 +224,60 @@ export type ActionMap = {
     outputs: Output[];
     tiles: Tile[];
 };
-type PropertyItem = {
-    name: string;
-    type: DataTypes | DataTypes[];
-    children?: PropertyItem[];
-};
-type PropertyTree = PropertyItem[];
-export type CompatiblePaths = {
-    from: string;
-    to: string;
-}[];
 export class DataSchemaHandler {
-    getPropertiesTree(schema: DataSchema): PropertyTree;
     isSchemasCompatible(schema: DataSchema, schemaToCompare: DataSchema): boolean;
-    isSchemaPartiallyCompatible(schemaFrom: DataSchema, schemaTo: DataSchema, cb: (compatiblePaths: string[]) => any): boolean;
-    isSchemaPartiallyCompatibleWithTopLevelProperties(schemaFrom: DataSchema, schemaTo: DataSchema, cb: (compatiblePaths: CompatiblePaths) => any): boolean;
+    findCompatibilities(source: DataSchema, target: DataSchema, cb: (source: DataSchemaWithCompatibility, target: DataSchemaWithCompatibility) => void): boolean;
     validateSchema(schema: DataSchema): boolean;
-    walkThroughPropertiesRecursive(schema: DataSchema, callback: (partialSchema: DataSchema, path: string) => void): void;
+    walkThroughPropertiesRecursive(schema: DataSchema, callback: (partialSchema: DataSchema) => void): void;
     getSchemaFromPath(schema: DataSchema, path: string): DataSchema;
 }
 export class ActionMapHandler {
     protected readonly models: Model[];
-    protected readonly actionFetcher: (actionId: string) => Promise<Action | undefined>;
     protected readonly dataSchemaHandler: DataSchemaHandler;
     protected actionMap: ActionMap;
+    protected usedActions: ActionDataSchema[];
     protected changeStack: ActionMap[];
     protected futureStack: ActionMap[];
-    constructor(actionMap: ActionMap | null, models: Model[], actionFetcher: (actionId: string) => Promise<Action | undefined>, options?: {
+    constructor(actionMap: ActionMap | null, models: Model[], options?: {
         skipValidation?: boolean;
     });
     get currentActionMap(): ActionMap;
     static get emptyActionMap(): ActionMap;
+    forceUpdateActionMap(actionMap: ActionMap): ActionMap;
+    isTileNeedsForInputs(tileId: string): boolean;
     createEmptyActionMap(name?: string): ActionMap;
     renameActionMap(name: string): ActionMap;
-    validateSchema(): Promise<boolean>;
-    getAccessorOutputSchema(tile: AccessorTile): Promise<DataSchema>;
-    validateTile(tile: Tile): Promise<boolean>;
-    addTile(tile: Tile): ActionMap;
+    validateSchema(): {
+        isValid: boolean;
+        errors: any[];
+    };
+    getAccessorOutputSchema(tile: AccessorTile): DataSchema;
+    validateTile(tile: Tile): boolean;
+    addTile(tile: Tile, actionSchemas?: ActionDataSchema): ActionMap;
     removeTile(id: string): ActionMap;
-    canConnectTiles(fromTileId: string, toTileId: string, cb: (compatiblePaths: CompatiblePaths) => void): Promise<boolean>;
-    addOutput(output: Omit<Output, 'id'>, fromTileId: string, toTileId: string): Promise<ActionMap>;
-    removeOutput(id: string): ActionMap;
+    canConnectTiles(fromTileId: string, toTileId: string, cb: (compatiblePaths: OutputCompatiblePaths) => void): boolean;
+    addOutput(output: Omit<Output, 'id'>): ActionMap;
     updateTileCoordinates(id: string, position: [number, number]): ActionMap;
     tilesIntersect(position: [number, number]): boolean;
-    getTileOutputSchema(tile: Tile): Promise<DataSchema>;
-    getActionArgumentsSchema(actionId: string): Promise<DataSchema>;
+    getTileOutputSchema(tile: Tile): DataSchema;
+    getActionArgumentsSchema(actionId: string): DataSchema;
     undo(): ActionMap;
     redo(): ActionMap;
+    protected getMemoryInitialSchema(tileId: string): DataSchema;
     protected pushNewState(actionMap: ActionMap): ActionMap;
     protected returnToPreviousState(): ActionMap;
     protected putCurrentToFutureState(): ActionMap;
     protected putCurrentToPreviousState(): ActionMap;
     protected clearFutureStack(): ActionMap;
     protected returnToFutureState(): ActionMap;
-    protected getActionOutputSchema(actionId: string): Promise<DataSchema>;
+    protected getActionOutputSchema(actionId: string): DataSchema;
     protected getModelSchema(modelName: string): DataSchema;
     protected getMemoryById(id: string): MemoryTile | null;
-    protected getMemorySchema(id: string): Promise<DataSchema>;
-    protected processOutputs(inOutputs: Output[]): Promise<{
-        argument?: string;
-        schema: DataSchema;
-    }[]>;
+    protected getMemorySchema(id: string): DataSchema;
+    protected outputsToDataSchema(inOutputs: Output[]): DataSchema;
     protected getOutputById(id: string): Output;
     protected getOutputsByIds(ids: string[]): Output[];
+    protected getOutputsByOutputTileId(id: string): Output[];
     protected getSourceTileForOutput(outputId: string): Tile;
 }
 

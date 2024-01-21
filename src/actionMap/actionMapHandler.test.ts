@@ -33,7 +33,6 @@ describe('ActionMapHandler', () => {
       const actionMapHandler = new ActionMapHandler(
         null,
         [],
-        async () => undefined,
       );
 
       // Act
@@ -54,7 +53,6 @@ describe('ActionMapHandler', () => {
       const actionMapHandler = new ActionMapHandler(
         null,
         [],
-        async () => undefined,
       );
       const name = 'Custom Action Map';
 
@@ -78,7 +76,6 @@ describe('ActionMapHandler', () => {
       const actionMapHandler = new ActionMapHandler(
         null,
         [],
-        async () => undefined,
       );
 
       actionMapHandler.createEmptyActionMap();
@@ -104,7 +101,6 @@ describe('ActionMapHandler', () => {
       const actionMapHandler = new ActionMapHandler(
         validActionMap,
         [],
-        async () => undefined,
       );
 
       // Act
@@ -132,7 +128,6 @@ describe('ActionMapHandler', () => {
       const actionMapHandler = new ActionMapHandler(
         invalidActionMap as any,
         [],
-        async () => undefined,
         {
           skipValidation: true,
         }
