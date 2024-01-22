@@ -40,7 +40,6 @@ export const tileGeneralSchema = yup.object().shape({
 // AccessorTile schema
 export const accessorTileSchema = tileGeneralSchema
   .concat(yup.object({
-    output: yup.array().of(yup.string()).required(),
     accessType: accessorTypeSchema.required(),
   }));
 
@@ -70,7 +69,7 @@ export const modelAccessorTileSchema = accessorTileSchema
   .concat(yup.object({
     accessType: yup.mixed().oneOf([AccessorType.Model]),
     modelName: yup.string().required(),
-    query: yup.string().required(),
+    // query: yup.string().required(),
     operation: modelAccessOperationSchema.required(),
   }));
 
@@ -85,7 +84,6 @@ export const actionTileSchema = tileGeneralSchema
 // MemoryTile schema
 export const memoryTileSchema = tileGeneralSchema
   .concat(yup.object({
-    input: yup.array().of(yup.string()).required(),
     memoryType: yup
       .mixed<MemoryType>()
       .oneOf(Object.values(MemoryType))
@@ -97,7 +95,7 @@ export const modelMemoryTileSchema = memoryTileSchema
   .concat(yup.object({
     memoryType: yup.mixed().oneOf([MemoryType.Model]),
     modelName: yup.string().required(),
-    query: yup.string().required(),
+    // query: yup.string().required(),
     operation: modelMemoryOperationSchema.required(),
   }));
 

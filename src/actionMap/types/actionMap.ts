@@ -127,7 +127,7 @@ export enum  ModelAccessOperation {
 export type ModelAccessorTile = AccessorTile & {
   accessType: AccessorType.Model;
   modelName: string;
-  query: string;
+  query: string; // TODO: delete?
   operation: ModelAccessOperation;
 };
 
@@ -135,7 +135,7 @@ export type ActionTile = TileGeneral & {
   actionId: string;
 };
 
-export enum MemoryType { // TODO: reimplement data schema for this
+export enum MemoryType {
   DataOut = 'dataOut',
   Internal = 'internal',
   Model = 'model',
@@ -154,7 +154,7 @@ export enum ModelMemoryOperation {
 export type ModelMemoryTile = MemoryTile & {
   memoryType: MemoryType.Model;
   modelName: string;
-  query: string;
+  query: string; // TODO: delete?
   operation: ModelMemoryOperation;
 };
 

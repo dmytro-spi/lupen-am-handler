@@ -359,7 +359,6 @@ const $5a06354403e1cbe2$export$8da21ffd331f2922 = $8zHUo$yup.object().shape({
     type: $5a06354403e1cbe2$export$3f22e65960887329.required()
 });
 const $5a06354403e1cbe2$export$8df29c7063b7517d = $5a06354403e1cbe2$export$8da21ffd331f2922.concat($8zHUo$yup.object({
-    output: $8zHUo$yup.array().of($8zHUo$yup.string()).required(),
     accessType: $5a06354403e1cbe2$export$97a6fcb49b2b0798.required()
 }));
 const $5a06354403e1cbe2$export$334599776679ae92 = $5a06354403e1cbe2$export$8df29c7063b7517d.concat($8zHUo$yup.object({
@@ -385,7 +384,7 @@ const $5a06354403e1cbe2$export$334eda1600f280a7 = $5a06354403e1cbe2$export$8df29
         (0, $53a7a2c32695d914$export$1f02415756f5fb16).Model
     ]),
     modelName: $8zHUo$yup.string().required(),
-    query: $8zHUo$yup.string().required(),
+    // query: yup.string().required(),
     operation: $5a06354403e1cbe2$export$923e425a87884b8a.required()
 }));
 const $5a06354403e1cbe2$export$c9c64d51056635a7 = $5a06354403e1cbe2$export$8da21ffd331f2922.concat($8zHUo$yup.object({
@@ -394,7 +393,6 @@ const $5a06354403e1cbe2$export$c9c64d51056635a7 = $5a06354403e1cbe2$export$8da21
     input: $8zHUo$yup.array().of($8zHUo$yup.string()).required()
 }));
 const $5a06354403e1cbe2$export$48e226a6daf86e70 = $5a06354403e1cbe2$export$8da21ffd331f2922.concat($8zHUo$yup.object({
-    input: $8zHUo$yup.array().of($8zHUo$yup.string()).required(),
     memoryType: $8zHUo$yup.mixed().oneOf(Object.values((0, $53a7a2c32695d914$export$90d94503f4d956ff))).required()
 }));
 const $5a06354403e1cbe2$export$1253cb500ffddf18 = $5a06354403e1cbe2$export$48e226a6daf86e70.concat($8zHUo$yup.object({
@@ -402,7 +400,7 @@ const $5a06354403e1cbe2$export$1253cb500ffddf18 = $5a06354403e1cbe2$export$48e22
         (0, $53a7a2c32695d914$export$90d94503f4d956ff).Model
     ]),
     modelName: $8zHUo$yup.string().required(),
-    query: $8zHUo$yup.string().required(),
+    // query: yup.string().required(),
     operation: $5a06354403e1cbe2$export$c50c1c96240d4cab.required()
 }));
 // Combined Tile schema

@@ -340,7 +340,6 @@ const $8e667be3765ae363$export$8da21ffd331f2922 = $hgUW1$object().shape({
     type: $8e667be3765ae363$export$3f22e65960887329.required()
 });
 const $8e667be3765ae363$export$8df29c7063b7517d = $8e667be3765ae363$export$8da21ffd331f2922.concat($hgUW1$object({
-    output: $hgUW1$array().of($hgUW1$string()).required(),
     accessType: $8e667be3765ae363$export$97a6fcb49b2b0798.required()
 }));
 const $8e667be3765ae363$export$334599776679ae92 = $8e667be3765ae363$export$8df29c7063b7517d.concat($hgUW1$object({
@@ -366,7 +365,7 @@ const $8e667be3765ae363$export$334eda1600f280a7 = $8e667be3765ae363$export$8df29
         (0, $b224c477343e41e6$export$1f02415756f5fb16).Model
     ]),
     modelName: $hgUW1$string().required(),
-    query: $hgUW1$string().required(),
+    // query: yup.string().required(),
     operation: $8e667be3765ae363$export$923e425a87884b8a.required()
 }));
 const $8e667be3765ae363$export$c9c64d51056635a7 = $8e667be3765ae363$export$8da21ffd331f2922.concat($hgUW1$object({
@@ -375,7 +374,6 @@ const $8e667be3765ae363$export$c9c64d51056635a7 = $8e667be3765ae363$export$8da21
     input: $hgUW1$array().of($hgUW1$string()).required()
 }));
 const $8e667be3765ae363$export$48e226a6daf86e70 = $8e667be3765ae363$export$8da21ffd331f2922.concat($hgUW1$object({
-    input: $hgUW1$array().of($hgUW1$string()).required(),
     memoryType: $hgUW1$mixed().oneOf(Object.values((0, $b224c477343e41e6$export$90d94503f4d956ff))).required()
 }));
 const $8e667be3765ae363$export$1253cb500ffddf18 = $8e667be3765ae363$export$48e226a6daf86e70.concat($hgUW1$object({
@@ -383,7 +381,7 @@ const $8e667be3765ae363$export$1253cb500ffddf18 = $8e667be3765ae363$export$48e22
         (0, $b224c477343e41e6$export$90d94503f4d956ff).Model
     ]),
     modelName: $hgUW1$string().required(),
-    query: $hgUW1$string().required(),
+    // query: yup.string().required(),
     operation: $8e667be3765ae363$export$c50c1c96240d4cab.required()
 }));
 // Combined Tile schema
