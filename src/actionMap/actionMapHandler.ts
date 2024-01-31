@@ -596,6 +596,14 @@ export class ActionMapHandler {
     return this.returnToFutureState();
   }
 
+  public getTileOutputs(tileId: string): Output[] {
+    return this.actionMap.outputs.filter((o) => o.outputTileId === tileId);
+  }
+
+  public getTileInputs(tileId: string): Output[] {
+    return this.actionMap.outputs.filter((o) => o.inputTileId === tileId);
+  }
+
   // PROTECTED -----------------------------------------------------------------
   protected getMemoryInitialSchema(tileId: string): DataSchema {
     const memory = this.getMemoryById(tileId);

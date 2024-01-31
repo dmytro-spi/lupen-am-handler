@@ -1050,6 +1050,12 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
     redo() {
         return this.returnToFutureState();
     }
+    getTileOutputs(tileId) {
+        return this.actionMap.outputs.filter((o)=>o.outputTileId === tileId);
+    }
+    getTileInputs(tileId) {
+        return this.actionMap.outputs.filter((o)=>o.inputTileId === tileId);
+    }
     // PROTECTED -----------------------------------------------------------------
     getMemoryInitialSchema(tileId) {
         const memory = this.getMemoryById(tileId);

@@ -258,6 +258,8 @@ export class ActionMapHandler {
     getActionArgumentsSchema(actionId: string): DataSchema;
     undo(): ActionMap;
     redo(): ActionMap;
+    getTileOutputs(tileId: string): Output[];
+    getTileInputs(tileId: string): Output[];
     protected getMemoryInitialSchema(tileId: string): DataSchema;
     protected pushNewState(actionMap: ActionMap): ActionMap;
     protected returnToPreviousState(): ActionMap;
