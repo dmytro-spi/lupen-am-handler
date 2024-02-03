@@ -404,17 +404,6 @@ export class ActionMapHandler {
 
     const outputId = uuidv4();
 
-    this.pushNewState({
-      ...this.actionMap,
-      outputs: [
-        ...this.actionMap.outputs,
-        {
-          ...output,
-          id: outputId,
-        } as Output,
-      ],
-    });
-
     this.actionMap.outputs.push({
       ...output,
       id: outputId,

@@ -897,16 +897,6 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
         //   throw new Error('Output data map is not compatible with tiles');
         // }
         const outputId = (0, $hgUW1$v4)();
-        this.pushNewState({
-            ...this.actionMap,
-            outputs: [
-                ...this.actionMap.outputs,
-                {
-                    ...output,
-                    id: outputId
-                }
-            ]
-        });
         this.actionMap.outputs.push({
             ...output,
             id: outputId
