@@ -231,8 +231,8 @@ export class ActionMapHandler {
     protected readonly dataSchemaHandler: DataSchemaHandler;
     protected actionMap: ActionMap;
     protected usedActions: ActionDataSchema[];
-    protected changeStack: ActionMap[];
-    protected futureStack: ActionMap[];
+    protected undoStack: Uint8Array[];
+    protected redoStack: Uint8Array[];
     constructor(actionMap: ActionMap | null, models: Model[], options?: {
         skipValidation?: boolean;
     });
@@ -261,12 +261,9 @@ export class ActionMapHandler {
     getTileOutputs(tileId: string): Output[];
     getTileInputs(tileId: string): Output[];
     protected getMemoryInitialSchema(tileId: string): DataSchema;
-    protected pushNewState(actionMap: ActionMap): ActionMap;
-    protected returnToPreviousState(): ActionMap;
-    protected putCurrentToFutureState(): ActionMap;
-    protected putCurrentToPreviousState(): ActionMap;
-    protected clearFutureStack(): ActionMap;
-    protected returnToFutureState(): ActionMap;
+    protected saveUndo(): void;
+    protected undoChanges(): ActionMap;
+    protected redoChanges(): ActionMap;
     protected getActionOutputSchema(actionId: string): DataSchema;
     protected getModelSchema(modelName: string): DataSchema;
     protected getMemoryById(id: string): MemoryTile | null;

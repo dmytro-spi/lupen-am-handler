@@ -1,4 +1,5 @@
 import {v4 as $hgUW1$v4} from "uuid";
+import {encode as $hgUW1$encode, decode as $hgUW1$decode} from "@msgpack/msgpack";
 import {object as $hgUW1$object, string as $hgUW1$string, array as $hgUW1$array, mixed as $hgUW1$mixed, lazy as $hgUW1$lazy, boolean as $hgUW1$boolean, number as $hgUW1$number} from "yup";
 import {cloneDeep as $hgUW1$cloneDeep} from "lodash";
 
@@ -167,6 +168,7 @@ const $fd42a2123675ef71$export$54582e7b17f0fab7 = {
     name: "user",
     schema: JSON.stringify($fd42a2123675ef71$export$431bbfaa07941dc7)
 };
+
 
 
 
@@ -622,8 +624,8 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
         this.dataSchemaHandler = new (0, $a3e7ad90fc86cc8c$export$e073683b1b98b026)();
         this.actionMap = $54eb9ffd392831bf$export$a82bfd0bc6a25e39.emptyActionMap;
         this.usedActions = [];
-        this.changeStack = [];
-        this.futureStack = [];
+        this.undoStack = [];
+        this.redoStack = [];
         if (actionMap) {
             this.actionMap = actionMap;
             if (!options?.skipValidation) {
@@ -664,7 +666,7 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
    *                       - tiles: an empty array of tiles.
    *                       - outputs: an empty array of outputs.
    */ createEmptyActionMap(name) {
-        this.putCurrentToPreviousState();
+        this.saveUndo();
         this.actionMap = {
             id: (0, $hgUW1$v4)(),
             name: name ?? "New Action Map",
@@ -801,13 +803,8 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
             if (tile.actionId !== actionSchemas.actionId) throw new Error("Action schemas are not for this action");
             if (!this.usedActions.some((usedAction)=>usedAction.actionId === actionSchemas.actionId)) this.usedActions.push(actionSchemas);
         }
-        this.pushNewState({
-            ...this.actionMap,
-            tiles: [
-                ...this.actionMap.tiles,
-                tile
-            ]
-        });
+        this.saveUndo();
+        this.actionMap.tiles.push(tile);
         return this.actionMap;
     }
     /**
@@ -825,13 +822,12 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
    */ removeTile(id) {
         const tile = this.actionMap.tiles.find((t)=>t.id === id);
         if (!tile) throw new Error(`Tile ${id} not found`);
+        this.saveUndo();
         // delete inputs ant outputs for this tile
         const newOutputs = this.actionMap.outputs.filter((o)=>o.outputTileId !== id && o.inputTileId !== id);
-        return this.pushNewState({
-            ...this.actionMap,
-            tiles: this.actionMap.tiles.filter((t)=>t.id !== id),
-            outputs: newOutputs
-        });
+        this.actionMap.tiles = this.actionMap.tiles.filter((t)=>t.id !== id);
+        this.actionMap.outputs = newOutputs;
+        return this.actionMap;
     }
     /**
    * Asynchronously determines if two tiles can be connected.
@@ -896,6 +892,7 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
         // if (!output.dataMap.every((dataMap) => compatiblePaths.some((path) => path.from === dataMap.outputPath && path.to === dataMap.inputPath))) {
         //   throw new Error('Output data map is not compatible with tiles');
         // }
+        this.saveUndo();
         const outputId = (0, $hgUW1$v4)();
         this.actionMap.outputs.push({
             ...output,
@@ -970,16 +967,9 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
         if (!tile) throw new Error(`Tile ${id} not found`);
         const anotherTileIntersects = this.tilesIntersect(position);
         if (anotherTileIntersects) throw new Error("Tile intersects with another tile");
-        return this.pushNewState({
-            ...this.actionMap,
-            tiles: this.actionMap.tiles.map((t)=>{
-                if (t.id === id) return {
-                    ...t,
-                    coordinates: position
-                };
-                return t;
-            })
-        });
+        this.saveUndo();
+        tile.coordinates = position;
+        return this.actionMap;
     }
     /**
    * Checks if a tile intersects with any other tile in the action map.
@@ -1035,10 +1025,10 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
         return action.arguments;
     }
     undo() {
-        return this.returnToPreviousState();
+        return this.undoChanges();
     }
     redo() {
-        return this.returnToFutureState();
+        return this.redoChanges();
     }
     getTileOutputs(tileId) {
         return this.actionMap.outputs.filter((o)=>o.outputTileId === tileId);
@@ -1064,37 +1054,24 @@ class $54eb9ffd392831bf$export$a82bfd0bc6a25e39 {
         };
         return initialMemorySchema;
     }
-    pushNewState(actionMap) {
-        this.clearFutureStack();
-        this.changeStack.push(this.actionMap);
-        if (this.changeStack.length > 10) this.changeStack.shift();
-        this.actionMap = actionMap;
-        return actionMap;
+    saveUndo() {
+        const actionMapBuffer = (0, $hgUW1$encode)(this.actionMap);
+        this.undoStack.push(actionMapBuffer);
     }
-    returnToPreviousState() {
-        this.putCurrentToFutureState();
-        this.actionMap = this.changeStack.pop() ?? this.actionMap;
+    undoChanges() {
+        const previousActionMapBuffer = this.undoStack.pop();
+        if (!previousActionMapBuffer) return this.actionMap;
+        const currentActionMapBuffer = (0, $hgUW1$encode)(this.actionMap);
+        this.redoStack.push(currentActionMapBuffer);
+        this.actionMap = (0, $hgUW1$decode)(previousActionMapBuffer);
         return this.actionMap;
     }
-    putCurrentToFutureState() {
-        if (!this.actionMap) return this.actionMap;
-        this.futureStack.push(this.actionMap);
-        if (this.futureStack.length > 10) this.futureStack.shift();
-        return this.actionMap;
-    }
-    putCurrentToPreviousState() {
-        if (!this.actionMap) return this.actionMap;
-        this.changeStack.push(this.actionMap);
-        if (this.changeStack.length > 10) this.changeStack.shift();
-        return this.actionMap;
-    }
-    clearFutureStack() {
-        this.futureStack = [];
-        return this.actionMap;
-    }
-    returnToFutureState() {
-        this.putCurrentToPreviousState();
-        this.actionMap = this.futureStack.pop() ?? this.actionMap;
+    redoChanges() {
+        const futureActionMapBuffer = this.redoStack.pop();
+        if (!futureActionMapBuffer) return this.actionMap;
+        const currentActionMapBuffer = (0, $hgUW1$encode)(this.actionMap);
+        this.undoStack.push(currentActionMapBuffer);
+        this.actionMap = (0, $hgUW1$decode)(futureActionMapBuffer);
         return this.actionMap;
     }
     getActionOutputSchema(actionId) {
