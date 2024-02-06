@@ -233,6 +233,10 @@ export class ActionMapHandler {
     protected usedActions: ActionDataSchema[];
     protected undoStack: Uint8Array[];
     protected redoStack: Uint8Array[];
+    protected firstTileY: number;
+    protected lastTileY: number;
+    protected firstTileX: number;
+    protected lastTileX: number;
     constructor(actionMap: ActionMap | null, models: Model[], options?: {
         skipValidation?: boolean;
     });
@@ -260,6 +264,13 @@ export class ActionMapHandler {
     redo(): ActionMap;
     getTileOutputs(tileId: string): Output[];
     getTileInputs(tileId: string): Output[];
+    getFirstLastTileCoordinates(): {
+        firstTileX: number;
+        lastTileX: number;
+        firstTileY: number;
+        lastTileY: number;
+    };
+    protected refreshFirstAndLastTileCoordinates(): void;
     protected getMemoryInitialSchema(tileId: string): DataSchema;
     protected saveUndo(): void;
     protected undoChanges(): ActionMap;

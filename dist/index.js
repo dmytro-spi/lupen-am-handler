@@ -645,12 +645,17 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         this.usedActions = [];
         this.undoStack = [];
         this.redoStack = [];
+        this.firstTileY = 0;
+        this.lastTileY = 0;
+        this.firstTileX = 0;
+        this.lastTileX = 0;
         if (actionMap) {
             this.actionMap = actionMap;
             if (!options?.skipValidation) {
                 const { isValid: isValid } = this.validateSchema();
                 if (!isValid) throw new Error("Invalid action map schema");
             }
+            this.refreshFirstAndLastTileCoordinates();
         } else this.createEmptyActionMap();
     }
     // PUBLIC ------------------------------------------------------------------
@@ -692,6 +697,7 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
             tiles: [],
             outputs: []
         };
+        this.refreshFirstAndLastTileCoordinates();
         return this.actionMap;
     }
     /**
@@ -824,6 +830,10 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         }
         this.saveUndo();
         this.actionMap.tiles.push(tile);
+        if (tile.coordinates[0] < this.firstTileX) this.firstTileX = tile.coordinates[0];
+        if (tile.coordinates[0] > this.lastTileX) this.lastTileX = tile.coordinates[0];
+        if (tile.coordinates[1] < this.firstTileY) this.firstTileY = tile.coordinates[1];
+        if (tile.coordinates[1] > this.lastTileY) this.lastTileY = tile.coordinates[1];
         return this.actionMap;
     }
     /**
@@ -846,6 +856,10 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
         const newOutputs = this.actionMap.outputs.filter((o)=>o.outputTileId !== id && o.inputTileId !== id);
         this.actionMap.tiles = this.actionMap.tiles.filter((t)=>t.id !== id);
         this.actionMap.outputs = newOutputs;
+        if (tile.coordinates[0] === this.firstTileX) this.firstTileX = this.actionMap.tiles.reduce((acc, t)=>Math.min(acc, t.coordinates[0]), 0);
+        if (tile.coordinates[0] === this.lastTileX) this.lastTileX = this.actionMap.tiles.reduce((acc, t)=>Math.max(acc, t.coordinates[0]), 0);
+        if (tile.coordinates[1] === this.firstTileY) this.firstTileY = this.actionMap.tiles.reduce((acc, t)=>Math.min(acc, t.coordinates[1]), 0);
+        if (tile.coordinates[1] === this.lastTileY) this.lastTileY = this.actionMap.tiles.reduce((acc, t)=>Math.max(acc, t.coordinates[1]), 0);
         return this.actionMap;
     }
     /**
@@ -1055,7 +1069,21 @@ class $86d69c5e11233160$export$a82bfd0bc6a25e39 {
     getTileInputs(tileId) {
         return this.actionMap.outputs.filter((o)=>o.inputTileId === tileId);
     }
+    getFirstLastTileCoordinates() {
+        return {
+            firstTileX: this.firstTileX,
+            lastTileX: this.lastTileX,
+            firstTileY: this.firstTileY,
+            lastTileY: this.lastTileY
+        };
+    }
     // PROTECTED -----------------------------------------------------------------
+    refreshFirstAndLastTileCoordinates() {
+        this.firstTileX = this.actionMap.tiles.reduce((acc, t)=>Math.min(acc, t.coordinates[0]), 0);
+        this.lastTileX = this.actionMap.tiles.reduce((acc, t)=>Math.max(acc, t.coordinates[0]), 0);
+        this.firstTileY = this.actionMap.tiles.reduce((acc, t)=>Math.min(acc, t.coordinates[1]), 0);
+        this.lastTileY = this.actionMap.tiles.reduce((acc, t)=>Math.max(acc, t.coordinates[1]), 0);
+    }
     getMemoryInitialSchema(tileId) {
         const memory = this.getMemoryById(tileId);
         if (!memory) throw new Error(`Memory ${tileId} not found`);

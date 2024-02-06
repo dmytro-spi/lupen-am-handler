@@ -30,6 +30,10 @@ export class ActionMapHandler {
   protected usedActions: ActionDataSchema[] = [];
   protected undoStack: Uint8Array[] = [];
   protected redoStack: Uint8Array[] = [];
+  protected firstTileY = 0;
+  protected lastTileY = 0;
+  protected firstTileX = 0;
+  protected lastTileX = 0;
 
   constructor(
     actionMap: ActionMap | null,
@@ -47,6 +51,8 @@ export class ActionMapHandler {
           throw new Error('Invalid action map schema');
         }
       }
+
+      this.refreshFirstAndLastTileCoordinates();
     } else {
       this.createEmptyActionMap();
     }
@@ -98,6 +104,8 @@ export class ActionMapHandler {
       tiles: [],
       outputs: [],
     };
+
+    this.refreshFirstAndLastTileCoordinates();
 
     return this.actionMap;
   }
@@ -264,6 +272,22 @@ export class ActionMapHandler {
 
     this.actionMap.tiles.push(tile);
 
+    if (tile.coordinates[0] < this.firstTileX) {
+      this.firstTileX = tile.coordinates[0];
+    }
+
+    if (tile.coordinates[0] > this.lastTileX) {
+      this.lastTileX = tile.coordinates[0];
+    }
+
+    if (tile.coordinates[1] < this.firstTileY) {
+      this.firstTileY = tile.coordinates[1];
+    }
+
+    if (tile.coordinates[1] > this.lastTileY) {
+      this.lastTileY = tile.coordinates[1];
+    }
+
     return this.actionMap;
   }
 
@@ -294,6 +318,22 @@ export class ActionMapHandler {
 
     this.actionMap.tiles = this.actionMap.tiles.filter((t) => t.id !== id);
     this.actionMap.outputs = newOutputs;
+
+    if (tile.coordinates[0] === this.firstTileX) {
+      this.firstTileX = this.actionMap.tiles.reduce((acc, t) => Math.min(acc, t.coordinates[0]), 0);
+    }
+
+    if (tile.coordinates[0] === this.lastTileX) {
+      this.lastTileX = this.actionMap.tiles.reduce((acc, t) => Math.max(acc, t.coordinates[0]), 0);
+    }
+
+    if (tile.coordinates[1] === this.firstTileY) {
+      this.firstTileY = this.actionMap.tiles.reduce((acc, t) => Math.min(acc, t.coordinates[1]), 0);
+    }
+
+    if (tile.coordinates[1] === this.lastTileY) {
+      this.lastTileY = this.actionMap.tiles.reduce((acc, t) => Math.max(acc, t.coordinates[1]), 0);
+    }
 
     return this.actionMap;
   }
@@ -588,7 +628,23 @@ export class ActionMapHandler {
     return this.actionMap.outputs.filter((o) => o.inputTileId === tileId);
   }
 
+  public getFirstLastTileCoordinates(): { firstTileX: number; lastTileX: number; firstTileY: number; lastTileY: number } {
+    return {
+      firstTileX: this.firstTileX,
+      lastTileX: this.lastTileX,
+      firstTileY: this.firstTileY,
+      lastTileY: this.lastTileY,
+    };
+  }
+
   // PROTECTED -----------------------------------------------------------------
+  protected refreshFirstAndLastTileCoordinates(): void {
+    this.firstTileX = this.actionMap.tiles.reduce((acc, t) => Math.min(acc, t.coordinates[0]), 0);
+    this.lastTileX = this.actionMap.tiles.reduce((acc, t) => Math.max(acc, t.coordinates[0]), 0);
+    this.firstTileY = this.actionMap.tiles.reduce((acc, t) => Math.min(acc, t.coordinates[1]), 0);
+    this.lastTileY = this.actionMap.tiles.reduce((acc, t) => Math.max(acc, t.coordinates[1]), 0);
+  }
+
   protected getMemoryInitialSchema(tileId: string): DataSchema {
     const memory = this.getMemoryById(tileId);
 
